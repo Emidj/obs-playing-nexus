@@ -1,0 +1,256 @@
+{
+  "format": "obs-playing.preset-compatibility",
+  "version": 1,
+  "presets": [
+    {
+      "id": "studio",
+      "name": "Prism",
+      "setting": 1,
+      "renderer": "classic",
+      "preview": {
+        "height": 166,
+        "scaled": false
+      }
+    },
+    {
+      "id": "minimal",
+      "name": "Air",
+      "setting": 2,
+      "renderer": "classic",
+      "preview": {
+        "height": 152,
+        "scaled": false
+      }
+    },
+    {
+      "id": "cantilever",
+      "name": "Cantilever",
+      "setting": 3,
+      "renderer": "classic",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "oblique",
+      "name": "Oblique",
+      "setting": 4,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "aura",
+      "name": "Aura",
+      "setting": 5,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "orbit",
+      "name": "Orbit",
+      "setting": 6,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "terminal",
+      "name": "Terminal",
+      "setting": 7,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "rupture",
+      "name": "Rupture",
+      "setting": 8,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "dune",
+      "name": "Dune",
+      "setting": 9,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "chrome",
+      "name": "Chrome",
+      "setting": 10,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "monolith",
+      "name": "Monolith",
+      "setting": 11,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "portal",
+      "name": "Portal",
+      "setting": 12,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "beacon",
+      "name": "Beacon",
+      "setting": 13,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "laser",
+      "name": "Laser",
+      "setting": 14,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "matrix",
+      "name": "Matrix",
+      "setting": 15,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "lotus",
+      "name": "Lotus",
+      "setting": 16,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "tide",
+      "name": "Tide",
+      "setting": 17,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "silk",
+      "name": "Silk",
+      "setting": 18,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "obsidian",
+      "name": "Obsidian",
+      "setting": 19,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "lens",
+      "name": "Lens",
+      "setting": 20,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "gum",
+      "name": "Bubblegum",
+      "setting": 21,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "sintonia",
+      "name": "Tuning",
+      "setting": 22,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    },
+    {
+      "id": "trazo",
+      "name": "Trace",
+      "setting": 23,
+      "renderer": "native-recipe",
+      "preview": {
+        "height": 220,
+        "scaled": true
+      }
+    }
+  ],
+  "aliases": [
+    {
+      "id": "neon",
+      "target": "orbit",
+      "name": "Neon (Orbit)",
+      "setting": 24
+    },
+    {
+      "id": "broadcast",
+      "target": "oblique",
+      "name": "Broadcast (Oblique)",
+      "setting": 25
+    },
+    {
+      "id": "editorial",
+      "target": "chrome",
+      "name": "Editorial (Chrome)",
+      "setting": 26
+    }
+  ]
+}

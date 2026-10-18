@@ -1,0 +1,34 @@
+# Local state and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+*.pcs
+*.db
+*.db-wal
+*.db-shm
+*.log
+*.dmp
+*.bin
+# Build outputs and local tools
+work/
+outputs/
+dist/
+build/
+build-*/
+.vs/
+.idea/
+__pycache__/
+*.pyc
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.dll
+# Original dependency archives belong in Release Sources, not Git history
+/*.zip
+/*.7z
+/*.rar

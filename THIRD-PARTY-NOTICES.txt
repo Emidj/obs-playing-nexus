@@ -1,0 +1,64 @@
+OBS Playing - third-party notices
+
+Serato Remote protocol reference and interoperable handshake:
+https://github.com/chrisle/serato-connect
+https://github.com/chrisle/serato-connect/blob/main/docs/protocol.md
+No Node.js package or Python runtime is bundled. Bonjour is not redistributed;
+the Serato reader uses the local Bonjour service when already installed.
+
+MIT License
+Copyright (c) 2026 Chris Le
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Bundled: SQLite3 Multiple Ciphers 2.5.1 / SQLite 3.53.4, Windows x64, without ICU.
+The original sqlite3mc_x64.dll is installed as obs-playing-db.dll.
+Project: https://github.com/utelle/SQLite3MultipleCiphers
+Release: https://github.com/utelle/SQLite3MultipleCiphers/releases/tag/v2.5.1
+Archive: sqlite3mc-2.5.1-sqlite-3.53.4-win64.zip
+Archive SHA256: 858C4F2E9E262CACA06E6C4FAFEE62D13DD90C21B649B047F17992BF0402981E
+DLL SHA256: 5030DECC6D914539E3B9B7E28AA4F6DE1E7161DAC6FD4B21EB02E6754D9B175E
+
+The archive hash was checked against the publisher's SHA256SUMS.
+The original release license follows:
+MIT License
+
+Copyright (c) 2019-2026 Ulrich Telle
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+Format references (no Python package bundled):
+https://github.com/dylanljones/pyrekordbox (MIT, Dylan Jones)
+https://github.com/dylanljones/pyrekordbox/blob/master/pyrekordbox/masterdb/models.py
+https://github.com/dylanljones/pyrekordbox/blob/master/pyrekordbox/masterdb/database.py

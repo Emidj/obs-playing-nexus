@@ -1,0 +1,94 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Companion setup · OBS Playing NEXUS</title><style>html{color-scheme:dark}body{margin:0;background:#08111d;color:#d8e4f1;font:17px/1.65 "Segoe UI",Arial,sans-serif}main{max-width:1050px;margin:auto;padding:35px 28px 65px}h1{font-size:36px;color:#fff;line-height:1.2}h2{margin-top:55px;padding:13px 0;border-bottom:2px solid #184764;color:#7cdaff}strong{color:#fff}a{color:#72d5ff}li{margin:8px 0}figure{margin:26px 0}img{display:block;max-width:100%;height:auto;border-radius:16px}img[src*="companion-ejemplo"]{max-width:440px;margin:auto}code{font-family:Consolas,monospace;background:#17283b;padding:2px 6px;border-radius:5px}pre{overflow:auto;background:#17283b;padding:18px;border-radius:12px;font-size:14px}.table{overflow:auto}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #29435c;padding:13px;text-align:left;vertical-align:top}th{background:#123653}em{color:#a7bcd0}footer{border-top:1px solid #29435c;margin-top:45px;padding-top:18px;color:#8aa2ba}@media print{html{color-scheme:light}body{background:white;color:#202a35;font-size:11pt}main{padding:0}h1,h2,strong{color:#10283e}h2{break-after:avoid}figure,table,li{break-inside:avoid}a{color:#08639b}code,pre{background:#edf2f8}th{background:#dfedf6}em{color:#46596a}}</style></head><body><main><h1>OBS Playing NEXUS — Companion setup for two PCs</h1>
+<p><strong>Illustrated guide · Windows · RC3.1</strong></p>
+<p><a href="README.html">Español</a> · <strong>English</strong></p>
+<p>Double-click <strong>README.en.html</strong> to open this illustrated guide in your browser, even without an Internet connection. Keep the <code>imagenes</code> folder beside the README.</p>
+<p><strong>Control names:</strong> this RC displays several controls in Spanish. This guide gives their exact labels with English explanations. The numbered diagrams use English descriptions; they are illustrations, not screenshots of an English interface.</p>
+<h2>1. Install the right component on each computer</h2>
+<ul>
+<li><strong>DJ PC:</strong> your DJ application and <strong>OBS Playing Companion</strong>.</li>
+<li><strong>Streaming PC:</strong> <strong>OBS Studio 32.x x64</strong> and the <strong>OBS Playing NEXUS plugin</strong>.</li>
+<li>Both computers must share your home network. Avoid a guest network or a VPN that changes the route between them during setup.</li>
+<li>For remote cover artwork, update <strong>both components to RC3.1 or later</strong>.</li>
+</ul>
+<figure><img src="imagenes/01-dos-pcs.en.svg" alt="Which component belongs on each PC" loading="lazy"/></figure>
+<p>The same installer provides both options. Select <strong>PC DJ · Companion</strong> on the DJ computer and <strong>PC streaming · Plugin OBS</strong> on the streaming computer. Companion creates a desktop shortcut. Windows asks for administrator approval when the plugin installation requires it. Close the relevant application before updating it.</p>
+<h2>2. Check the DJ application&#x27;s track information first</h2>
+<p>On the DJ PC:</p>
+<ol>
+<li>Open Companion from the desktop and start your DJ application.</li>
+<li>Click <strong>⚙ Configuración y dispositivos</strong> (settings and devices), then <strong>PC DJ</strong>.</li>
+<li>Under <strong>Programa DJ</strong> (DJ application), select <strong>rekordbox</strong>, <strong>VirtualDJ</strong> or <strong>Serato</strong>. <strong>Detectar automáticamente</strong> enables automatic detection; select a specific application if several are playing at the same time.</li>
+<li>Enable <strong>Ver canción en este PC</strong> (show track on this PC) and play a track.</li>
+<li>Check that its <strong>title and artist</strong> appear under CURRENT TRACK.</li>
+</ol>
+<figure><img src="imagenes/02-ajustes-dj.en.svg" alt="DJ PC settings: application, local preview and sending" loading="lazy"/></figure>
+<p><strong>Ver canción en este PC</strong> lets you check detection before a receiver connects. Without a receiver or local preview, the detector can remain inactive. A waiting message in that state does not by itself indicate a fault.</p>
+<p>For Serato 4.0.10, enable the OBS Playing device under <strong>Setup → Expansion Packs → External Control</strong>. Automatic Rekordbox reading depends on its version and playback mode. History modes are separate alternatives and may update later.</p>
+<figure><img src="imagenes/companion-ejemplo.png" alt="Actual Companion screen with test data" loading="lazy"/></figure>
+<p><em>Example screenshot from the local test setup, using VirtualDJ and fictional track data. The address 127.0.0.1 shown here is for a single computer. For two PCs, use the DJ PC&#x27;s actual local address, as explained below.</em></p>
+<h2>3. Allow network access in Windows</h2>
+<p>On your <strong>trusted home network</strong>, check that the connection on each PC is marked <strong>Private</strong> under <strong>Settings → Network &amp; Internet → Ethernet or Wi-Fi connection properties</strong>.</p>
+<p>On the DJ PC:</p>
+<ol>
+<li>Open <strong>Windows Security → Firewall &amp; network protection</strong>.</li>
+<li>Select <strong>Allow an app through firewall → Change settings</strong>.</li>
+<li>Find <strong>OBS Playing Companion</strong> or <code>obs-playing-companion.exe</code> and allow it on <strong>Private</strong> networks.</li>
+<li>If it is missing, choose <strong>Allow another app → Browse</strong> and select the installed executable. The default location is:</li>
+</ol>
+<pre><code>%LOCALAPPDATA%\OBS NEXUS\OBS Playing Companion\obs-playing-companion.exe</code></pre>
+<figure><img src="imagenes/03-red-firewall.en.svg" alt="Private home network and the specific Companion firewall permission" loading="lazy"/></figure>
+<p>The Private permission only applies when that PC&#x27;s connection is also classified as Private. Windows handles administrator approval. This installer version does not create firewall rules automatically.</p>
+<p>See Microsoft&#x27;s <a href="https://support.microsoft.com/en-us/windows/security/firewall/risks-of-allowing-apps-through-windows-firewall">instructions for allowing an application</a> and <a href="https://support.microsoft.com/en-us/windows/security/windows-security/firewall-and-network-protection-in-the-windows-security-app">explanation of firewall and network profiles</a>.</p>
+<h2>4. Open pairing on the DJ PC</h2>
+<ol>
+<li>Click <strong>Pair New Device</strong> on Companion&#x27;s main screen.</li>
+<li>If there are several network connections, select the one sharing a router with the streaming PC.</li>
+<li>Pairing stays open for <strong>two minutes</strong>. Keep Companion open.</li>
+<li>Under NETWORK, note its <strong>local IP address</strong> and <strong>port</strong>, normally <strong>9000</strong>. Example: <code>192.168.1.20</code> and <code>9000</code>. Each computer has its own address.</li>
+</ol>
+<p>This button prepares sending and pairing over your local network. If configuring it manually, enable <strong>Permitir conexión desde otro PC de mi red</strong> (allow another PC on my network) and click <strong>Iniciar envío</strong> (start sending). The advertised address must be the DJ PC&#x27;s actual local IP address.</p>
+<h2>5. Pair from OBS on the streaming PC</h2>
+<ol>
+<li>Add an <strong>OBS Playing NEXUS</strong> source or open its properties.</li>
+<li>Under <strong>Programa DJ</strong>, select <strong>Companion — PC DJ</strong>.</li>
+<li>Disable <strong>Tema de prueba (ficticio)</strong> (fictional test track) for this check.</li>
+<li>Click <strong>Vincular / cambiar PC DJ → Buscar PC DJ</strong> (pair/change DJ PC → search).</li>
+<li>Select the other computer and click <strong>Vincular equipo seleccionado</strong> (pair selected computer).</li>
+<li>Compare the displayed identity fingerprint and confirm the request <strong>on both PCs</strong>.</li>
+</ol>
+<figure><img src="imagenes/04-vincular.en.svg" alt="Pairing Companion with the OBS source" loading="lazy"/></figure>
+<p>Pairing saves the destination for reconnection. You do not need to copy a code for this procedure. If the two-minute window expires, click <strong>Pair New Device</strong> again and repeat the search.</p>
+<h2>6. Check the title, artist and cover artwork</h2>
+<ol>
+<li>Companion should show <strong>Connected</strong> and at least <strong>1 connected PC</strong>.</li>
+<li>OBS should show the same title and artist as the DJ PC.</li>
+<li>Switch to another track and check that OBS updates.</li>
+<li>To check artwork, select a <strong>PRO</strong> style, enable <strong>Mostrar portada / imagen de perfil</strong> (show cover/profile image) and play a track with available artwork.</li>
+<li>Artwork may arrive after the text. RC3.1 sends it when available and associates it with the correct track.</li>
+</ol>
+<figure><img src="imagenes/05-comprobar.en.svg" alt="Checking the connection, track information and cover artwork" loading="lazy"/></figure>
+<p>When no cover is available, the Twitch profile image is used if that fallback is enabled and your account is connected in OBS. Classic styles do not display artwork. Companion transmits track data and artwork; it does not send the audio.</p>
+<h2>7. Startup, reconnection and changing computers</h2>
+<ul>
+<li>On the DJ PC, enable <strong>Iniciar envío automáticamente al abrir</strong> (start sending automatically when opened) to avoid clicking Start sending every time.</li>
+<li>This takes effect <strong>when Companion opens</strong>; it does not configure Windows startup.</li>
+<li>The OBS source uses the saved pairing and attempts to recover an interrupted connection. The DJ PC&#x27;s identity must still match.</li>
+<li>To change computers, use <strong>Vincular / cambiar PC DJ</strong>. Remove the local pairing with <strong>Olvidar vinculación anterior</strong> (forget previous pairing).</li>
+<li>In Companion on the DJ PC, <strong>Revocar vinculación seleccionada</strong> (revoke selected pairing) removes the previous computer&#x27;s access. Forgetting a local destination does not itself revoke access on the remote DJ PC.</li>
+<li>If the DJ PC&#x27;s IP address changes, search for it and pair again.</li>
+</ul>
+<h2>8. Troubleshooting</h2>
+<div class="table"><table>
+<tr><th>Symptom</th><th>What to check</th></tr>
+<tr><td>No title in Companion</td><td>Select the DJ application, enable «Ver canción en este PC» and play a track. Check its version and read permissions too.</td></tr>
+<tr><td>OBS cannot find the DJ PC</td><td>Reopen the two-minute pairing window. Check the shared network, advertised IP, Private network profile and Companion firewall permission.</td></tr>
+<tr><td>Companion is missing from the firewall list</td><td>Add its installed executable using «Allow another app».</td></tr>
+<tr><td>The PC appears but pairing fails</td><td>Compare the identity and confirm on both computers before pairing expires.</td></tr>
+<tr><td>OBS reports no linked profile</td><td>Complete «Vincular / cambiar PC DJ» from that OBS source.</td></tr>
+<tr><td>Several DJ applications are playing</td><td>Select the intended application explicitly in Companion.</td></tr>
+<tr><td>Text works but remote artwork is missing</td><td>Update both plugin and Companion to RC3.1 or later. Check artwork on the DJ PC and the artwork options in a PRO style.</td></tr>
+<tr><td>A sample track is always displayed</td><td>Disable «Tema de prueba (ficticio)» in OBS.</td></tr>
+<tr><td>Connection fails after changing networks</td><td>Check the current IP and search again. Check VPN and guest network settings.</td></tr>
+</table></div>
+<p>When requesting help, provide Windows/DJ application versions, the local IP and port, and the visible message. <strong>Do not share pairing codes, <code>.pcs</code> profile files, passwords or credentials.</strong></p>
+<p><em>The numbered illustrations explain the setup steps. The dashboard image is an actual screenshot with test data. OBS Playing NEXUS Companion setup guide.</em></p><footer>NEXUS OBS Plugins by DjEmiMas · Offline Companion setup guide</footer></main></body></html>

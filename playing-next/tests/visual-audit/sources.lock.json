@@ -1,0 +1,38 @@
+[
+  {
+    "path": "src/visual/scene.hpp",
+    "sha256": "D27896DE2BB1BFC012C7F0CE9A2B3E547BDEE903337B97C2B1CF98D548E87AE1"
+  },
+  {
+    "path": "src/visual/text-layout.hpp",
+    "sha256": "F71B3AAF83753DCEE76BC7145FA55D9DCBF85DC1A6F2A7EB900A03F52F4F48EC"
+  },
+  {
+    "path": "src/visual/text-layout.cpp",
+    "sha256": "BB4B4362CCB4399D8A8B665CA6B77BDDB9933AE382A78439A28240DA8FCD4DC1"
+  },
+  {
+    "path": "src/visual/visual-engine.hpp",
+    "sha256": "94BD643538565E1D490F1B2F6091272C9F0CA5E3D6080DBDC21866F0EE40180E"
+  },
+  {
+    "path": "src/visual/visual-engine.cpp",
+    "sha256": "E1A777E8D6A837E6E1ED1AC761931818765958283DD780A41FBBBDD36836BAF9"
+  },
+  {
+    "path": "src/visual/asset-manager.hpp",
+    "sha256": "021FD8A464B2DE508876F3C57BD316B1F203AC75DC9BBA5F65EFF98C61813D33"
+  },
+  {
+    "path": "src/visual/asset-manager.cpp",
+    "sha256": "6B7590C44EADB897A0D6880BC5B5289B7E9408F8B06DC099F99F13465B0CB77D"
+  },
+  {
+    "path": "src/visual/motion.hpp",
+    "sha256": "B0F366C1EC67342EC789B9F7DB0F92511EB87D90B8B171F3ABAB37CE10DBAA28"
+  },
+  {
+    "path": "tests/visual-tests.cpp",
+    "sha256": "D5CE437E64FCC790547A3D7709C0E2244918020E4735206558041F4FECFB02FD"
+  }
+]

@@ -1,0 +1,15 @@
+Build own Companion: Visual Studio 2022 C++ x64 and CMake >=3.28.
+cmake -S playing-next -B build -A x64 -DBUILD_TESTING=OFF -DPLAYING_BUILD_COMPANION=ON -DPLAYING_BUILD_OBS_PROBE=OFF -DQt6_DIR=<Qt6/lib/cmake/Qt6>
+cmake --build build --config RelWithDebInfo
+Use a Qt6 SDK with Core/Network/Gui/Widgets and Schannel. Sources and licenses of
+Qt 6.8.3 modules are included in the adjacent ZIPs. OBS dependency build scripts,
+configuration, original archive checksums and patches: obs-deps-2025-07-11.zip,
+deps.qt/qt6.ps1 and Build-Dependencies.ps1. The Windows recipe uses these exact
+source archive hashes. SBOM records the source revision metadata from the archive.
+Qt is dynamically linked and its DLLs/plugins may be replaced with compatible
+modified builds. Reverse engineering for debugging those modifications is allowed.
+Microsoft runtime DLLs remain unmodified proprietary redistributables from
+VC/Redist/MSVC/14.44.35112/x64/Microsoft.VC143.CRT; UCRT is supplied by Windows.
+https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution
+Do not redistribute a user's profile.pcs: DPAPI binds it to that Windows user.
+This test package is not a final installer or certification on a second PC.

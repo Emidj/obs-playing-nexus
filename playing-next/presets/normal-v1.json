@@ -1,0 +1,926 @@
+{
+  "format": "obs-playing.preset-catalogue",
+  "version": 1,
+  "presets": [
+    {
+      "id": "studio",
+      "name": "Prism",
+      "renderer": "classic"
+    },
+    {
+      "id": "minimal",
+      "name": "Air",
+      "renderer": "classic"
+    },
+    {
+      "id": "cantilever",
+      "name": "Cantilever",
+      "renderer": "classic"
+    },
+    {
+      "id": "oblique",
+      "name": "Oblique",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 45,
+        "available": 410,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#28361c",
+          "italic": false,
+          "uppercase": true
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 42,
+          "weight": 700,
+          "color": "#182013",
+          "italic": true,
+          "uppercase": true
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#d6ebbd",
+          "italic": false,
+          "uppercase": true
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "aura",
+      "name": "Aura",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 145,
+        "available": 320,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#635887",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 34,
+          "weight": 700,
+          "color": "#36315d",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#635887",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 3,
+        "y": -6,
+        "period": 6000,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "orbit",
+      "name": "Orbit",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 145,
+        "available": 315,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#88d9ff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 36,
+          "weight": 700,
+          "color": "#ffffff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#88d9ff",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "terminal",
+      "name": "Terminal",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 45,
+        "available": 410,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Consolas",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#a3fac4",
+          "italic": false,
+          "uppercase": true
+        },
+        {
+          "family": "Consolas",
+          "pixelSize": 29,
+          "weight": 700,
+          "color": "#a3fac4",
+          "italic": false,
+          "uppercase": true
+        },
+        {
+          "family": "Consolas",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#a3fac4",
+          "italic": false,
+          "uppercase": true
+        }
+      ],
+      "motion": {
+        "x": 6,
+        "y": 0,
+        "period": 3000,
+        "pulse": 0.35
+      }
+    },
+    {
+      "id": "rupture",
+      "name": "Rupture",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 45,
+        "available": 410,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#292621",
+          "italic": false,
+          "uppercase": true
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 44,
+          "weight": 700,
+          "color": "#202014",
+          "italic": false,
+          "uppercase": true
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#ffe8f4",
+          "italic": false,
+          "uppercase": true
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "dune",
+      "name": "Dune",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 45,
+        "available": 410,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#693323",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Georgia",
+          "pixelSize": 38,
+          "weight": 700,
+          "color": "#693323",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#693323",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "chrome",
+      "name": "Chrome",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 115,
+        "available": 340,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#f2f9ff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 38,
+          "weight": 700,
+          "color": "#19314a",
+          "italic": true,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#19314a",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "monolith",
+      "name": "Monolith",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 55,
+        "available": 375,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#ff8d58",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 42,
+          "weight": 700,
+          "color": "#ffffff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#ff8d58",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "portal",
+      "name": "Portal",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 155,
+        "available": 300,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#c5bcff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 42,
+          "weight": 700,
+          "color": "#ffffff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#c5bcff",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "beacon",
+      "name": "Beacon",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 155,
+        "available": 300,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#ffbd79",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 42,
+          "weight": 700,
+          "color": "#ffffff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#ffbd79",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "laser",
+      "name": "Laser",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 60,
+        "available": 345,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#6fe4c4",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 42,
+          "weight": 700,
+          "color": "#b9ffe8",
+          "italic": true,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#6fe4c4",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "matrix",
+      "name": "Matrix",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 155,
+        "available": 305,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#6ed5ee",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 42,
+          "weight": 700,
+          "color": "#d5f7ff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#6ed5ee",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "lotus",
+      "name": "Lotus",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 170,
+        "available": 285,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#78374f",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Georgia",
+          "pixelSize": 42,
+          "weight": 700,
+          "color": "#78374f",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#78374f",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "tide",
+      "name": "Tide",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 45,
+        "available": 410,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#176a77",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Georgia",
+          "pixelSize": 42,
+          "weight": 700,
+          "color": "#104f60",
+          "italic": true,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#ffffff",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "silk",
+      "name": "Silk",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 45,
+        "available": 410,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#80516b",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Georgia",
+          "pixelSize": 42,
+          "weight": 700,
+          "color": "#63364c",
+          "italic": true,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#80516b",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "obsidian",
+      "name": "Obsidian",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 45,
+        "available": 325,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#cab1d7",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 42,
+          "weight": 700,
+          "color": "#ffffff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#cab1d7",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "lens",
+      "name": "Lens",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 65,
+        "available": 370,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#dae3eb",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 34,
+          "weight": 700,
+          "color": "#ffffff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#dae3eb",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 0,
+        "y": -3,
+        "period": 4500,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "gum",
+      "name": "Bubblegum",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 45,
+        "available": 410,
+        "center": true,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#244560",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 44,
+          "weight": 700,
+          "color": "#ff94d4",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#def4ff",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 3,
+        "y": -6,
+        "period": 6000,
+        "pulse": 0.18
+      }
+    },
+    {
+      "id": "sintonia",
+      "name": "Tuning",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 45,
+        "available": 410,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#d5ea7e",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 34,
+          "weight": 700,
+          "color": "#ffffff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#d5ea7e",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 6,
+        "y": 0,
+        "period": 3000,
+        "pulse": 0.35
+      }
+    },
+    {
+      "id": "trazo",
+      "name": "Trace",
+      "renderer": "native-recipe",
+      "layout": {
+        "left": 65,
+        "available": 375,
+        "center": false,
+        "top": 26,
+        "rowGap": 8,
+        "bottom": 45
+      },
+      "text": [
+        {
+          "family": "Segoe UI",
+          "pixelSize": 11,
+          "weight": 500,
+          "color": "#e796cf",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 34,
+          "weight": 700,
+          "color": "#ffffff",
+          "italic": false,
+          "uppercase": false
+        },
+        {
+          "family": "Segoe UI",
+          "pixelSize": 14,
+          "weight": 500,
+          "color": "#e796cf",
+          "italic": false,
+          "uppercase": false
+        }
+      ],
+      "motion": {
+        "x": 6,
+        "y": 0,
+        "period": 3000,
+        "pulse": 0.35
+      }
+    }
+  ],
+  "aliases": {
+    "neon": "orbit",
+    "broadcast": "oblique",
+    "editorial": "chrome"
+  }
+}

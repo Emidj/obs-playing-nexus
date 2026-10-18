@@ -1,0 +1,22 @@
+[
+  {
+    "path": "src/adapters/obs-visual-renderer.hpp",
+    "sha256": "968D7B6520ECD2005A4573658EA9955D56E208DA12928902E99E38A1D4362161"
+  },
+  {
+    "path": "src/adapters/obs-visual-renderer.cpp",
+    "sha256": "88A93FE2E2E4B5B84988B9638B9B66E8D6B387CBB80C59D1654CDD4337EF84E0"
+  },
+  {
+    "path": "src/adapters/alert-shader.hpp",
+    "sha256": "B5CFD65A9FCFE7F6B0032DF12ACCB1966E2215F69CFA4F03FE80946456795ED0"
+  },
+  {
+    "path": "src/adapters/hype-shader.hpp",
+    "sha256": "3C2A88805851F894585634A9C4D072869DB1F9E47ABA7EDEE2CA4434B7411493"
+  },
+  {
+    "path": "src/adapters/shoutout-shader.hpp",
+    "sha256": "11B23824154489DEC11879459DD9024DE9AE54746A71F158CE34331C3AD86FF6"
+  }
+]

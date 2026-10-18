@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: MIT
+# Compile the real GPL implementation directly, no Twitch application target.
+file(READ "${CMAKE_CURRENT_LIST_DIR}/../tests/visual-audit/renderer.lock.json" lock)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/../tests/visual-audit/renderer.lock.json")
+string(JSON count LENGTH "${lock}")
+math(EXPR last "${count}-1")
+foreach(index RANGE 0 ${last})
+  string(JSON path GET "${lock}" ${index} path)
+  string(JSON expected GET "${lock}" ${index} sha256)
+  file(SHA256 "${PLAYING_SHARED_ROOT}/${path}" actual)
+  set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${PLAYING_SHARED_ROOT}/${path}")
+  string(TOUPPER "${actual}" actual)
+  if(NOT actual STREQUAL expected)
+    message(FATAL_ERROR "Audited renderer changed: ${path}")
+  endif()
+endforeach()
+find_package(libobs REQUIRED)
+add_library(playing-shared-obs-renderer STATIC "${PLAYING_SHARED_ROOT}/src/adapters/obs-visual-renderer.cpp")
+target_link_libraries(playing-shared-obs-renderer PUBLIC playing-shared-visual OBS::libobs)
+# Pinned upstream source shadows a QRectF named layer with a shader vec4 inside
+# a nested scope (line451); preserve its bytes, waive only C4456 on this target.
+target_compile_options(playing-shared-obs-renderer PRIVATE /W4 /WX /wd4456 /utf-8)
+add_library(playing-track-renderer STATIC "${CMAKE_CURRENT_LIST_DIR}/../src/visual/obs-track-renderer.cpp")
+target_link_libraries(playing-track-renderer PUBLIC playing-track-visual playing-shared-obs-renderer)
+target_compile_options(playing-track-renderer PRIVATE /W4 /WX /utf-8)

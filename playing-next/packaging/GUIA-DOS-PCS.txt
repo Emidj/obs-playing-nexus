@@ -1,0 +1,46 @@
+OBS Playing Companion - prueba portable Windows x64
+
+Este paquete es una version de pruebas. No instala el plugin OBS final.
+El Companion definitivo solo estara en el PC DJ. Durante esta prueba se usa
+un segundo Companion como receptor provisional en el PC de streaming.
+
+1. Extrae TODO el ZIP en una carpeta propia de cada PC. No ejecutes desde el ZIP.
+   No copies las carpetas perfil-PC-DJ/perfil-Streaming entre PCs ni usuarios:
+   Windows protege sus credenciales para el usuario que las creo.
+2. En el PC DJ abre "Abrir Companion PC DJ.cmd". Configura tu programa DJ.
+   Pulsa Pair New Device: permite vincular durante dos minutos y detecta la red.
+   Si tienes varias redes, elige la compartida con el otro PC.
+3. En el PC de streaming abre "Abrir receptor de pruebas.cmd". En Configuracion,
+   PC de streaming, pulsa "Buscar PC DJ y vincular" y selecciona tu equipo.
+4. Compara la identidad que muestran ambos PCs y confirma la solicitud en ambos.
+   No hace falta copiar codigos. El receptor guarda el destino y conecta al abrir.
+   En el PC DJ puedes activar "Iniciar envio automaticamente al abrir".
+5. Reproduce y cambia de cancion. Comprueba titulo, artista y portada disponible.
+   Puedes elegir tu imagen de perfil para cuando no haya portada de la cancion.
+6. Cierra y abre ambos programas: deben recuperar la conexion guardada. Prueba
+   Detener conexion y volver a conectar al PC guardado. Si desconectas temporalmente
+   la red, el receptor debe limpiar la cancion antigua y reconectar al recuperarla.
+7. Para cambiar de equipo, en PC DJ selecciona el anterior en Connected Clients y
+   pulsa "Revocar vinculacion seleccionada" en Configuracion: retira su acceso.
+   En el receptor, "Olvidar vinculacion anterior" borra el destino y desactiva la
+   reconexion. Olvidar no revoca el acceso en el emisor. Vuelve a los pasos 2-4.
+
+Si Windows pregunta por acceso de red, permite solo tu red privada de confianza.
+El paquete no modifica el firewall. Usa UDP39009 para buscar, TCP temporal para
+vincular y TCP9000 por defecto para datos. Ambos PCs deben compartir red IPv4.
+VPN, aislamiento Wi-Fi, red publica o subredes distintas pueden impedir descubrir.
+Si cambia la IP del PC DJ, vuelve a buscarlo y vincularlo. El codigo manual sigue
+disponible como alternativa. No inicies varios emisores en el mismo puerto.
+
+No requiere OBS para esta prueba. No instales scripts o DLLs en tu OBS habitual.
+Para las pruebas internas de OBS solo se usa una copia portable aislada.
+Ningun test local sustituye esta comprobacion entre dos PCs fisicos.
+
+Resultado a comunicar: Windows de ambos PCs, programa DJ/version, conexion usada,
+si descubre, vincula, recibe cambios, reconecta y revoca correctamente. No envies
+codigos de vinculacion, archivos .pcs, claves ni capturas con credenciales.
+
+Avisos y fuentes: THIRD-PARTY-NOTICES.txt, licenses/, source/ y sbom/.
+Se permite sustituir las DLLs Qt por versiones compatibles reconstruidas; no hay
+comprobacion de hash de Qt. Se incluyen fuentes originales Qt 6.8.3 y receta OBS,
+ademas del codigo propio y sus instrucciones. Consulta source/REBUILD.txt.
