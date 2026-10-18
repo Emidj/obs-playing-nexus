@@ -4,6 +4,16 @@ Plugin nativo para OBS Studio y Companion para Windows x64 que muestran informac
 
 Incluye 23 diseños originales. La compatibilidad depende de la versión y del estado de VirtualDJ, rekordbox o Serato; no implica medición del audio que sale de una mesa externa.
 
+## Preview
+
+![OBS Playing NEXUS promotional preview](docs/images/obs-playing-nexus-preview.png)
+
+*Promotional illustration of a now-playing overlay in OBS.*
+
+<img src="docs/images/companion-demo.png" alt="OBS Playing Companion with demonstration track and local connection" width="440">
+
+*Companion screenshot with demonstration data and a local loopback connection.*
+
 ## Instalación
 
 Descarga el [instalador oficial RC3.1](https://github.com/Emidj/obs-playing-nexus/releases/tag/v1.0.0-rc3.1). Cierra OBS y el Companion antes de actualizar. Selecciona Plugin OBS en el PC de streaming y Companion en el PC DJ. El plugin puede solicitar permisos de administrador para Program Files. Para portadas entre PCs, actualiza ambos componentes a RC3.1.
