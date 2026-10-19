@@ -29,9 +29,7 @@ foreach($name in @('Qt6Core.dll','Qt6Gui.dll','Qt6Widgets.dll','Qt6Network.dll')
 foreach($relative in @('platforms/qwindows.dll','tls/qschannelbackend.dll','imageformats/qjpeg.dll','imageformats/qwebp.dll')) {Copy-Payload (Join-Path $QtRoot "plugins/$relative") "plugins/$relative"}
 foreach($name in @('msvcp140.dll','msvcp140_1.dll','msvcp140_2.dll','vcruntime140.dll','vcruntime140_1.dll')) {Copy-Payload (Join-Path $CrtRoot $name) $name}
 @('[Paths]','Prefix=.','Plugins=plugins') | Set-Content -LiteralPath (Join-Path $package 'qt.conf') -Encoding ascii
-foreach($role in @(@('Abrir Companion PC DJ.cmd','perfil-PC-DJ'),@('Abrir receptor de pruebas.cmd','perfil-Streaming'))) {
-    @('@echo off',('start "" "%~dp0obs-playing-companion.exe" --profile-dir "%~dp0'+$role[1]+'"')) | Set-Content -LiteralPath (Join-Path $package $role[0]) -Encoding ascii
-}
+@('@echo off','start "" "%~dp0obs-playing-companion.exe" --profile-dir "%~dp0perfil-PC-DJ"') | Set-Content -LiteralPath (Join-Path $package 'Abrir Companion PC DJ.cmd') -Encoding ascii
 Copy-Payload (Join-Path $PSScriptRoot 'GUIA-DOS-PCS.txt') 'GUIA-DOS-PCS.txt'
 foreach($name in @('README.md','README.html','README.en.md','README.en.html')){Copy-Payload (Join-Path $workspace "playing-next/docs/companion/$name") "docs/companion/$name"}
 foreach($image in (Get-ChildItem (Join-Path $workspace 'playing-next/docs/companion/imagenes') -File)){Copy-Payload $image.FullName ('docs/companion/imagenes/'+$image.Name)}

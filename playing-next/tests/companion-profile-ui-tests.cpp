@@ -23,6 +23,8 @@
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QScreen>
+#include <QTabWidget>
+#include <QSignalBlocker>
 #include <iostream>
 #include <stdexcept>
 using namespace playing::companion;
@@ -108,6 +110,7 @@ void selectionPreview(const QString &db) {
     auto p=profile(); p.receiver.reset(); ProtectedStore store(path); store.save(encodeProfile(p));
     write(history,"22:10 : Local Artist - Preview without sender\r\n");
     Window window(path,db.toUtf8().toStdString());
+    auto tabs=window.findChild<QTabWidget *>();check(tabs&&tabs->count()==1&&tabs->tabText(0)=="PC DJ","Streaming PC option remains in Companion UI");
     child<QComboBox>(window,"provider")->setCurrentIndex(3);
     const auto saved=decodeProfile(*store.load());
     check(saved.sender.selection && saved.sender.selection->providerId=="serato","DJ selector waits for Start Sender");
@@ -119,11 +122,23 @@ void selectionPreview(const QString &db) {
     check(child<QLabel>(window,"network")->text().contains("Disconnected"),"Local preview opened sender listener");
     child<QCheckBox>(window,"preview")->setChecked(false);
     check(child<QLabel>(window,"track")->text()=="Esperando canción","Local preview stop retained active track");
+    {const QSignalBlocker startBlocked(child<QPushButton>(window,"startSender")),pairBlocked(child<QPushButton>(window,"automaticPairSender"));
+     child<QPushButton>(window,"pairDashboard")->click();QApplication::processEvents();
+     auto quick=child<QDialog>(window,"quickSetup");check(quick->isVisible(),"One-button assistant missing");
+     const auto capture=QDir(QCoreApplication::applicationDirPath()).filePath("quick-assistant.png");check(quick->grab().save(capture),"Assistant capture failed");
+     check(child<QCheckBox>(window,"preview")->isChecked(),"Assistant requires manual local preview");
+     check(quick->findChildren<QLineEdit *>().isEmpty(),"Assistant asks for IP or codes");
+     check(quick->screen()->availableGeometry().contains(quick->frameGeometry()),"Assistant exceeds available screen");quick->reject();}
+    child<QPushButton>(window,"stop")->click();
+    {const auto fresh=dir.filePath("fresh.pcs");Window first(fresh,db.toUtf8().toStdString());
+     check(child<QCheckBox>(first,"autoSend")->isChecked()&&child<QCheckBox>(first,"preview")->isChecked(),"Fresh DJ Companion requires automatic-start/preview checkboxes");
+     check(decodeProfile(*ProtectedStore(fresh).load()).startup==StartupMode::Sender,"Fresh DJ startup not saved");child<QPushButton>(first,"stop")->click();}
 }
 void gui(Profile p,const QString &db,const QString &output,const QString &image) {
     QTemporaryDir dir; check(dir.isValid(),"UI fixture directory");
     p.receiver.reset(); p.streamerImage=playing::core::ImageReference{playing::core::ImageKind::LocalFile,image.toUtf8().toStdString(),""};
     const auto djPath=dir.filePath("dj.pcs"),rxPath=dir.filePath("rx.pcs"); ProtectedStore djStore(djPath),rxStore(rxPath); djStore.save(encodeProfile(p));
+    Profile manualReceiver;manualReceiver.identity=createIdentity();rxStore.save(encodeProfile(manualReceiver));
     const auto pin=certificatePin(p.identity.certificate);
     QTcpServer reserve; check(reserve.listen(QHostAddress::LocalHost,0),"Reserve port"); const auto port=reserve.serverPort(); reserve.close();
     const auto history=dir.filePath("history.txt"); write(history,QByteArray::fromStdString(u8"22:01 : Sonny Fodera - Mind Still (Original Mix)\r\n"));

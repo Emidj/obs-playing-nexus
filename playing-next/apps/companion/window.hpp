@@ -7,6 +7,7 @@
 #include <QWidget>
 class QLabel; class QLineEdit; class QSpinBox; class QComboBox; class QCheckBox; class QListWidget; class QPushButton;
 class QCloseEvent; class QMouseEvent; class QShowEvent;
+class QDialog;
 namespace playing::companion {
 class Window final : public QWidget {
 public:
@@ -35,6 +36,8 @@ private:
     PairingClient pairingClient_;
     providers::ConsumerToken remoteToken_;
     QLabel *status_=nullptr,*track_=nullptr,*detectorStatus_=nullptr;
+    QDialog *quickSetup_=nullptr;
+    QLabel *quickStatus_=nullptr,*quickIdentity_=nullptr;
     QLineEdit *address_=nullptr,*history_=nullptr,*code_=nullptr;
     QSpinBox *port_=nullptr;
     QComboBox *provider_=nullptr;

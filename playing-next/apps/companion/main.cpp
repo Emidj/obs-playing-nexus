@@ -11,7 +11,7 @@
 #include <QStandardPaths>
 int main(int argc,char **argv) {
     QApplication app(argc,argv); app.setApplicationName("OBS Playing Companion"); app.setOrganizationName("OBS Playing Next");
-    app.setApplicationVersion("1.0.0-rc3.2"); app.setWindowIcon(QIcon(":/branding/nexus-app.ico"));
+    app.setApplicationVersion("1.0.0-rc3.4"); app.setWindowIcon(QIcon(":/branding/nexus-app.ico"));
     QCommandLineParser parser; parser.addHelpOption(); parser.addOption({"profile-dir","Directorio propio del perfil protegido","path"}); parser.addOption({"db-library","Dependencia DB auditada","path"}); parser.process(app);
     try {
         const auto profileDir=parser.isSet("profile-dir")?parser.value("profile-dir"):QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);

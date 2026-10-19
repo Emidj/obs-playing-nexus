@@ -84,7 +84,7 @@ Window::Window(QString profilePath,std::string databaseLibrary)
     :store_(std::move(profilePath)),detector_(dj_,sender_),channel_(std::make_shared<providers::network::Channel>()),receiver_(channel_) {
     const auto stored=store_.load();
     if(stored) profile_=decodeProfile(*stored);
-    else {Profile first; first.identity=createIdentity(); save(first);}
+    else {Profile first; first.identity=createIdentity(); first.startup=StartupMode::Sender; save(first);}
     receiverView_=profile_.startup==StartupMode::Receiver || (profile_.receiver.has_value()&&profile_.startup!=StartupMode::Sender);
     if(!registerNativeDetectors(dj_,databaseLibrary)) throw std::runtime_error("Native detector unavailable");
     for(const auto &d:profile_.devices) if(!sender_.pair(d.credential)) throw std::runtime_error("Paired device unavailable");
@@ -109,7 +109,7 @@ Window::Window(QString profilePath,std::string databaseLibrary)
     linkedDj_=new QLabel; linkedDj_->setObjectName("linkedDj"); linkedDj_->setTextFormat(Qt::PlainText); linkedDj_->setWordWrap(true); linkedDj_->setMinimumHeight(48); clientRow->addWidget(linkedDj_,1); clientsLayout->addLayout(clientRow);
     QVBoxLayout *detectorLayout=nullptr; card(cards,"AUTO DETECTOR",&detectorLayout);
     for(const auto &id:{QString("rekordbox"),QString("virtualdj"),QString("serato")}) {auto row=new QPushButton; row->setObjectName("providerRow"); row->setProperty("providerId",id); row->setMinimumHeight(48); auto rowLayout=new QHBoxLayout(row); rowLayout->setContentsMargins(8,4,8,4); auto logoLabel=new QLabel; logoLabel->setPixmap(icon(id,34)); rowLayout->addWidget(logoLabel); auto nameLabel=new QLabel(id=="rekordbox"?"rekordbox":id=="virtualdj"?"VirtualDJ":"Serato DJ Pro"); nameLabel->setStyleSheet("font-size:18px;"); rowLayout->addWidget(nameLabel); rowLayout->addStretch(); auto indicator=new QLabel("●"); indicator->setObjectName("indicator"); rowLayout->addWidget(indicator); for(auto label:{logoLabel,nameLabel,indicator}) label->setAttribute(Qt::WA_TransparentForMouseEvents); detectorLayout->addWidget(row); providerRows_.push_back(row);}
-    auto pairDashboard=button(detectorLayout,"♧   Pair New Device","pairDashboard");
+    auto pairDashboard=button(detectorLayout,"Conectar con OBS","pairDashboard");
     detectorStatus_=new QLabel; detectorStatus_->setObjectName("detectorStatus"); detectorStatus_->setWordWrap(true); detectorStatus_->setStyleSheet("font-size:14px; color:#91b0db;"); detectorLayout->addWidget(detectorStatus_);
     auto footer=new QHBoxLayout; auto configure=new QPushButton("⚙"); configure->setObjectName("configure"); configure->setFixedSize(46,40); configure->setStyleSheet("font-size:30px;"); configure->setToolTip("Configuración y dispositivos"); footer->addWidget(configure); footer->addStretch(); running_=new QLabel; footer->addWidget(running_); footer->addWidget(new QSizeGrip(this)); root->addLayout(footer);
     auto settingsDialog=new ScreenDialog(this); settingsDialog->setObjectName("settingsDialog"); settingsDialog->setWindowTitle("Configuración del Companion"); settingsDialog->resize(570,670);
@@ -125,7 +125,7 @@ Window::Window(QString profilePath,std::string databaseLibrary)
     port_=new QSpinBox; port_->setObjectName("port"); port_->setRange(1024,65535); port_->setValue(profile_.sender.port); form->addRow("Puerto",port_);
     lan_=new QCheckBox("Permitir conexión desde otro PC de mi red"); lan_->setChecked(profile_.sender.localNetwork); form->addRow(lan_);
     if(profile_.sender.selection) {const auto &r=*profile_.sender.selection; provider_->setCurrentIndex(r.mode==providers::Mode::History?(r.providerId=="virtualdj"?4:5):(r.providerId=="virtualdj"?1:r.providerId=="rekordbox"?2:3)); history_->setText(QString::fromUtf8(r.historyPath)); if(!detector_.select(r)) throw std::runtime_error("Saved selection invalid");}
-    preview_=new QCheckBox("Ver canción en este PC"); preview_->setObjectName("preview"); form->addRow(preview_);
+    preview_=new QCheckBox("Ver canción en este PC"); preview_->setObjectName("preview"); preview_->setChecked(profile_.startup==StartupMode::Sender); form->addRow(preview_);
     djLayout->insertLayout(0,form);
     autoSend_=new QCheckBox("Iniciar envío automáticamente al abrir"); autoSend_->setObjectName("autoSend"); autoSend_->setChecked(profile_.startup==StartupMode::Sender); djLayout->addWidget(autoSend_);
     QObject::connect(autoSend_,&QCheckBox::toggled,this,[this](bool enabled) {guarded([this,enabled] {setStartup(enabled?StartupMode::Sender:StartupMode::Manual);});});
@@ -143,7 +143,7 @@ Window::Window(QString profilePath,std::string databaseLibrary)
     QObject::connect(preview_,&QCheckBox::toggled,this,[this](bool enabled) {guarded([this,enabled] {if(enabled) applyDjSelection(); detector_.setPreview(enabled); update();});});
     auto automaticPair=button(djLayout,"Permitir vinculación durante 2 minutos","automaticPairSender");
     auto pairingStatus=new QLabel; pairingStatus->setWordWrap(true); pairingStatus->setObjectName("pairingStatus"); djLayout->addWidget(pairingStatus);
-    pairingServer_.changed=[this,pairingStatus] {pairingStatus->setText(pairingServer_.active()?"Vinculación abierta. Identidad de este PC:\n"+pairingFingerprint(certificatePin(profile_.identity.certificate)):"Vinculación cerrada");};
+    pairingServer_.changed=[this,pairingStatus] {pairingStatus->setText(pairingServer_.active()?"Vinculación abierta. Identidad de este PC:\n"+pairingFingerprint(certificatePin(profile_.identity.certificate)):"Vinculación cerrada");update();};
     QObject::connect(automaticPair,&QPushButton::clicked,this,[this,start] {guarded([this,start] {
         if(!sender_.port() || !lan_->isChecked() || !profile_.sender.localNetwork || address_->text().trimmed()!=profile_.sender.address || port_->value()!=profile_.sender.port) {
             QStringList addresses; for(const auto &interface:QNetworkInterface::allInterfaces()) {
@@ -159,12 +159,50 @@ Window::Window(QString profilePath,std::string databaseLibrary)
         if(!sender_.port()) throw std::runtime_error("Start sender first");
         if(!pairingServer_.open(profile_.identity,sender_.port(),QSysInfo::machineHostName().left(80))) throw std::runtime_error("Pairing listener unavailable");
     });});
-    QObject::connect(pairDashboard,&QPushButton::clicked,this,[automaticPair] {automaticPair->click();});
+    // One window for the normal setup; network details and code pairing remain in settings.
+    quickSetup_=new ScreenDialog(this);quickSetup_->setObjectName("quickSetup");quickSetup_->setWindowTitle("Conectar con OBS");quickSetup_->resize(450,480);
+    auto quickRoot=new QVBoxLayout(quickSetup_);auto quickScroll=new QScrollArea;quickScroll->setWidgetResizable(true);quickRoot->addWidget(quickScroll,1);
+    auto quickBody=new QWidget;quickScroll->setWidget(quickBody);auto quickLayout=new QVBoxLayout(quickBody);
+    auto quickHint=new QLabel("Abre tu programa DJ. Después, en OBS del otro PC, pulsa «Conectar Companion».\nNo necesitas configurar direcciones ni copiar códigos.");quickHint->setWordWrap(true);quickLayout->addWidget(quickHint);
+    auto quickProvider=new QComboBox;quickProvider->setObjectName("quickProvider");for(int i=0;i<provider_->count();++i)quickProvider->addItem(provider_->itemText(i));quickLayout->addWidget(quickProvider);
+    quickStatus_=new QLabel;quickStatus_->setObjectName("quickStatus");quickStatus_->setWordWrap(true);quickStatus_->setTextFormat(Qt::PlainText);quickLayout->addWidget(quickStatus_);
+    quickIdentity_=new QLabel;quickIdentity_->setObjectName("quickIdentity");quickIdentity_->setWordWrap(true);quickIdentity_->setTextFormat(Qt::PlainText);quickLayout->addWidget(quickIdentity_);
+    auto retrySetup=button(quickLayout,"Volver a buscar conexión","quickRetry");
+    auto quickClose=button(quickRoot,"Cerrar","quickClose");QObject::connect(quickClose,&QPushButton::clicked,quickSetup_,&QDialog::accept);
+    const auto prepare=[this,start,automaticPair]{guarded([this,start,automaticPair]{
+        preview_->setChecked(true);
+        if(!sender_.port()||!profile_.sender.localNetwork){
+            QStringList addresses;
+            for(const auto &interface:QNetworkInterface::allInterfaces()){
+                if(!(interface.flags()&QNetworkInterface::IsUp)||!(interface.flags()&QNetworkInterface::IsRunning)||(interface.flags()&QNetworkInterface::IsLoopBack))continue;
+                for(const auto &entry:interface.addressEntries())if(entry.ip().protocol()==QAbstractSocket::IPv4Protocol){
+                    const auto ip=entry.ip().toIPv4Address();if((ip>>24)==10||(ip&0xfff00000)==0xac100000||(ip>>16)==0xc0a8)addresses.append(entry.ip().toString());
+                }
+            }
+            addresses.removeDuplicates();
+            if(addresses.isEmpty()){quickIdentity_->setText("Conecta este PC a la misma red Wi-Fi o cableada que el PC de OBS y vuelve a intentarlo.");update();return;}
+            // Listener binds all local interfaces. Discovery replies supply the real
+            // reachable address, so multiple adapters never require an IP question.
+            address_->setText(addresses.contains(profile_.sender.address)?profile_.sender.address:addresses.first());lan_->setChecked(true);start->click();
+        }
+        if(!sender_.port()){quickIdentity_->setText("No se pudo preparar la conexión. Cierra otras ventanas del Companion en este PC y vuelve a intentarlo.");return;}
+        automaticPair->click();
+        if(pairingServer_.active())autoSend_->setChecked(true);
+        update();
+    });};
+    QObject::connect(quickProvider,&QComboBox::currentIndexChanged,this,[this](int index){provider_->setCurrentIndex(index);});
+    QObject::connect(retrySetup,&QPushButton::clicked,this,prepare);
+    QObject::connect(pairDashboard,&QPushButton::clicked,this,[this,quickProvider,prepare]{
+        {const QSignalBlocker block(quickProvider);quickProvider->setCurrentIndex(provider_->currentIndex());}
+        quickSetup_->show();quickSetup_->raise();quickSetup_->activateWindow();prepare();
+    });
+    QObject::connect(quickSetup_,&QDialog::finished,this,[this]{pairingServer_.stop();});
     auto closePairWindow=button(djLayout,"Cerrar vinculación","closeAutomaticPair"); QObject::connect(closePairWindow,&QPushButton::clicked,this,[this] {pairingServer_.stop();});
     pairingServer_.requested=[this](QByteArray id,QString deviceName) {QTimer::singleShot(0,this,[this,id,deviceName] {
         if(!pairingServer_.pending(id)) return;
         const auto question=QString("El equipo «%1» solicita vincularse.\n\nComprueba que esta identidad coincide en ambos PCs:\n%2\n\nConfirma solo la solicitud que acabas de iniciar.").arg(deviceName,pairingFingerprint(certificatePin(profile_.identity.certificate)));
-        if(!confirmPair(this,"Vincular equipo",question)) {pairingServer_.reject(id); return;}
+        QWidget *parent=quickSetup_&&quickSetup_->isVisible()?static_cast<QWidget *>(quickSetup_):this;
+        if(!confirmPair(parent,"Vincular equipo",question)) {pairingServer_.reject(id); return;}
         if(!pairingServer_.pending(id)) return;
         guarded([this,id,deviceName] {const auto credential=newDeviceCredential(); Profile next=profile_; next.devices.push_back({deviceName,credential}); save(next); if(!sender_.pair(credential)||!pairingServer_.approve(id,credential)) throw std::runtime_error("Pair approval unavailable"); update();});
     });};
@@ -232,7 +270,9 @@ Window::Window(QString profilePath,std::string databaseLibrary)
         Profile next=profile_; next.receiver.reset(); if(next.startup==StartupMode::Receiver) next.startup=StartupMode::Manual; next.autoReconnect=false; save(next);
         pairingClient_.stop(); receiver_.stop(); code_->clear(); {const QSignalBlocker receiveBlocked(autoReceive_),retryBlocked(autoReconnect_); autoReceive_->setChecked(false); autoReconnect_->setChecked(false);} autoReceive_->setEnabled(false); update();
     });});
-    receiverLayout->addStretch(); tabs->addTab(receiverPage,"PC de streaming");
+    // Legacy receiver widgets stay inert/hidden for stored-profile compatibility
+    // and transport fixtures. The shipping Companion UI has only the DJ role.
+    receiverLayout->addStretch();receiverPage->setParent(settingsBody);receiverPage->hide();tabs->setTabBarAutoHide(true);
     auto profileImage=button(settingsLayout,"Elegir imagen de perfil del streamer…","profileImage"); QObject::connect(profileImage,&QPushButton::clicked,this,[this] {guarded([this] {const auto path=QFileDialog::getOpenFileName(this,"Imagen de perfil",{},"Imágenes (*.png *.jpg *.jpeg *.webp)"); if(path.isEmpty()) return; Profile next=profile_; next.streamerImage=core::ImageReference{core::ImageKind::LocalFile,path.toUtf8().toStdString(),""}; save(next); displayedImage_.reset(); update();});});
     status_=new QLabel; status_->setObjectName("status"); status_->setWordWrap(true); settingsLayout->addWidget(status_);
     auto stopButton=button(settingsLayout,"Detener conexión","stop"); QObject::connect(stopButton,&QPushButton::clicked,this,[this] {stop();});
@@ -241,8 +281,7 @@ Window::Window(QString profilePath,std::string databaseLibrary)
     QObject::connect(provider_,&QComboBox::currentIndexChanged,this,[this] {guarded([this] {applyDjSelection(); update();});});
     QObject::connect(history_,&QLineEdit::editingFinished,this,[this] {guarded([this] {applyDjSelection(); update();});});
     for(auto row:providerRows_) QObject::connect(row,&QPushButton::clicked,this,[this,row] {const auto id=row->property("providerId").toString(); provider_->setCurrentIndex(id=="virtualdj"?1:id=="rekordbox"?2:3);});
-    tabs->setCurrentIndex(receiverView_?1:0);
-    QObject::connect(tabs,&QTabWidget::currentChanged,this,[this](int index) {receiverView_=index==1; stop();});
+    tabs->setCurrentIndex(0);
     sender_.clientsChanged=[this] {detector_.syncDemand(); update();}; detector_.changed=[this] {update();};
     receiver_.changed=[this] {remote_.refresh({"network",providers::Mode::Automatic,""}); update();}; update();
     if(profile_.startup!=StartupMode::Manual) QTimer::singleShot(0,this,[this,start,reconnect] {
@@ -266,7 +305,7 @@ void Window::setStartup(StartupMode mode) {
     const auto sync=[this] {const QSignalBlocker sendBlocked(autoSend_),receiveBlocked(autoReceive_),retryBlocked(autoReconnect_); autoSend_->setChecked(profile_.startup==StartupMode::Sender); autoReceive_->setChecked(profile_.startup==StartupMode::Receiver); autoReconnect_->setChecked(profile_.autoReconnect);};
     try {Profile next=profile_; next.startup=mode; if(mode==StartupMode::Receiver) next.autoReconnect=true; save(next);}
     catch(...) {sync(); throw;}
-    sync(); receiver_.setAutoReconnect(profile_.autoReconnect);
+    sync(); receiver_.setAutoReconnect(profile_.autoReconnect);if(mode==StartupMode::Sender)preview_->setChecked(true);
 }
 void Window::guarded(const std::function<void()> &action) {
     try {action();} catch(const std::exception &) {QMessageBox::warning(this,"OBS Playing Companion","No se pudo completar la acción. Comprueba la configuración y el perfil protegido.");}
@@ -304,6 +343,17 @@ void Window::update() {
     }
     detectorStatus_->setText(detectorStatus); detectorStatus_->setVisible(!detectorStatus.isEmpty());
     status_->setText(status+(detectorStatus.isEmpty()?QString{}:"\n"+detectorStatus));
+    if(quickStatus_){
+        const bool music=snapshot&&snapshot->metadata;
+        const bool cover=snapshot&&snapshot->track&&snapshot->track->artwork.status==core::ArtworkStatus::Ready;
+        quickStatus_->setText(QString("Programa DJ: %1\nMúsica: %2\nConexión con OBS: %3\nPortada del tema: %4%5")
+            .arg(provider_->currentText(),music?QString::fromUtf8(snapshot->metadata->title):QStringLiteral("esperando una canción"),
+                 sender_.clientCount()?QStringLiteral("conectada"):sender_.port()?QStringLiteral("lista; esperando a OBS"):QStringLiteral("sin preparar"),
+                 cover?QStringLiteral("disponible"):QStringLiteral("todavía no disponible"),detectorStatus.isEmpty()?QString{}:"\n\n"+detectorStatus));
+        if(pairingServer_.active())quickIdentity_->setText("En OBS pulsa «Conectar Companion».\nComprueba esta identidad en ambos PCs:\n"+pairingFingerprint(certificatePin(profile_.identity.certificate)));
+        else if(sender_.clientCount())quickIdentity_->setText("La conexión está guardada. En las siguientes sesiones solo abre Companion y OBS.");
+        else if(sender_.port())quickIdentity_->setText("La ventana de vinculación está cerrada. Pulsa «Volver a buscar conexión» para abrirla de nuevo.\nSi OBS no encuentra este PC, comprueba el permiso de red del Companion en Windows.");
+    }
     clientsTitle_->setText(receiverView_?"PC DJ VINCULADO":"CONNECTED CLIENTS");
     devices_->setVisible(!receiverView_); count_->setVisible(!receiverView_); linkedDj_->setVisible(receiverView_);
     linkedDj_->setText(profile_.receiver?QString("PC DJ · %1:%2\n%3").arg(profile_.receiver->address).arg(profile_.receiver->port).arg(receiver_.connected()?"Conectado":receiver_.connecting()?"Conectando…":receiver_.reconnectPending()?"Reconectando…":"Guardado · Sin conexión"):"Sin PC DJ vinculado");

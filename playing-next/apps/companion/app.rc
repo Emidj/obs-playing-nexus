@@ -1,8 +1,8 @@
 #include <windows.h>
 1 ICON "nexus-app.ico"
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,5
- PRODUCTVERSION 1,0,0,5
+ FILEVERSION 1,0,0,7
+ PRODUCTVERSION 1,0,0,7
  FILEOS VOS_NT_WINDOWS32
  FILETYPE VFT_APP
 BEGIN
@@ -12,9 +12,9 @@ BEGIN
   BEGIN
    VALUE "CompanyName", "OBS NEXUS / DjEmiMas"
    VALUE "FileDescription", "OBS Playing Companion"
-   VALUE "FileVersion", "1.0.0-rc3.2"
+   VALUE "FileVersion", "1.0.0-rc3.4"
    VALUE "ProductName", "OBS Playing NEXUS"
-   VALUE "ProductVersion", "1.0.0-rc3.2"
+   VALUE "ProductVersion", "1.0.0-rc3.4"
   END
  END
  BLOCK "VarFileInfo"

@@ -23,6 +23,7 @@
 #include <QGuiApplication>
 #include <QMetaObject>
 #include <QThread>
+#include <QTimer>
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
@@ -39,6 +40,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "twitch-profile.hpp"
+#include "playing/companion/protected-store.hpp"
 #include <util/config-file.h>
 #ifdef PLAYING_SOURCE_TEST_HOOKS
 #include "playing/companion/protected-store.hpp"
@@ -59,7 +61,10 @@ struct State {
     QString profilePath;
     QString twitchChannel;
     bool automaticProfileEnabled=true,profileRequested=false;
+    unsigned profileFailures=0;
+    std::uint64_t profileGeneration=0;
     bool manualProfile=false;
+    QString profileStatus;
     std::optional<core::ImageReference> automaticProfile;
     bool showExisting=true;
     int hideAfterMs=0;
@@ -261,17 +266,48 @@ void command(const std::shared_ptr<State> &state) noexcept {
             if(!state->listed) {service.states.push_back(state);state->listed=true;}
             if(state->id&&closed) {service.host->detach(state->id);state->id=0;}
             if(!closed) {
-                if(request.providerId=="network")request.providerId=service.host->remoteProfile(profilePath);
+                if(request.providerId=="network"){
+                    try{request.providerId=service.host->remoteProfile(profilePath);}
+                    catch(...){if(state->id){service.host->detach(state->id);state->id=0;}throw;}
+                }
                 if(state->id&&(request<state->attached||state->attached<request)){service.host->detach(state->id);state->id=0;}
                 if(!state->id) {state->id=request.providerId=="demo-preview"?service.host->attachDemo(demo,textLayout,state->consumer):service.host->attach(request,textLayout,state->consumer,showExisting,hideAfterMs);state->attached=request;}
                 else service.host->configure(state->id,textLayout,showExisting,hideAfterMs);
                 if(request.providerId=="demo-preview")service.host->demoTrack(state->id,demo);
                 service.host->active(state->id,active);
                 state->applied=revision;
-                bool getProfile=false;QString channel;{std::lock_guard<std::mutex> lock(state->mutex);if(active&&textLayout.artworkEnabled&&textLayout.profileFallback&&state->automaticProfileEnabled&&!state->profileRequested&&!textLayout.streamerProfile){state->profileRequested=true;channel=state->twitchChannel;getProfile=true;}}
+                bool getProfile=false;QString channel;std::uint64_t profileGeneration=0;{std::lock_guard<std::mutex> lock(state->mutex);if(active&&textLayout.artworkEnabled&&textLayout.profileFallback&&state->automaticProfileEnabled&&!state->profileRequested&&!textLayout.streamerProfile){state->profileRequested=true;profileGeneration=++state->profileGeneration;channel=state->twitchChannel;state->profileStatus=QStringLiteral("Consultando imagen de Twitch…");getProfile=true;}}
                 if(getProfile){
                     auto *profile=obs_frontend_get_profile_config();const char *stored=profile?config_get_string(profile,"Twitch","Token"):nullptr;
-                    service.profiles->request(channel,stored?QByteArray(stored):QByteArray{},[weak=std::weak_ptr<State>(state),channel](QUrl url){const auto target=weak.lock();if(!target||service.closing||url.isEmpty())return;{std::lock_guard<std::mutex> lock(target->mutex);if(target->closed||target->twitchChannel!=channel||!target->automaticProfileEnabled||target->manualProfile)return;target->automaticProfile=core::ImageReference{core::ImageKind::Https,url.toEncoded().toStdString(),std::to_string(QDateTime::currentMSecsSinceEpoch())};target->textLayout.streamerProfile=target->automaticProfile;++target->revision;}command(target);});
+                    service.profiles->request(channel,stored?QByteArray(stored):QByteArray{},[weak=std::weak_ptr<State>(state),channel,profileGeneration](QUrl url,QString profileStatus){
+                        const auto target=weak.lock();if(!target||service.closing)return;
+                        int retryDelay=0;
+                        {std::lock_guard<std::mutex> lock(target->mutex);
+                         if(target->closed||target->profileGeneration!=profileGeneration||target->twitchChannel!=channel||!target->automaticProfileEnabled||target->manualProfile)return;
+                         target->profileStatus=std::move(profileStatus);
+                         if(url.isEmpty()){
+                             if(!target->active){target->profileRequested=false;return;}
+                             constexpr int delays[]={5000,15000,45000};
+                             if(target->profileFailures>=3)return;
+                             retryDelay=delays[target->profileFailures++];
+                         }else{
+                             target->profileFailures=0;
+                             target->automaticProfile=core::ImageReference{core::ImageKind::Https,url.toEncoded().toStdString(),std::to_string(QDateTime::currentMSecsSinceEpoch())};
+                             target->textLayout.streamerProfile=target->automaticProfile;++target->revision;
+                         }}
+                        if(!retryDelay){command(target);return;}
+                        // Bounded recovery for a late OBS login or transient request failure.
+                        // The weak state and generation cancel retries after removal/reload.
+                        QTimer::singleShot(retryDelay,service.dispatcher,[weak,profileGeneration]{
+                            const auto retry=weak.lock();if(!retry||service.closing)return;
+                            {std::lock_guard<std::mutex> lock(retry->mutex);
+                             if(retry->closed||retry->profileGeneration!=profileGeneration||!retry->automaticProfileEnabled||retry->manualProfile||retry->automaticProfile)return;
+                             retry->profileRequested=false;
+                             if(!retry->active)return;
+                             ++retry->revision;}
+                            command(retry);
+                        });
+                    });
                 }
                 {std::lock_guard<std::mutex> lock(state->mutex);state->error.clear();}
             }
@@ -313,7 +349,7 @@ void update(void *data,obs_data_t *settings) noexcept {
          if(!demoImage.empty())state->demo.artwork={core::ArtworkStatus::Ready,core::ImageReference{core::ImageKind::LocalFile,demoImage,{}}};
      }
      const auto channel=QString::fromUtf8(obs_data_get_string(settings,"twitch_channel")).trimmed().left(25);const bool autoProfile=obs_data_get_bool(settings,"twitch_profile_auto");
-     if(state->twitchChannel!=channel||state->automaticProfileEnabled!=autoProfile){state->automaticProfile.reset();state->profileRequested=false;}
+     if(state->twitchChannel!=channel||state->automaticProfileEnabled!=autoProfile){state->automaticProfile.reset();state->profileRequested=false;state->profileFailures=0;++state->profileGeneration;}
      state->twitchChannel=channel;state->automaticProfileEnabled=autoProfile;
      auto nextLayout=configuredLayout(settings);
      state->manualProfile=nextLayout.streamerProfile.has_value();
@@ -434,8 +470,8 @@ bool visibility(obs_properties_t *props,obs_property_t *,obs_data_t *settings) {
     obs_property_set_visible(obs_properties_get(props,"mode"),true);obs_property_set_enabled(obs_properties_get(props,"mode"),history&&!demo);
     obs_property_set_visible(obs_properties_get(props,"history"),!demo&&history&&obs_data_get_int(settings,"mode")==1);
     obs_property_set_visible(obs_properties_get(props,"encoding"),!demo&&provider=="virtualdj"&&obs_data_get_int(settings,"mode")==1);
-    obs_property_set_visible(obs_properties_get(props,"receiver_profile"),remote&&!demo);
-    obs_property_set_visible(obs_properties_get(props,"pair_receiver"),remote&&!demo);
+    obs_property_set_visible(obs_properties_get(props,"receiver_profile"),remote&&!demo&&obs_data_get_int(settings,"editor_mode")==1);
+    obs_property_set_visible(obs_properties_get(props,"pair_receiver"),!demo);
     obs_property_set_visible(obs_properties_get(props,"title_minimum"),!normal&&obs_data_get_int(settings,"title_overflow")==3);
     obs_property_set_visible(obs_properties_get(props,"artist_minimum"),!normal&&obs_data_get_int(settings,"artist_overflow")==3);
     obs_property_set_visible(obs_properties_get(props,"normal_preset"),false);obs_property_set_visible(obs_properties_get(props,"pro_preset"),false);
@@ -528,23 +564,42 @@ bool openPresetManagerImpl(void *data,bool saveAs) {
 }
 bool openPresetManager(obs_properties_t *,obs_property_t *,void *data){return openPresetManagerImpl(data,false);}
 bool saveDesignAs(obs_properties_t *,obs_property_t *,void *data){return openPresetManagerImpl(data,true);}
-bool pairReceiver(obs_properties_t *props,obs_property_t *,void *) {
+bool pairReceiver(obs_properties_t *props,obs_property_t *,void *data) {
     auto stored=static_cast<PropertiesContext *>(obs_properties_get_param(props));if(!stored||!stored->state)return false;
     const auto state=stored->state;
+    const auto source=static_cast<Source *>(data);
+    auto weak=source&&source->source?std::shared_ptr<obs_weak_source_t>(obs_source_get_weak_source(source->source),obs_weak_source_release):std::shared_ptr<obs_weak_source_t>{};
     if(service.closing.load())return false;
     std::lock_guard<std::mutex> gate(service.dispatchMutex);
     if(service.closing.load())return false;
-    QMetaObject::invokeMethod(service.dispatcher,[state] {
+    QMetaObject::invokeMethod(service.dispatcher,[state,weak] {
         QString path;{std::lock_guard<std::mutex> lock(state->mutex);if(state->closed)return;path=state->profilePath;}
         try {
-            auto changed=[] {
+            auto changed=[weak,path] {
+                bool linked=false;
+                try{const auto saved=companion::ProtectedStore(path).load();linked=saved&&companion::decodeProfile(*saved).receiver.has_value();}catch(const std::exception &){}
+                auto selected=weak?std::shared_ptr<obs_source_t>(obs_weak_source_get_source(weak.get()),obs_source_release):std::shared_ptr<obs_source_t>{};
+                if(linked&&selected&&!obs_source_removed(selected.get())){
+                    auto settings=obs_source_get_settings(selected.get());obs_data_set_string(settings,"provider","network");obs_data_set_int(settings,"mode",0);
+                    obs_source_update(selected.get(),settings);obs_data_release(settings);obs_source_update_properties(selected.get());
+                }
                 const auto states=service.states;
-                for(const auto &weak:states)if(auto target=weak.lock()) {
-                    {std::lock_guard<std::mutex> lock(target->mutex);if(target->closed||target->request.providerId!="network")continue;++target->revision;}
+                for(const auto &entryWeak:states)if(auto target=entryWeak.lock()) {
+                    {std::lock_guard<std::mutex> lock(target->mutex);if(target->closed||target->request.providerId!="network"||target->profilePath!=path)continue;++target->revision;}
                     target->consumer->publication.publish({});command(target);
                 }
             };
-            service.dialogs.push_back(showPlayingReceiverLink(path,changed,static_cast<QWidget *>(obs_frontend_get_main_window())));
+            const auto health=[state]{PlayingReceiverHealth result;
+                if(service.closing)return result;
+                {std::lock_guard<std::mutex> lock(state->mutex);if(state->closed)return result;if(!state->active)result.message="Activa esta fuente en la escena de OBS para comprobar la recepción.";}
+                result.connected=service.host&&service.host->remoteConnected(state->attached.providerId);
+                const auto frame=state->consumer->publication.read();result.track=frame&&frame->snapshot&&frame->snapshot->metadata.has_value();result.image=frame&&frame->artwork;
+                if(result.connected&&!result.track&&result.message.isEmpty())result.message="La red funciona. Reproduce una canción en el PC DJ.";
+                return result;
+            };
+            bool linked=false;try{const auto previous=companion::ProtectedStore(path).load();linked=previous&&companion::decodeProfile(*previous).receiver.has_value();}catch(const std::exception &){}
+            if(linked)changed();
+            service.dialogs.push_back(showPlayingReceiverLink(path,changed,static_cast<QWidget *>(obs_frontend_get_main_window()),health));
         }catch(const std::exception &error){blog(LOG_WARNING,"[playing-next] Pairing unavailable: %s",error.what());}
     },Qt::QueuedConnection);return false;
 }
@@ -552,10 +607,31 @@ bool reloadArtwork(obs_properties_t *props,obs_property_t *,void *) {
     const auto stored=static_cast<PropertiesContext *>(obs_properties_get_param(props));if(!stored||!stored->state)return false;
     auto state=stored->state;
     {std::lock_guard<std::mutex> lock(state->mutex);if(state->closed)return false;
-     if(state->automaticProfileEnabled&&!state->manualProfile){state->profileRequested=false;state->automaticProfile.reset();state->textLayout.streamerProfile.reset();++state->revision;}
+     if(state->automaticProfileEnabled&&!state->manualProfile){state->profileRequested=false;state->profileFailures=0;++state->profileGeneration;state->automaticProfile.reset();state->textLayout.streamerProfile.reset();++state->revision;}
      else if(state->textLayout.streamerProfile){state->textLayout.streamerProfile->version="reload-"+std::to_string(++imageVersions);++state->revision;}}
     QMetaObject::invokeMethod(service.dispatcher,[]{if(service.profiles)service.profiles->invalidate();},Qt::QueuedConnection);
     command(state);return false;
+}
+bool imageDiagnostics(obs_properties_t *props,obs_property_t *,void *) {
+    const auto stored=static_cast<PropertiesContext *>(obs_properties_get_param(props));if(!stored||!stored->state)return false;
+    const auto state=stored->state;
+    QMetaObject::invokeMethod(service.dispatcher,[state]{
+        if(service.closing)return;
+        QString text;
+        {std::lock_guard<std::mutex> lock(state->mutex);if(state->closed)return;
+         text=QStringLiteral("Mostrar imagen: %1\nAlternativa del perfil: %2\nPerfil automático de Twitch: %3\nImagen manual configurada: %4\n")
+             .arg(state->textLayout.artworkEnabled?"Sí":"No",state->textLayout.profileFallback?"Sí":"No",state->automaticProfileEnabled?"Sí":"No",state->manualProfile?"Sí":"No");
+         text+=QStringLiteral("Twitch: ")+(state->profileStatus.isEmpty()?QStringLiteral("Sin consulta realizada."):state->profileStatus)+"\n";}
+        const auto frame=state->consumer->publication.read();
+        QString cover="Sin canción activa";
+        if(frame&&frame->snapshot&&frame->snapshot->track){switch(frame->snapshot->track->artwork.status){
+            case core::ArtworkStatus::Ready:cover="Portada recibida";break;
+            case core::ArtworkStatus::Missing:cover="El lector DJ no proporciona portada";break;
+            case core::ArtworkStatus::Failed:cover="Error de portada en el lector DJ";break;
+            default:cover="Portada todavía no disponible";break;}}
+        text+=QStringLiteral("Portada: ")+cover+QStringLiteral("\nImagen preparada para dibujar: ")+(frame&&frame->artwork?"Sí":"No");
+        QMessageBox::information(static_cast<QWidget *>(obs_frontend_get_main_window()),QStringLiteral("Diagnóstico de imágenes"),text);
+    },Qt::QueuedConnection);return false;
 }
 bool manualProfileImage(obs_properties_t *,obs_property_t *property,void *data) {
     auto source=static_cast<Source *>(data);if(!source||!source->source||service.closing.load())return false;
@@ -628,7 +704,7 @@ obs_properties_t *properties(void *data) {
     auto encoding=obs_properties_add_list(props,"encoding","Codificacion de historial VirtualDJ",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
     obs_property_list_add_int(encoding,"Automatic",0);obs_property_list_add_int(encoding,"ANSI",1);obs_property_list_add_int(encoding,"UTF-16LE",2);
     obs_properties_add_path(props,"receiver_profile","Perfil protegido de vinculacion",OBS_PATH_FILE,"Profile (*.pcs)",nullptr);
-    obs_properties_add_button(props,"pair_receiver","Vincular / cambiar PC DJ",pairReceiver);
+    obs_properties_add_button2(props,"pair_receiver","Conectar Companion",pairReceiver,data);
     obs_properties_add_bool(props,"show_existing","Mostrar el tema encontrado al activar la fuente");
     auto cover=obs_properties_add_bool(props,"artwork_enabled","Mostrar portada / imagen de perfil");obs_property_set_modified_callback(cover,visibility);
     obs_properties_add_bool(props,"artwork_fallback","Usar perfil del streamer si no hay portada");
@@ -638,6 +714,7 @@ obs_properties_t *properties(void *data) {
     obs_properties_add_button2(props,"manual_profile_url","Introducir URL HTTPS (opcional)",manualProfileImage,data);
     obs_properties_add_button2(props,"clear_streamer_image","Quitar imagen manual",manualProfileImage,data);
     obs_properties_add_button(props,"reload_artwork","Recargar imagen de perfil",reloadArtwork);
+    obs_properties_add_button(props,"image_diagnostics","Diagnóstico de imágenes",imageDiagnostics);
     for(const auto &field:{std::pair<const char *,const char *>{"artwork_x","Imagen: posicion X"},{"artwork_y","Imagen: posicion Y"}})obs_properties_add_int(props,field.first,field.second,0,2047,1);
     for(const auto &field:{std::pair<const char *,const char *>{"artwork_width","Imagen: ancho"},{"artwork_height","Imagen: alto"}})obs_properties_add_int(props,field.first,field.second,1,2048,1);
     obs_properties_add_int(props,"hide_seconds","Ocultar tema tras segundos (0: sin limite)",0,3600,1);
@@ -753,7 +830,7 @@ void evidenceGui() {
         value["titleX"]=frame->scrollingViewport[0].x();value["titleWidth"]=frame->scrollingViewport[0].width();value["titleHeight"]=frame->scrollingViewport[0].height();value["artistX"]=frame->scrollingViewport[1].x();value["artistWidth"]=frame->scrollingViewport[1].width();value["artistHeight"]=frame->scrollingViewport[1].height();
         if(frame->artwork){value["artworkWidth"]=frame->artwork->image.width();value["artworkHeight"]=frame->artwork->image.height();}
         if(frame->proArt&&frame->proArt->record)value["recordBottom"]=frame->proArt->recordPosition.y()+frame->proArt->record->image.height();
-        {std::lock_guard<std::mutex> lock(state->mutex);value["appearanceRetained"]=state->retainAppearance;}
+        {std::lock_guard<std::mutex> lock(state->mutex);value["appearanceRetained"]=state->retainAppearance;value["profileFailures"]=int(state->profileFailures);value["profileGeneration"]=qint64(state->profileGeneration);}
         if(!frame->snapshot||!frame->snapshot->track)continue; // Idle frame has no track. Test diagnostics only.
         value["artist"]=QString::fromUtf8(frame->snapshot->track->artist.c_str());
         value["trackRevision"]=static_cast<qint64>(frame->snapshot->trackRevision);
@@ -778,6 +855,16 @@ void evidenceGui() {
 }
 }
 extern "C" __declspec(dllexport) void playing_source_test_query() {QMetaObject::invokeMethod(service.dispatcher,[]{evidenceGui();},Qt::QueuedConnection);}
+extern "C" __declspec(dllexport) void playing_source_test_receiver_command(int action) {
+    QMetaObject::invokeMethod(service.dispatcher,[action]{
+        for(const auto &dialog:service.dialogs)if(dialog&&dialog->objectName()=="receiverAssistant"){
+            if(action==1)dialog->findChild<QPushButton*>("receiverForget")->click();
+            if(action==2)dialog->close();
+            if(action==3){const auto folder=QFileInfo(QString::fromUtf8(obs_get_module_binary_path(obs_current_module()))).dir();dialog->grab().save(folder.filePath("receiver-assistant.png"));}
+            break;
+        }
+    },Qt::QueuedConnection);
+}
 extern "C" __declspec(dllexport) void playing_source_test_profile_trace(obs_source_t *source,bool enabled){
     if(!source||std::strcmp(obs_source_get_id(source),"obs_playing_next_development")!=0)return;
     const auto data=static_cast<Source *>(obs_obj_get_data(source));if(!data)return;
