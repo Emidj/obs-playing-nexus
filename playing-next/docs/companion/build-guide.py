@@ -42,11 +42,11 @@ for lang in ("es", "en"):
         +text(90,515,"Los dos en la misma red" if es else "Both on the same network",25))
     svg("quick-02-"+lang+".svg", "02 · Conectar una vez" if es else "02 · Connect once",
         card(45,120,470,330,"PC DJ · COMPANION" if es else "DJ PC · COMPANION")
-        +button(75,195,410,"Conectar con OBS")
+        +button(75,195,410,"Conectar con OBS" if es else "Connect to OBS")
         +text(75,300,"Lectura y envío automáticos" if es else "Automatic reading and sending",22)
         +text(75,360,"Aceptar solicitud" if es else "Accept request",24)
         +card(555,120,500,330,"OBS")
-        +button(585,195,440,"Conectar Companion")
+        +button(585,195,440,"Conectar Companion" if es else "Connect Companion")
         +text(585,300,"Búsqueda automática" if es else "Automatic discovery",24)
         +text(585,360,"Confirmar identidad" if es else "Confirm identity",24)
         +text(90,515,"Sin IP, puertos ni códigos" if es else "No IP addresses, ports or codes",25))

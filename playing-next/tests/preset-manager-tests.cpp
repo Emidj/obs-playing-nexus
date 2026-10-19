@@ -1,3 +1,4 @@
+#include "playing/ui/i18n.hpp"
 // SPDX-License-Identifier: MIT
 #include "../src/obs/preset-manager.hpp"
 #include <QApplication>
@@ -19,7 +20,7 @@
 #include <QUuid>
 #include <iostream>
 #include <stdexcept>
-int main(int argc,char** argv){QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);QApplication app(argc,argv);unsigned checks=0;
+int main(int argc,char** argv){playing::ui::setLanguage("es");QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);QApplication app(argc,argv);unsigned checks=0;
 auto check=[&](bool ok,const char* reason){++checks;if(!ok)throw std::runtime_error(reason);};
 auto rejects=[&](auto fn,const char* reason){bool failed=false;try{fn();}catch(const std::exception&){failed=true;}check(failed,reason);};
 using namespace playing::presets;

@@ -1,3 +1,4 @@
+#include "playing/ui/i18n.hpp"
 // SPDX-License-Identifier: MIT
 #include <obs-module.h>
 #include "playing/visual/vertical-pro-geometry.hpp"
@@ -49,6 +50,8 @@
 #include <QCryptographicHash>
 #endif
 OBS_DECLARE_MODULE()
+MODULE_EXPORT void obs_module_set_locale(const char *locale) {playing::ui::setLanguage(locale);}
+MODULE_EXPORT void obs_module_free_locale(void) {}
 MODULE_EXPORT const char *obs_module_description(void) { return "OBS Playing NEXUS"; }
 namespace {
 using namespace playing;
@@ -276,7 +279,7 @@ void command(const std::shared_ptr<State> &state) noexcept {
                 if(request.providerId=="demo-preview")service.host->demoTrack(state->id,demo);
                 service.host->active(state->id,active);
                 state->applied=revision;
-                bool getProfile=false;QString channel;std::uint64_t profileGeneration=0;{std::lock_guard<std::mutex> lock(state->mutex);if(active&&textLayout.artworkEnabled&&textLayout.profileFallback&&state->automaticProfileEnabled&&!state->profileRequested&&!textLayout.streamerProfile){state->profileRequested=true;profileGeneration=++state->profileGeneration;channel=state->twitchChannel;state->profileStatus=QStringLiteral("Consultando imagen de Twitch…");getProfile=true;}}
+                bool getProfile=false;QString channel;std::uint64_t profileGeneration=0;{std::lock_guard<std::mutex> lock(state->mutex);if(active&&textLayout.artworkEnabled&&textLayout.profileFallback&&state->automaticProfileEnabled&&!state->profileRequested&&!textLayout.streamerProfile){state->profileRequested=true;profileGeneration=++state->profileGeneration;channel=state->twitchChannel;state->profileStatus=playing::ui::string("Consultando imagen de Twitch…");getProfile=true;}}
                 if(getProfile){
                     auto *profile=obs_frontend_get_profile_config();const char *stored=profile?config_get_string(profile,"Twitch","Token"):nullptr;
                     service.profiles->request(channel,stored?QByteArray(stored):QByteArray{},[weak=std::weak_ptr<State>(state),channel,profileGeneration](QUrl url,QString profileStatus){
@@ -479,7 +482,7 @@ bool visibility(obs_properties_t *props,obs_property_t *,obs_data_t *settings) {
     for(const auto key:advanced){auto property=obs_properties_get(props,key);obs_property_set_visible(property,obs_property_visible(property)&&mode==1);}
     for(const auto key:layout){auto property=obs_properties_get(props,key);obs_property_set_visible(property,obs_property_visible(property)&&mode==2);}
     obs_property_set_visible(obs_properties_get(props,"editor_hint"),mode==2);
-    obs_property_set_description(obs_properties_get(props,"editor_hint"),normal?"Clasicos: distribucion automatica. Ajusta ancho y separacion de filas; el marco sigue el texto.":automatic?"Mueve el texto con los dos sliders; cero restaura su posicion original. La portada se adapta automaticamente al marco.":"Layout manual: ajusta las cajas de titulo/artista y la portada dentro del lienzo.");
+    obs_property_set_description(obs_properties_get(props,"editor_hint"),normal?playing::ui::text("Clasicos: distribucion automatica. Ajusta ancho y separacion de filas; el marco sigue el texto."):automatic?playing::ui::text("Mueve el texto con los dos sliders; cero restaura su posicion original. La portada se adapta automaticamente al marco."):playing::ui::text("Layout manual: ajusta las cajas de titulo/artista y la portada dentro del lienzo."));
     return true;
 }
 struct PropertiesContext {std::shared_ptr<State> state;long long geometry=0;};
@@ -513,10 +516,10 @@ int presetFamily(obs_data_t *settings){
 }
 bool populateStyle(obs_properties_t *props,obs_data_t *settings){
     const int family=presetFamily(settings);auto *style=obs_properties_get(props,"preset_style");obs_property_list_clear(style);
-    obs_property_list_add_int(style,"Seleccionar estilo",0);
+    obs_property_list_add_int(style,playing::ui::text("Seleccionar estilo"),0);
     if(family){
-        obs_property_list_add_int(style,"Neon Club — en desarrollo",1);obs_property_list_add_int(style,"Vinyl Classic — en desarrollo",4);obs_property_list_add_int(style,"Minimal — en desarrollo",5);obs_property_list_add_int(style,"Glassmorph — en desarrollo",6);obs_property_list_add_int(style,"Urban — en desarrollo",7);obs_property_list_add_int(style,"Waveform — en desarrollo",8);obs_property_list_add_int(style,"HUD — en desarrollo",9);obs_property_list_add_int(style,"Particles — en desarrollo",10);obs_property_list_add_int(style,"Liquid — en desarrollo",11);obs_property_list_add_int(style,"Vertical Retro — en desarrollo",12);obs_property_list_add_int(style,"Vertical Glass — en desarrollo",13);obs_property_list_add_int(style,"Vertical Vinyl — en desarrollo",14);obs_property_list_add_int(style,"Vertical Urban — en desarrollo",15);obs_property_list_add_int(style,"Vertical Liquid — en desarrollo",16);
-        obs_property_list_add_int(style,"Solo texto horizontal",2);obs_property_list_add_int(style,"Solo texto vertical",3);
+        obs_property_list_add_int(style,"Neon Club",1);obs_property_list_add_int(style,"Vinyl Classic",4);obs_property_list_add_int(style,"Minimal",5);obs_property_list_add_int(style,"Glassmorph",6);obs_property_list_add_int(style,"Urban",7);obs_property_list_add_int(style,"Waveform",8);obs_property_list_add_int(style,"HUD",9);obs_property_list_add_int(style,"Particles",10);obs_property_list_add_int(style,"Liquid",11);obs_property_list_add_int(style,"Vertical Retro",12);obs_property_list_add_int(style,"Vertical Glass",13);obs_property_list_add_int(style,"Vertical Vinyl",14);obs_property_list_add_int(style,"Vertical Urban",15);obs_property_list_add_int(style,"Vertical Liquid",16);
+        obs_property_list_add_int(style,playing::ui::text("Solo texto horizontal"),2);obs_property_list_add_int(style,playing::ui::text("Solo texto vertical"),3);
     }else{
         for(const auto &preset:visual::normal::normalCatalogue())obs_property_list_add_int(style,preset.name.c_str(),preset.setting);
         // Old aliases remain loadable without lengthening the normal new-style list.
@@ -548,10 +551,10 @@ bool openPresetManagerImpl(void *data,bool saveAs) {
     QMetaObject::invokeMethod(service.dispatcher,[weak,path,saveAs]{
         if(service.closing.load())return;
         try {
-            auto acquire=[weak]{if(service.closing.load())throw std::runtime_error("OBS se está cerrando.");auto target=std::shared_ptr<obs_source_t>(obs_weak_source_get_source(weak.get()),obs_source_release);if(!target||obs_source_removed(target.get()))throw std::runtime_error("La fuente se ha cerrado o eliminado.");return target;};
+            auto acquire=[weak]{if(service.closing.load())throw std::runtime_error(playing::ui::text("OBS se está cerrando."));auto target=std::shared_ptr<obs_source_t>(obs_weak_source_get_source(weak.get()),obs_source_release);if(!target||obs_source_removed(target.get()))throw std::runtime_error(playing::ui::text("La fuente se ha cerrado o eliminado."));return target;};
             auto current=[acquire]{auto target=acquire();auto settings=std::shared_ptr<obs_data_t>(obs_source_get_settings(target.get()),obs_data_release);auto result=QJsonDocument::fromJson(QByteArray(obs_data_get_json(settings.get()))).object();result["normal_preset"]=qint64(obs_data_get_int(settings.get(),"normal_preset"));result["pro_preset"]=qint64(obs_data_get_int(settings.get(),"pro_preset"));return result;};
             auto apply=[acquire](const presets::Entry& entry){
-                if(service.closing.load())throw std::runtime_error("OBS se está cerrando.");
+                if(service.closing.load())throw std::runtime_error(playing::ui::text("OBS se está cerrando."));
                 presets::validate(entry.appearance);auto target=acquire();auto settings=std::shared_ptr<obs_data_t>(obs_source_get_settings(target.get()),obs_data_release);
                 for(const auto& key:presets::visualKeys()){const auto utf8=key.toUtf8();obs_data_unset_user_value(settings.get(),utf8.constData());}
                 const auto json=QJsonDocument(entry.appearance).toJson(QJsonDocument::Compact);auto appearance=std::shared_ptr<obs_data_t>(obs_data_create_from_json(json.constData()),obs_data_release);obs_data_apply(settings.get(),appearance.get());
@@ -559,7 +562,7 @@ bool openPresetManagerImpl(void *data,bool saveAs) {
             };
             auto dialog=presets::showManager(path,current,apply,static_cast<QWidget *>(obs_frontend_get_main_window()));service.dialogs.push_back(dialog);
             if(saveAs)QTimer::singleShot(0,dialog,[dialog]{if(auto button=dialog->findChild<QPushButton*>("presetSaveAs"))button->click();});
-        }catch(const std::exception& error){blog(LOG_WARNING,"[playing-next] Preset manager unavailable: %s",error.what());QMessageBox::warning(static_cast<QWidget *>(obs_frontend_get_main_window()),"Gestor de presets",QString::fromUtf8(error.what()));}
+        }catch(const std::exception& error){blog(LOG_WARNING,"[playing-next] Preset manager unavailable: %s",error.what());QMessageBox::warning(static_cast<QWidget *>(obs_frontend_get_main_window()),playing::ui::text("Gestor de presets"),QString::fromUtf8(error.what()));}
     },Qt::QueuedConnection);return false;
 }
 bool openPresetManager(obs_properties_t *,obs_property_t *,void *data){return openPresetManagerImpl(data,false);}
@@ -591,10 +594,10 @@ bool pairReceiver(obs_properties_t *props,obs_property_t *,void *data) {
             };
             const auto health=[state]{PlayingReceiverHealth result;
                 if(service.closing)return result;
-                {std::lock_guard<std::mutex> lock(state->mutex);if(state->closed)return result;if(!state->active)result.message="Activa esta fuente en la escena de OBS para comprobar la recepción.";}
+                {std::lock_guard<std::mutex> lock(state->mutex);if(state->closed)return result;if(!state->active)result.message=playing::ui::text("Activa esta fuente en la escena de OBS para comprobar la recepción.");}
                 result.connected=service.host&&service.host->remoteConnected(state->attached.providerId);
                 const auto frame=state->consumer->publication.read();result.track=frame&&frame->snapshot&&frame->snapshot->metadata.has_value();result.image=frame&&frame->artwork;
-                if(result.connected&&!result.track&&result.message.isEmpty())result.message="La red funciona. Reproduce una canción en el PC DJ.";
+                if(result.connected&&!result.track&&result.message.isEmpty())result.message=playing::ui::text("La red funciona. Reproduce una canción en el PC DJ.");
                 return result;
             };
             bool linked=false;try{const auto previous=companion::ProtectedStore(path).load();linked=previous&&companion::decodeProfile(*previous).receiver.has_value();}catch(const std::exception &){}
@@ -619,18 +622,18 @@ bool imageDiagnostics(obs_properties_t *props,obs_property_t *,void *) {
         if(service.closing)return;
         QString text;
         {std::lock_guard<std::mutex> lock(state->mutex);if(state->closed)return;
-         text=QStringLiteral("Mostrar imagen: %1\nAlternativa del perfil: %2\nPerfil automático de Twitch: %3\nImagen manual configurada: %4\n")
-             .arg(state->textLayout.artworkEnabled?"Sí":"No",state->textLayout.profileFallback?"Sí":"No",state->automaticProfileEnabled?"Sí":"No",state->manualProfile?"Sí":"No");
-         text+=QStringLiteral("Twitch: ")+(state->profileStatus.isEmpty()?QStringLiteral("Sin consulta realizada."):state->profileStatus)+"\n";}
+         text=playing::ui::string("Mostrar imagen: %1\nAlternativa del perfil: %2\nPerfil automático de Twitch: %3\nImagen manual configurada: %4\n")
+             .arg(state->textLayout.artworkEnabled?playing::ui::text("Sí"):playing::ui::text("No"),state->textLayout.profileFallback?playing::ui::text("Sí"):playing::ui::text("No"),state->automaticProfileEnabled?playing::ui::text("Sí"):playing::ui::text("No"),state->manualProfile?playing::ui::text("Sí"):playing::ui::text("No"));
+         text+=QStringLiteral("Twitch: ")+(state->profileStatus.isEmpty()?playing::ui::string("Sin consulta realizada."):state->profileStatus)+"\n";}
         const auto frame=state->consumer->publication.read();
-        QString cover="Sin canción activa";
+        QString cover=playing::ui::text("Sin canción activa");
         if(frame&&frame->snapshot&&frame->snapshot->track){switch(frame->snapshot->track->artwork.status){
-            case core::ArtworkStatus::Ready:cover="Portada recibida";break;
-            case core::ArtworkStatus::Missing:cover="El lector DJ no proporciona portada";break;
-            case core::ArtworkStatus::Failed:cover="Error de portada en el lector DJ";break;
-            default:cover="Portada todavía no disponible";break;}}
-        text+=QStringLiteral("Portada: ")+cover+QStringLiteral("\nImagen preparada para dibujar: ")+(frame&&frame->artwork?"Sí":"No");
-        QMessageBox::information(static_cast<QWidget *>(obs_frontend_get_main_window()),QStringLiteral("Diagnóstico de imágenes"),text);
+            case core::ArtworkStatus::Ready:cover=playing::ui::text("Portada recibida");break;
+            case core::ArtworkStatus::Missing:cover=playing::ui::text("El lector DJ no proporciona portada");break;
+            case core::ArtworkStatus::Failed:cover=playing::ui::text("Error de portada en el lector DJ");break;
+            default:cover=playing::ui::text("Portada todavía no disponible");break;}}
+        text+=playing::ui::string("Portada: ")+cover+playing::ui::string("\nImagen preparada para dibujar: ")+(frame&&frame->artwork?playing::ui::text("Sí"):playing::ui::text("No"));
+        QMessageBox::information(static_cast<QWidget *>(obs_frontend_get_main_window()),playing::ui::string("Diagnóstico de imágenes"),text);
     },Qt::QueuedConnection);return false;
 }
 bool manualProfileImage(obs_properties_t *,obs_property_t *property,void *data) {
@@ -641,10 +644,10 @@ bool manualProfileImage(obs_properties_t *,obs_property_t *property,void *data) 
         if(service.closing.load())return;
         QString chosen;bool accepted=action=="clear_streamer_image";
         if(action=="choose_streamer_image"){
-            chosen=QFileDialog::getOpenFileName(static_cast<QWidget *>(obs_frontend_get_main_window()),QStringLiteral("Seleccionar imagen manual"),QString{},QStringLiteral("Imagenes (*.png *.jpg *.jpeg *.webp *.svg)"));accepted=!chosen.isEmpty();
+            chosen=QFileDialog::getOpenFileName(static_cast<QWidget *>(obs_frontend_get_main_window()),playing::ui::string("Seleccionar imagen manual"),QString{},playing::ui::string("Imagenes (*.png *.jpg *.jpeg *.webp *.svg)"));accepted=!chosen.isEmpty();
         }else if(action=="manual_profile_url"){
-            chosen=QInputDialog::getText(static_cast<QWidget *>(obs_frontend_get_main_window()),QStringLiteral("Imagen manual por URL"),QStringLiteral("URL HTTPS (opcional)"),QLineEdit::Normal,QString{},&accepted).trimmed();
-            if(accepted&&!chosen.isEmpty()&&!chosen.startsWith("https://")){QMessageBox::warning(static_cast<QWidget *>(obs_frontend_get_main_window()),QStringLiteral("Imagen manual"),QStringLiteral("La URL debe comenzar con https://"));return;}
+            chosen=QInputDialog::getText(static_cast<QWidget *>(obs_frontend_get_main_window()),playing::ui::string("Imagen manual por URL"),playing::ui::string("URL HTTPS (opcional)"),QLineEdit::Normal,QString{},&accepted).trimmed();
+            if(accepted&&!chosen.isEmpty()&&!chosen.startsWith("https://")){QMessageBox::warning(static_cast<QWidget *>(obs_frontend_get_main_window()),playing::ui::string("Imagen manual"),playing::ui::string("La URL debe comenzar con https://"));return;}
         }
         if(!accepted||service.closing.load())return;
         auto target=std::shared_ptr<obs_source_t>(obs_weak_source_get_source(weak.get()),obs_source_release);
@@ -668,90 +671,90 @@ bool previewTrack(obs_properties_t *,obs_property_t *property,void *data) {
 obs_properties_t *properties(void *data) {
     auto stored=new PropertiesContext{data?static_cast<Source *>(data)->state:std::shared_ptr<State>{},0};
     auto props=obs_properties_create_param(stored,[](void *value){delete static_cast<PropertiesContext *>(value);});
-    auto provider=obs_properties_add_list(props,"provider","Programa DJ",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_STRING);
-    obs_property_list_add_string(provider,"VirtualDJ","virtualdj");obs_property_list_add_string(provider,"Serato DJ Pro (Automatic)","serato");
+    auto provider=obs_properties_add_list(props,"provider",playing::ui::text("Programa DJ"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_STRING);
+    obs_property_list_add_string(provider,"VirtualDJ","virtualdj");obs_property_list_add_string(provider,playing::ui::text("Serato DJ Pro (Automatic)"),"serato");
     if(!service.databaseLibrary.empty())obs_property_list_add_string(provider,"rekordbox","rekordbox");
-    obs_property_list_add_string(provider,"Companion — PC DJ","network");
-    auto mode=obs_properties_add_list(props,"mode","Lectura",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
-    obs_property_list_add_int(mode,"Automatic",0);obs_property_list_add_int(mode,"History",1);
-    auto category=obs_properties_add_list(props,"preset_family","Categoria",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
-    obs_property_list_add_int(category,"Clasicos",0);obs_property_list_add_int(category,"PRO",1);obs_property_set_modified_callback(category,categoryChanged);
-    auto selectedStyle=obs_properties_add_list(props,"preset_style","Estilo",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);obs_property_set_modified_callback(selectedStyle,styleChanged);
-    obs_properties_add_button2(props,"preset_manager","Gestor de presets / favoritos",openPresetManager,data);
-    auto editorMode=obs_properties_add_list(props,"editor_mode","Editor de diseno",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
-    obs_property_list_add_int(editorMode,"Basico (Basic)",0);obs_property_list_add_int(editorMode,"Avanzado (Advanced)",1);obs_property_list_add_int(editorMode,"Distribucion (Layout)",2);obs_property_set_modified_callback(editorMode,visibility);
-    obs_properties_add_button2(props,"preset_save_as","Guardar diseno como...",saveDesignAs,data);
-    obs_properties_add_text(props,"editor_hint","Layout",OBS_TEXT_INFO);
-    auto normal=obs_properties_add_list(props,"normal_preset","Clasicos",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
+    obs_property_list_add_string(provider,playing::ui::text("Companion — PC DJ"),"network");
+    auto mode=obs_properties_add_list(props,"mode",playing::ui::text("Lectura"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
+    obs_property_list_add_int(mode,playing::ui::text("Automatic"),0);obs_property_list_add_int(mode,playing::ui::text("History"),1);
+    auto category=obs_properties_add_list(props,"preset_family",playing::ui::text("Categoria"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
+    obs_property_list_add_int(category,playing::ui::text("Clasicos"),0);obs_property_list_add_int(category,"PRO",1);obs_property_set_modified_callback(category,categoryChanged);
+    auto selectedStyle=obs_properties_add_list(props,"preset_style",playing::ui::text("Estilo"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);obs_property_set_modified_callback(selectedStyle,styleChanged);
+    obs_properties_add_button2(props,"preset_manager",playing::ui::text("Gestor de presets / favoritos"),openPresetManager,data);
+    auto editorMode=obs_properties_add_list(props,"editor_mode",playing::ui::text("Editor de diseno"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
+    obs_property_list_add_int(editorMode,playing::ui::text("Basico (Basic)"),0);obs_property_list_add_int(editorMode,playing::ui::text("Avanzado (Advanced)"),1);obs_property_list_add_int(editorMode,playing::ui::text("Distribucion (Layout)"),2);obs_property_set_modified_callback(editorMode,visibility);
+    obs_properties_add_button2(props,"preset_save_as",playing::ui::text("Guardar diseno como..."),saveDesignAs,data);
+    obs_properties_add_text(props,"editor_hint",playing::ui::text("Layout"),OBS_TEXT_INFO);
+    auto normal=obs_properties_add_list(props,"normal_preset",playing::ui::text("Clasicos"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
     obs_property_set_modified_callback(normal,classicSelection);
     auto pro=obs_properties_add_list(props,"pro_preset","PRO",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
-    obs_property_list_add_int(pro,"Desactivado",0);obs_property_list_add_int(pro,"Neon Club — en desarrollo",1);obs_property_list_add_int(pro,"Solo texto horizontal",2);obs_property_list_add_int(pro,"Solo texto vertical",3);obs_property_list_add_int(pro,"Vinyl Classic — en desarrollo",4);obs_property_list_add_int(pro,"Minimal — en desarrollo",5);obs_property_list_add_int(pro,"Glassmorph — en desarrollo",6);obs_property_list_add_int(pro,"Urban — en desarrollo",7);obs_property_list_add_int(pro,"Waveform — en desarrollo",8);obs_property_list_add_int(pro,"HUD — en desarrollo",9);obs_property_list_add_int(pro,"Particles — en desarrollo",10);obs_property_list_add_int(pro,"Liquid — en desarrollo",11);obs_property_list_add_int(pro,"Vertical Retro — en desarrollo",12);obs_property_list_add_int(pro,"Vertical Glass — en desarrollo",13);obs_property_list_add_int(pro,"Vertical Vinyl — en desarrollo",14);obs_property_list_add_int(pro,"Vertical Urban — en desarrollo",15);obs_property_list_add_int(pro,"Vertical Liquid — en desarrollo",16);obs_property_set_modified_callback(pro,textOrientation);
-    obs_properties_add_int_slider(props,"pro_hue","Tono general (0/360: original)",0,360,1);
-    obs_properties_add_int_slider(props,"pro_light_intensity","Intensidad de luz (%)",0,100,1);
-    obs_properties_add_bool(props,"pro_light_pulse","Animar pulso de luz (opcional)");obs_properties_add_int_slider(props,"pro_panel_opacity","Opacidad del fondo del titulo (%)",0,100,1);
-    obs_properties_add_int_slider(props,"animation_speed","Velocidad de animacion (%)",25,300,5);
-    obs_property_list_add_int(normal,"Desactivado / texto manual",0);
+    obs_property_list_add_int(pro,playing::ui::text("Desactivado"),0);obs_property_list_add_int(pro,"Neon Club",1);obs_property_list_add_int(pro,playing::ui::text("Solo texto horizontal"),2);obs_property_list_add_int(pro,playing::ui::text("Solo texto vertical"),3);obs_property_list_add_int(pro,"Vinyl Classic",4);obs_property_list_add_int(pro,"Minimal",5);obs_property_list_add_int(pro,"Glassmorph",6);obs_property_list_add_int(pro,"Urban",7);obs_property_list_add_int(pro,"Waveform",8);obs_property_list_add_int(pro,"HUD",9);obs_property_list_add_int(pro,"Particles",10);obs_property_list_add_int(pro,"Liquid",11);obs_property_list_add_int(pro,"Vertical Retro",12);obs_property_list_add_int(pro,"Vertical Glass",13);obs_property_list_add_int(pro,"Vertical Vinyl",14);obs_property_list_add_int(pro,"Vertical Urban",15);obs_property_list_add_int(pro,"Vertical Liquid",16);obs_property_set_modified_callback(pro,textOrientation);
+    obs_properties_add_int_slider(props,"pro_hue",playing::ui::text("Tono general (0/360: original)"),0,360,1);
+    obs_properties_add_int_slider(props,"pro_light_intensity",playing::ui::text("Intensidad de luz (%)"),0,100,1);
+    obs_properties_add_bool(props,"pro_light_pulse",playing::ui::text("Animar pulso de luz (opcional)"));obs_properties_add_int_slider(props,"pro_panel_opacity",playing::ui::text("Opacidad del fondo del titulo (%)"),0,100,1);
+    obs_properties_add_int_slider(props,"animation_speed",playing::ui::text("Velocidad de animacion (%)"),25,300,5);
+    obs_property_list_add_int(normal,playing::ui::text("Desactivado / texto manual"),0);
     for(std::size_t i=0;i<visual::normal::normalCatalogue().size();++i)obs_property_list_add_int(normal,visual::normal::normalCatalogue()[i].name.c_str(),static_cast<long long>(visual::normal::normalCatalogue()[i].setting));
     for(std::size_t i=0;i<visual::normal::normalAliases().size();++i)obs_property_list_add_int(normal,visual::normal::normalAliases()[i].name.c_str(),static_cast<long long>(visual::normal::normalAliases()[i].setting));
-    auto transition=obs_properties_add_list(props,"normal_transition","Transicion del tema",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
-    obs_property_list_add_int(transition,"Fade",0);obs_property_list_add_int(transition,"Slide",1);obs_property_list_add_int(transition,"Zoom",2);
-    obs_properties_add_int(props,"normal_duration","Duracion de transicion (ms)",200,2000,50);
-    obs_properties_add_bool(props,"transition_whole","Transicion de toda la tarjeta");
-    obs_properties_add_int(props,"normal_gap","Separacion de lineas (px)",0,80,1);
-    obs_properties_add_int(props,"normal_speed","Velocidad del texto (px/s)",10,150,1);
-    obs_properties_add_int(props,"normal_pause","Pausa del texto (s)",0,10,1);
-    obs_properties_add_path(props,"history","Historial / biblioteca (vacio: detectar)",OBS_PATH_FILE,"All (*.*)",nullptr);
-    auto encoding=obs_properties_add_list(props,"encoding","Codificacion de historial VirtualDJ",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
-    obs_property_list_add_int(encoding,"Automatic",0);obs_property_list_add_int(encoding,"ANSI",1);obs_property_list_add_int(encoding,"UTF-16LE",2);
-    obs_properties_add_path(props,"receiver_profile","Perfil protegido de vinculacion",OBS_PATH_FILE,"Profile (*.pcs)",nullptr);
-    obs_properties_add_button2(props,"pair_receiver","Conectar Companion",pairReceiver,data);
-    obs_properties_add_bool(props,"show_existing","Mostrar el tema encontrado al activar la fuente");
-    auto cover=obs_properties_add_bool(props,"artwork_enabled","Mostrar portada / imagen de perfil");obs_property_set_modified_callback(cover,visibility);
-    obs_properties_add_bool(props,"artwork_fallback","Usar perfil del streamer si no hay portada");
-    obs_properties_add_bool(props,"twitch_profile_auto","Obtener imagen del canal Twitch conectado en OBS");
-    obs_properties_add_text(props,"twitch_channel","Canal Twitch (opcional; vacio usa tu cuenta OBS)",OBS_TEXT_DEFAULT);
-    obs_properties_add_button2(props,"choose_streamer_image","Seleccionar imagen manual...",manualProfileImage,data);
-    obs_properties_add_button2(props,"manual_profile_url","Introducir URL HTTPS (opcional)",manualProfileImage,data);
-    obs_properties_add_button2(props,"clear_streamer_image","Quitar imagen manual",manualProfileImage,data);
-    obs_properties_add_button(props,"reload_artwork","Recargar imagen de perfil",reloadArtwork);
-    obs_properties_add_button(props,"image_diagnostics","Diagnóstico de imágenes",imageDiagnostics);
-    for(const auto &field:{std::pair<const char *,const char *>{"artwork_x","Imagen: posicion X"},{"artwork_y","Imagen: posicion Y"}})obs_properties_add_int(props,field.first,field.second,0,2047,1);
-    for(const auto &field:{std::pair<const char *,const char *>{"artwork_width","Imagen: ancho"},{"artwork_height","Imagen: alto"}})obs_properties_add_int(props,field.first,field.second,1,2048,1);
-    obs_properties_add_int(props,"hide_seconds","Ocultar tema tras segundos (0: sin limite)",0,3600,1);
-    for(const auto &field: {std::pair<const char *,const char *>{"title_overflow","Titulo largo"},{"artist_overflow","Artista largo"}}){
+    auto transition=obs_properties_add_list(props,"normal_transition",playing::ui::text("Transicion del tema"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
+    obs_property_list_add_int(transition,playing::ui::text("Fade"),0);obs_property_list_add_int(transition,playing::ui::text("Slide"),1);obs_property_list_add_int(transition,"Zoom",2);
+    obs_properties_add_int(props,"normal_duration",playing::ui::text("Duracion de transicion (ms)"),200,2000,50);
+    obs_properties_add_bool(props,"transition_whole",playing::ui::text("Transicion de toda la tarjeta"));
+    obs_properties_add_int(props,"normal_gap",playing::ui::text("Separacion de lineas (px)"),0,80,1);
+    obs_properties_add_int(props,"normal_speed",playing::ui::text("Velocidad del texto (px/s)"),10,150,1);
+    obs_properties_add_int(props,"normal_pause",playing::ui::text("Pausa del texto (s)"),0,10,1);
+    obs_properties_add_path(props,"history",playing::ui::text("Historial / biblioteca (vacio: detectar)"),OBS_PATH_FILE,playing::ui::text("All (*.*)"),nullptr);
+    auto encoding=obs_properties_add_list(props,"encoding",playing::ui::text("Codificacion de historial VirtualDJ"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
+    obs_property_list_add_int(encoding,playing::ui::text("Automatic"),0);obs_property_list_add_int(encoding,"ANSI",1);obs_property_list_add_int(encoding,"UTF-16LE",2);
+    obs_properties_add_path(props,"receiver_profile",playing::ui::text("Perfil protegido de vinculacion"),OBS_PATH_FILE,playing::ui::text("Profile (*.pcs)"),nullptr);
+    obs_properties_add_button2(props,"pair_receiver",playing::ui::text("Conectar Companion"),pairReceiver,data);
+    obs_properties_add_bool(props,"show_existing",playing::ui::text("Mostrar el tema encontrado al activar la fuente"));
+    auto cover=obs_properties_add_bool(props,"artwork_enabled",playing::ui::text("Mostrar portada / imagen de perfil"));obs_property_set_modified_callback(cover,visibility);
+    obs_properties_add_bool(props,"artwork_fallback",playing::ui::text("Usar perfil del streamer si no hay portada"));
+    obs_properties_add_bool(props,"twitch_profile_auto",playing::ui::text("Obtener imagen del canal Twitch conectado en OBS"));
+    obs_properties_add_text(props,"twitch_channel",playing::ui::text("Canal Twitch (opcional; vacio usa tu cuenta OBS)"),OBS_TEXT_DEFAULT);
+    obs_properties_add_button2(props,"choose_streamer_image",playing::ui::text("Seleccionar imagen manual..."),manualProfileImage,data);
+    obs_properties_add_button2(props,"manual_profile_url",playing::ui::text("Introducir URL HTTPS (opcional)"),manualProfileImage,data);
+    obs_properties_add_button2(props,"clear_streamer_image",playing::ui::text("Quitar imagen manual"),manualProfileImage,data);
+    obs_properties_add_button(props,"reload_artwork",playing::ui::text("Recargar imagen de perfil"),reloadArtwork);
+    obs_properties_add_button(props,"image_diagnostics",playing::ui::text("Diagnóstico de imágenes"),imageDiagnostics);
+    for(const auto &field:{std::pair<const char *,const char *>{"artwork_x",playing::ui::text("Imagen: posicion X")},{"artwork_y",playing::ui::text("Imagen: posicion Y")}})obs_properties_add_int(props,field.first,field.second,0,2047,1);
+    for(const auto &field:{std::pair<const char *,const char *>{"artwork_width",playing::ui::text("Imagen: ancho")},{"artwork_height",playing::ui::text("Imagen: alto")}})obs_properties_add_int(props,field.first,field.second,1,2048,1);
+    obs_properties_add_int(props,"hide_seconds",playing::ui::text("Ocultar tema tras segundos (0: sin limite)"),0,3600,1);
+    for(const auto &field: {std::pair<const char *,const char *>{"title_overflow",playing::ui::text("Titulo largo")},{"artist_overflow",playing::ui::text("Artista largo")}}){
         auto property=obs_properties_add_list(props,field.first,field.second,OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
-        obs_property_list_add_int(property,"Recortar",0);obs_property_list_add_int(property,"Puntos suspensivos",1);
-        obs_property_list_add_int(property,"Varias lineas",2);obs_property_list_add_int(property,"Ajustar tamano",3);
-        obs_property_list_add_int(property,"Ping-pong (ida y vuelta)",4);
+        obs_property_list_add_int(property,playing::ui::text("Recortar"),0);obs_property_list_add_int(property,playing::ui::text("Puntos suspensivos"),1);
+        obs_property_list_add_int(property,playing::ui::text("Varias lineas"),2);obs_property_list_add_int(property,playing::ui::text("Ajustar tamano"),3);
+        obs_property_list_add_int(property,playing::ui::text("Ping-pong (ida y vuelta)"),4);
         obs_property_set_modified_callback(property,visibility);
     }
-    obs_properties_add_int(props,"title_minimum","Tamano minimo del titulo (px)",8,30,1);
-    obs_properties_add_int(props,"artist_minimum","Tamano minimo del artista (px)",8,22,1);
-    obs_properties_add_int(props,"canvas_width","Ancho de la fuente (px)",64,2048,1);
-    obs_properties_add_int(props,"canvas_height","Alto de la fuente (px)",64,2048,1);
-    auto textLayout=obs_properties_add_list(props,"text_layout","Diseno de texto",OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
-    obs_property_list_add_int(textLayout,"Manual (BASIC actual)",0);obs_property_list_add_int(textLayout,"Solo texto — horizontal",1);obs_property_list_add_int(textLayout,"Solo texto — vertical",2);obs_property_set_modified_callback(textLayout,textOrientation);
-    obs_properties_add_font(props,"text_title_font","Tipografia y tamano del titulo");obs_properties_add_font(props,"text_artist_font","Tipografia y tamano del artista");
-    obs_properties_add_color_alpha(props,"text_title_color","Color del titulo");obs_properties_add_color_alpha(props,"text_artist_color","Color del artista");
-    for(const auto &row:{std::pair<const char*,const char*>{"title_","Titulo"},{"artist_","Artista"}}){const std::string prefix=row.first,label=row.second;obs_properties_add_int_slider(props,(prefix+"outline_width").c_str(),(label+": grosor de contorno (px)").c_str(),0,8,1);obs_properties_add_color_alpha(props,(prefix+"outline_color").c_str(),(label+": color de contorno").c_str());obs_properties_add_int_slider(props,(prefix+"shadow_offset").c_str(),(label+": distancia de sombra (px)").c_str(),0,8,1);obs_properties_add_color_alpha(props,(prefix+"shadow_color").c_str(),(label+": color y opacidad de sombra").c_str());}
-    obs_properties_add_int_slider(props,"text_offset_x","Desplazamiento horizontal del texto (px)",-1024,1024,1);
-    obs_properties_add_int_slider(props,"text_offset_y","Desplazamiento vertical del texto (px)",-1024,1024,1);
-    obs_properties_add_int(props,"text_margin","Margen exterior (px)",0,128,1);obs_properties_add_int(props,"text_line_gap","Separacion titulo / artista (px)",0,128,1);
-    obs_properties_add_int_slider(props,"text_top_distance","Distancia del texto desde arriba (px)",0,2048,1);
-    obs_properties_add_int(props,"text_image_gap","Distancia portada / texto (px)",0,128,1);obs_properties_add_int(props,"text_cover_size","Tamano de portada (px)",16,512,1);
-    for(const auto &field: {std::pair<const char *,const char *>{"title_x","Titulo: posicion X"},{"title_y","Titulo: posicion Y"},{"artist_x","Artista: posicion X"},{"artist_y","Artista: posicion Y"}})
+    obs_properties_add_int(props,"title_minimum",playing::ui::text("Tamano minimo del titulo (px)"),8,30,1);
+    obs_properties_add_int(props,"artist_minimum",playing::ui::text("Tamano minimo del artista (px)"),8,22,1);
+    obs_properties_add_int(props,"canvas_width",playing::ui::text("Ancho de la fuente (px)"),64,2048,1);
+    obs_properties_add_int(props,"canvas_height",playing::ui::text("Alto de la fuente (px)"),64,2048,1);
+    auto textLayout=obs_properties_add_list(props,"text_layout",playing::ui::text("Diseno de texto"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
+    obs_property_list_add_int(textLayout,playing::ui::text("Manual (BASIC actual)"),0);obs_property_list_add_int(textLayout,playing::ui::text("Solo texto — horizontal"),1);obs_property_list_add_int(textLayout,playing::ui::text("Solo texto — vertical"),2);obs_property_set_modified_callback(textLayout,textOrientation);
+    obs_properties_add_font(props,"text_title_font",playing::ui::text("Tipografia y tamano del titulo"));obs_properties_add_font(props,"text_artist_font",playing::ui::text("Tipografia y tamano del artista"));
+    obs_properties_add_color_alpha(props,"text_title_color",playing::ui::text("Color del titulo"));obs_properties_add_color_alpha(props,"text_artist_color",playing::ui::text("Color del artista"));
+    for(const auto &row:{std::pair<const char*,const char*>{"title_",playing::ui::text("Titulo")},{"artist_",playing::ui::text("Artista")}}){const std::string prefix=row.first,label=row.second;obs_properties_add_int_slider(props,(prefix+"outline_width").c_str(),(label+playing::ui::text(": grosor de contorno (px)")).c_str(),0,8,1);obs_properties_add_color_alpha(props,(prefix+"outline_color").c_str(),(label+playing::ui::text(": color de contorno")).c_str());obs_properties_add_int_slider(props,(prefix+"shadow_offset").c_str(),(label+playing::ui::text(": distancia de sombra (px)")).c_str(),0,8,1);obs_properties_add_color_alpha(props,(prefix+"shadow_color").c_str(),(label+playing::ui::text(": color y opacidad de sombra")).c_str());}
+    obs_properties_add_int_slider(props,"text_offset_x",playing::ui::text("Desplazamiento horizontal del texto (px)"),-1024,1024,1);
+    obs_properties_add_int_slider(props,"text_offset_y",playing::ui::text("Desplazamiento vertical del texto (px)"),-1024,1024,1);
+    obs_properties_add_int(props,"text_margin",playing::ui::text("Margen exterior (px)"),0,128,1);obs_properties_add_int(props,"text_line_gap",playing::ui::text("Separacion titulo / artista (px)"),0,128,1);
+    obs_properties_add_int_slider(props,"text_top_distance",playing::ui::text("Distancia del texto desde arriba (px)"),0,2048,1);
+    obs_properties_add_int(props,"text_image_gap",playing::ui::text("Distancia portada / texto (px)"),0,128,1);obs_properties_add_int(props,"text_cover_size",playing::ui::text("Tamano de portada (px)"),16,512,1);
+    for(const auto &field: {std::pair<const char *,const char *>{"title_x",playing::ui::text("Titulo: posicion X")},{"title_y",playing::ui::text("Titulo: posicion Y")},{"artist_x",playing::ui::text("Artista: posicion X")},{"artist_y",playing::ui::text("Artista: posicion Y")}})
         obs_properties_add_int(props,field.first,field.second,0,2047,1);
-    for(const auto &field: {std::pair<const char *,const char *>{"title_width","Titulo: ancho"},{"title_height","Titulo: alto"},{"artist_width","Artista: ancho"},{"artist_height","Artista: alto"}})
+    for(const auto &field: {std::pair<const char *,const char *>{"title_width",playing::ui::text("Titulo: ancho")},{"title_height",playing::ui::text("Titulo: alto")},{"artist_width",playing::ui::text("Artista: ancho")},{"artist_height",playing::ui::text("Artista: alto")}})
         obs_properties_add_int(props,field.first,field.second,1,2048,1);
-    for(const auto &field: {std::pair<const char *,const char *>{"title_align","Alineacion del titulo"},{"artist_align","Alineacion del artista"}}){
+    for(const auto &field: {std::pair<const char *,const char *>{"title_align",playing::ui::text("Alineacion del titulo")},{"artist_align",playing::ui::text("Alineacion del artista")}}){
         auto property=obs_properties_add_list(props,field.first,field.second,OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
-        obs_property_list_add_int(property,"Izquierda",0);obs_property_list_add_int(property,"Centro",1);obs_property_list_add_int(property,"Derecha",2);
+        obs_property_list_add_int(property,playing::ui::text("Izquierda"),0);obs_property_list_add_int(property,playing::ui::text("Centro"),1);obs_property_list_add_int(property,playing::ui::text("Derecha"),2);
     }
-    if(stored->state){std::lock_guard<std::mutex> lock(stored->state->mutex);if(!stored->state->error.empty())obs_properties_add_text(props,"status","Configuracion no disponible: revisa programa, ruta o vinculacion.",OBS_TEXT_INFO);}
-    auto demo=obs_properties_add_bool(props,"demo_enabled","Tema de prueba (ficticio)");obs_property_set_modified_callback(demo,visibility);
-    obs_properties_add_button2(props,"demo_previous","Probar tema anterior",previewTrack,data);
-    obs_properties_add_button2(props,"demo_next","Probar tema siguiente",previewTrack,data);
-    obs_properties_add_path(props,"demo_image","Portada de prueba (opcional)",OBS_PATH_FILE,"Images (*.png *.jpg *.jpeg *.webp *.svg)",nullptr);
+    if(stored->state){std::lock_guard<std::mutex> lock(stored->state->mutex);if(!stored->state->error.empty())obs_properties_add_text(props,"status",playing::ui::text("Configuracion no disponible: revisa programa, ruta o vinculacion."),OBS_TEXT_INFO);}
+    auto demo=obs_properties_add_bool(props,"demo_enabled",playing::ui::text("Tema de prueba (ficticio)"));obs_property_set_modified_callback(demo,visibility);
+    obs_properties_add_button2(props,"demo_previous",playing::ui::text("Probar tema anterior"),previewTrack,data);
+    obs_properties_add_button2(props,"demo_next",playing::ui::text("Probar tema siguiente"),previewTrack,data);
+    obs_properties_add_path(props,"demo_image",playing::ui::text("Portada de prueba (opcional)"),OBS_PATH_FILE,playing::ui::text("Images (*.png *.jpg *.jpeg *.webp *.svg)"),nullptr);
     obs_properties_add_text(props,"nexus_credit","NEXUS OSB Plugins by DjEmiMas",OBS_TEXT_INFO);
     obs_property_set_modified_callback(provider,visibility);obs_property_set_modified_callback(mode,visibility);
     for(const auto key:{"text_line_gap","text_title_font","text_artist_font"})obs_property_set_modified_callback(obs_properties_get(props,key),visibility);

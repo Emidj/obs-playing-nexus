@@ -1,3 +1,4 @@
+#include "playing/ui/i18n.hpp"
 // SPDX-License-Identifier: MIT
 #include "window.hpp"
 #include <QApplication>
@@ -86,7 +87,7 @@ void automatic(const QString &db) {
     {
         Window sender(djPath,db.toUtf8().toStdString()),receiver(rxPath,db.toUtf8().toStdString());
         check(wait([&] {return child<QLabel>(receiver,"track")->text()==QString::fromUtf8(u8"Jóga");}),"Automatic startup without button/code input");
-        check(child<QLabel>(sender,"network")->text().contains("Connected"),"Automatic authenticated client");
+        check(child<QLabel>(sender,"network")->text().contains(QString::fromUtf8(playing::ui::text("Conectado"))),"Automatic authenticated client");
         child<QPushButton>(receiver,"stop")->click(); check(child<QLabel>(receiver,"track")->text()=="Esperando canción","Automatic session stop clears song");
         child<QCheckBox>(receiver,"autoSend")->setChecked(true); check(decodeProfile(*rxStore.load()).startup==StartupMode::Sender && !child<QCheckBox>(receiver,"autoReceive")->isChecked(),"Automatic startup roles are exclusive");
         child<QCheckBox>(receiver,"autoReceive")->setChecked(true); check(decodeProfile(*rxStore.load()).startup==StartupMode::Receiver && !child<QCheckBox>(receiver,"autoSend")->isChecked(),"Automatic receiver preference persisted");
@@ -110,7 +111,7 @@ void selectionPreview(const QString &db) {
     auto p=profile(); p.receiver.reset(); ProtectedStore store(path); store.save(encodeProfile(p));
     write(history,"22:10 : Local Artist - Preview without sender\r\n");
     Window window(path,db.toUtf8().toStdString());
-    auto tabs=window.findChild<QTabWidget *>();check(tabs&&tabs->count()==1&&tabs->tabText(0)=="PC DJ","Streaming PC option remains in Companion UI");
+    auto tabs=window.findChild<QTabWidget *>();check(tabs&&tabs->count()==1&&tabs->tabText(0)==playing::ui::string("PC DJ"),"Streaming PC option remains in Companion UI");
     child<QComboBox>(window,"provider")->setCurrentIndex(3);
     const auto saved=decodeProfile(*store.load());
     check(saved.sender.selection && saved.sender.selection->providerId=="serato","DJ selector waits for Start Sender");
@@ -119,7 +120,7 @@ void selectionPreview(const QString &db) {
     child<QComboBox>(window,"provider")->setCurrentIndex(4);
     child<QCheckBox>(window,"preview")->setChecked(true);
     check(wait([&] {return child<QLabel>(window,"track")->text()=="Preview without sender";}),"Local preview ignored selected DJ before Start Sender");
-    check(child<QLabel>(window,"network")->text().contains("Disconnected"),"Local preview opened sender listener");
+    check(child<QLabel>(window,"network")->text().contains(playing::ui::string("●  Disconnected")),"Local preview opened sender listener");
     child<QCheckBox>(window,"preview")->setChecked(false);
     check(child<QLabel>(window,"track")->text()=="Esperando canción","Local preview stop retained active track");
     {const QSignalBlocker startBlocked(child<QPushButton>(window,"startSender")),pairBlocked(child<QPushButton>(window,"automaticPairSender"));
@@ -166,7 +167,7 @@ void gui(Profile p,const QString &db,const QString &output,const QString &image)
     settingsScroll->ensureWidgetVisible(stopButton); QApplication::processEvents();
     check(settingsScroll->viewport()->rect().contains(QRect(stopButton->mapTo(settingsScroll->viewport(),QPoint()),stopButton->size())),"Stop button unreachable in short settings");
     settingsWindow->close();
-    check(child<QLabel>(sender,"network")->text().contains("Disconnected"),"Startup opened connection");
+    check(child<QLabel>(sender,"network")->text().contains(playing::ui::string("●  Disconnected")),"Startup opened connection");
     check(child<QLabel>(sender,"track")->text()=="Esperando canción","Startup invented track");
     check(child<QLabel>(sender,"artwork")->pixmap().width()>0,"Profile fallback preview");
     child<QCheckBox>(receiver,"autoReconnect")->setChecked(true); check(decodeProfile(*rxStore.load()).autoReconnect,"GUI retry preference not protected/persisted");
@@ -187,13 +188,13 @@ void gui(Profile p,const QString &db,const QString &output,const QString &image)
     const ReceiverSettings settings{"127.0.0.1",port,"OBS Playing Companion",pin,p.devices[0].credential};
     child<QLineEdit>(receiver,"pairingCode")->setText(pairingCode(settings)); child<QPushButton>(receiver,"connectReceiver")->click();
     check(wait([&] {return child<QLabel>(receiver,"track")->text()=="Mind Still (Original Mix)";}),"GUI native history through TLS");
-    check(child<QLabel>(sender,"network")->text().contains("Connected") && child<QLabel>(receiver,"network")->text().contains("Connected"),"GUI connection state");
-    check(child<QLabel>(sender,"clientsTitle")->text()=="CONNECTED CLIENTS"&&child<QLabel>(receiver,"clientsTitle")->text()=="PC DJ VINCULADO","Role-specific client heading");
+    check(child<QLabel>(sender,"network")->text().contains(QString::fromUtf8(playing::ui::text("Conectado"))) && child<QLabel>(receiver,"network")->text().contains(QString::fromUtf8(playing::ui::text("Conectado"))),"GUI connection state");
+    check(child<QLabel>(sender,"clientsTitle")->text()==playing::ui::string("CONNECTED CLIENTS")&&child<QLabel>(receiver,"clientsTitle")->text()=="PC DJ VINCULADO","Role-specific client heading");
     check(child<QLabel>(receiver,"linkedDj")->text().contains("Conectado")&&child<QListWidget>(receiver,"devices")->isHidden(),"Receiver falsely shows local clients");
-    check(child<QListWidget>(sender,"devices")->item(0)->text().contains("Connected") && child<QListWidget>(sender,"devices")->item(0)->text().contains("127.0.0.1"),"Actual authenticated client address");
+    check(child<QListWidget>(sender,"devices")->item(0)->text().contains(QString::fromUtf8(playing::ui::text("Conectado"))) && child<QListWidget>(sender,"devices")->item(0)->text().contains("127.0.0.1"),"Actual authenticated client address");
     check(child<QLineEdit>(receiver,"pairingCode")->text().isEmpty(),"Pair code retained in edit");
     check(decodeProfile(*rxStore.load()).receiver->device.secret==p.devices[0].credential.secret,"Receiver pairing not persisted");
-    receiver.close(); check(wait([&] {return child<QLabel>(sender,"network")->text().contains("Disconnected");}),"Window close retained authenticated client");
+    receiver.close(); check(wait([&] {return child<QLabel>(sender,"network")->text().contains(playing::ui::string("●  Disconnected"));}),"Window close retained authenticated client");
     check(child<QLabel>(receiver,"track")->text()=="Esperando canción","Window close retained song"); receiver.show();
     child<QPushButton>(receiver,"reconnectReceiver")->click(); check(wait([&] {return child<QLabel>(receiver,"track")->text()=="Mind Still (Original Mix)";}),"Saved pairing reconnect after window close");
     check(sender.grab().save(output),"Dashboard screenshot");
@@ -215,7 +216,7 @@ void gui(Profile p,const QString &db,const QString &output,const QString &image)
     {Window reopened(djPath,db.toUtf8().toStdString()); check(child<QListWidget>(reopened,"devices")->count()==1 && child<QListWidget>(reopened,"devices")->item(0)->text().startsWith("SECOND-PC"),"Revoked device restored"); check(child<QSpinBox>(reopened,"port")->value()==port && child<QComboBox>(reopened,"provider")->currentIndex()==4,"Sender settings restart");}
 }
 }
-int main(int argc,char **argv) {
+int main(int argc,char **argv) {playing::ui::setLanguage("es");
     std::cerr<<"Starting Qt UI runtime\n";
     QApplication app(argc,argv); app.setQuitOnLastWindowClosed(false);
     std::cerr<<"Qt UI runtime ready\n";

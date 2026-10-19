@@ -1,6 +1,6 @@
 # OBS Playing NEXUS — conectar tus dos PCs
 
-**Guía ilustrada · Windows · RC3.4**
+**Guía ilustrada · Windows · RC3.5**
 
 **Español** · [English](README.en.md)
 
@@ -114,3 +114,9 @@ Para pedir ayuda, indica versiones y el mensaje visible. **No compartas códigos
 perfiles `.pcs`, contraseñas ni credenciales.**
 
 *Las imágenes son esquemas del asistente, no capturas de una prueba entre dos PCs físicos.*
+
+## Idiomas de la interfaz
+
+Español, inglés, italiano, francés y alemán incluidos. El plugin sigue el idioma
+de OBS; Companion y el instalador siguen Windows. Otros idiomas usan inglés.
+Los nombres de estilos, tus presets y los datos musicales se conservan.

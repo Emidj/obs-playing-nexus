@@ -1,11 +1,11 @@
-# Publicación RC3.4 — 19 de octubre de 2026
+# Publicación RC3.5 — 19 de octubre de 2026
 
 ## HECHOS
 
-Actualización aislada sobre RC3.2 conservando historial, galerías, licencias MIT/GPL/Qt y versiones anteriores. El instalador oficial se distribuye sin modificar; SHA256 E756DA1E824F37A887C7C8473D6E53A327ECC107C81CCF54AE7AA68E80FB2405. El ZIP de desarrollo original tiene SHA256 1EBC82353FCAE33BD52773B6D6BA1A8124530EBDE82DDDADA80B2BDF1FD33D1C.
+Preparación aislada sobre RC3.4 conservando historial, galerías, 23 diseños originales y avisos MIT/GPL/Qt. Instalador oficial sin modificar: SHA256 FB75961811A5020D6B543E460E90A18A4502F7F7C30440ACA8D770365461757E. Fuentes originales de desarrollo: SHA256 68046845FEDCC4A11D25B6F0050533D831D79ED0EC4BDACC5652D5AC813C5877.
 
-El informe de desarrollo registra 67 checks de instalación, 60 de paquete, pruebas UI y OBS portable con TLS loopback. No se repiten ni se presentan como nuevos ensayos de publicación. El nuevo paquete Sources se genera desde archivos públicos revisados y dependencias originales, excluyendo perfiles, registros y compilaciones. Se revisan patrones de secretos y rutas personales; esto no prueba ausencia absoluta de secretos. Las claves de pruebas de Qt son fixtures públicos upstream.
+Se incorporan cinco idiomas y el catálogo revisable locales/messages.tsv. El informe de desarrollo registra pruebas UI, propiedades OBS y empaquetado, 101 checks de idioma/render del instalador y 67 del motor. No se presentan como ensayos nuevos de publicación. Las fuentes de publicación se generan desde archivos revisados más los archivos originales de dependencias. No se publican perfiles, logs ni builds. El escaneo por patrones no demuestra ausencia absoluta de secretos. Los fixtures de claves de Qt son públicos upstream.
 
 ## LÍMITES
 
-Pendientes dos PCs físicos, DHCP, Windows limpio y portada Serato. No se declara resuelta la extracción Serato ni certificación completa de programas DJ reales. Las recetas requieren SDK externos; no se afirma compilación reproducible en equipo limpio.
+Pendientes dos PCs físicos, Windows limpio y portada Serato. No se modifican lectores ni protocolo LAN ni se declaran resueltos esos casos. No se certifican ventanas de terceros ni compilación reproducible en equipo limpio.

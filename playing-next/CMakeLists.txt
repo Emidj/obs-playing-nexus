@@ -198,6 +198,10 @@ if(PLAYING_BUILD_SHARED_VISUAL)
     target_link_libraries(playing-receiver-link-tests PRIVATE Playing::Companion Qt6::Widgets)
     target_compile_options(playing-receiver-link-tests PRIVATE /W4 /WX /utf-8)
     add_test(NAME native-source-receiver-link-ui COMMAND playing-receiver-link-tests)
+    add_executable(playing-localization-tests tests/localization-tests.cpp src/obs/receiver-link.cpp src/obs/preset-manager.cpp)
+    target_link_libraries(playing-localization-tests PRIVATE playing-companion-ui playing-track-visual Qt6::Widgets)
+    target_compile_options(playing-localization-tests PRIVATE /W4 /WX /utf-8)
+    add_test(NAME five-language-ui COMMAND playing-localization-tests "${CMAKE_CURRENT_SOURCE_DIR}/../obs-playing/obs-playing-db.dll" "${CMAKE_CURRENT_BINARY_DIR}/localization-captures")
     endif()
     add_executable(playing-track-visual-tests tests/track-visual-tests.cpp)
     target_link_libraries(playing-track-visual-tests PRIVATE playing-track-visual)
@@ -344,7 +348,7 @@ if(PLAYING_BUILD_SHARED_VISUAL)
       ENVIRONMENT "QT_QPA_PLATFORM=windows;QT_QPA_PLATFORM_PLUGIN_PATH=${playing_visual_qt_bin}/../plugins/platforms"
       ENVIRONMENT_MODIFICATION "PATH=path_list_prepend:${playing_visual_qt_bin}")
     if(PLAYING_BUILD_COMPANION)
-    set_tests_properties(native-preset-manager native-source-session-host native-source-receiver-link-ui PROPERTIES TIMEOUT 40
+    set_tests_properties(five-language-ui native-preset-manager native-source-session-host native-source-receiver-link-ui PROPERTIES TIMEOUT 40
       ENVIRONMENT "QT_QPA_PLATFORM=windows;QT_QPA_PLATFORM_PLUGIN_PATH=${playing_visual_qt_bin}/../plugins/platforms"
       ENVIRONMENT_MODIFICATION "PATH=path_list_prepend:${playing_visual_qt_bin}")
     endif()

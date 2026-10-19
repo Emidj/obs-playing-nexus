@@ -1,3 +1,4 @@
+#include "playing/ui/i18n.hpp"
 // SPDX-License-Identifier: MIT
 #include "../src/obs/receiver-link.hpp"
 #include "playing/companion/profile.hpp"
@@ -17,7 +18,7 @@
 #include "playing/companion/pairing.hpp"
 #include <iostream>
 #include <stdexcept>
-int main(int argc,char **argv) {
+int main(int argc,char **argv) {playing::ui::setLanguage("es");
     QApplication app(argc,argv);unsigned checks=0;
     const auto check=[&](bool value,const char *why){++checks;if(!value)throw std::runtime_error(why);};
     using namespace playing::companion;
