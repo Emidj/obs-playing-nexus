@@ -1,6 +1,6 @@
 # OBS Playing NEXUS — configurar Companion entre dos PCs
 
-**Guía ilustrada · Windows · RC3.1**
+**Guía ilustrada · Windows · RC3.2**
 
 **Español** · [English](README.en.md)
 
@@ -45,6 +45,19 @@ En Serato 4.0.10, activa el dispositivo de OBS Playing en **Setup → Expansion
 Packs → External Control**. La lectura automática de Rekordbox depende de la
 versión y del modo de reproducción; los modos de historial son alternativas
 distintas y pueden actualizarse más tarde.
+
+Si el dispositivo no aparece en External Control, comprueba en **Servicios**
+(**Servizi** en Windows italiano) que **Bonjour Service** esté instalado y
+**En ejecución / In esecuzione**. El Companion necesita Bonjour en el PC DJ
+para anunciarse a Serato; tener ambos PCs vinculados no sustituye este servicio.
+Desde RC3.2, la selección del programa se aplica inmediatamente y el panel
+muestra un aviso si Bonjour no está disponible o no responde.
+
+La ventana del Companion es compacta y se adapta al espacio disponible y al
+escalado de Windows. Puedes cambiar su tamaño desde la esquina inferior derecha;
+si falta altura, desplaza el contenido con la rueda o la barra lateral. El botón
+de configuración permanece accesible y la ventana de ajustes también permite
+el desplazamiento.
 
 ![Pantalla real del Companion con datos de prueba](imagenes/companion-ejemplo.png)
 

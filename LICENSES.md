@@ -1,4 +1,4 @@
-# Mapa de licencias de RC3.1
+# Mapa de licencias de RC3.2
 
 No se ha cambiado la licencia de los archivos originales.
 

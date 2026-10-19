@@ -1,27 +1,22 @@
-# Publicación RC3.1 — 18 de octubre de 2026
+# Publicación RC3.2 — 19 de octubre de 2026
 
 ## HECHOS COMPROBADOS
 
-- NEXUS 1.0 RC3.1 es la versión oficial indicada por el autor. Este repositorio procede de su ZIP Sources RC3.1, sin importar el historial Git del proyecto original o el antiguo producto Lua 0.5.9.
-- El instalador se conserva byte por byte: SHA256 `3C2688FC2CA204F55FD1A253DEA1D231D9526671060A8C11271934DAE87557A0`. La nueva ejecución aislada de su suite existente terminó con **61 comprobaciones PASS**. No se instaló el producto en el OBS habitual.
-- Se analizaron archivos del repositorio y ZIP anidados mediante patrones de tokens GitHub/AWS/Slack, cabeceras de claves privadas y rutas personales. Las claves privadas encontradas dentro de los fuentes Qt son fixtures de tests públicos o cadenas del parser SSL de Qt; no son identidades del usuario. Los dos archivos Qt coinciden con los SHA256 fijados por la receta original.
-- Los 14 archivos del motor compartido fijados por los dos locks coinciden con sus hashes. Se conservan fuentes, cabeceras y licencias originales del motor.
-- Se sustituyeron rutas personales por rutas de ejemplo en los scripts y documentación preparados. Estas rutas son ejemplos; el repositorio no incluye SDK instalados en esas ubicaciones.
-- Se conservaron LICENSE MIT, avisos originales y licencias de terceros. El alcance del binario combinado GPLv3 se explica en LICENSES.md y COPYING. Las fuentes Qt, sus recetas, parches y SBOM se suministran en el ZIP Sources de la Release.
-- No se incluyen perfiles personales .pcs, bibliotecas DJ, configuraciones de OBS, volcados, credenciales de dispositivos, logs de sesiones o builds históricos. Las claves de pruebas de Qt son datos públicos de terceros y no deben utilizarse en producción.
-- El ZIP Sources de publicación se genera desde el árbol revisado y no incluye .git. Difiere del ZIP de desarrollo original por las rutas de ejemplo, documentos de publicación y avisos añadidos; los binarios oficiales no se han recompilado ni modificado.
+- Actualización sobre la publicación y galerías RC3.1, conservando el historial público y la Release anterior.
+- El ZIP de desarrollo RC3.2 difiere del ZIP original RC3.1 en 14 archivos: Companion, guías/captura, pruebas de UI y metadatos del instalador. Sin archivos añadidos ni eliminados en ese paquete de desarrollo.
+- Instalador oficial sin modificar: SHA256 `80085EE7052136C2D63622DA82D128BE03C928FFA94A8725D60AAE04BE59BB12`.
+- Companion incluido: SHA256 `B8BFA9519BF1944DC2CB04574C15F6DA02ADA91F224B5D90C3EEE5329FA5CC3F`, comprobado directamente dentro del EXE del instalador.
+- Plugin OBS incluido: SHA256 `AF54873E3D55A130D96210495F6E6C7DB2E7DB87DA8C65B5AC5CCA3BBA9F948A`, idéntico al de RC3.1.
+- El código del motor del instalador solo cambia sus metadatos de versión. La nueva ejecución de su suite se detuvo al detectar OBS abierto. No se completó ni se afirma un nuevo PASS de instalación/desinstalación RC3.2; la sesión OBS habitual permanece abierta.
+- El informe de desarrollo RC3.2 registra 93 checks UI/perfil/preview a escalas 100 % y 200 %, 87 checks del diseño compacto al 150 % antes del aviso final Serato, 56 checks del ejecutable real y 60 del paquete con dependencias locales. Son resultados previos de desarrollo, no nuevos ensayos de esta publicación.
+- Se conservan licencias MIT/GPL y de terceros según LICENSES.md y COPYING. Los archivos fuente Qt y la receta de dependencias coinciden con los hashes de la publicación anterior; no se han actualizado dependencias.
+- Se revisa el árbol público preparado mediante patrones de credenciales, claves privadas y rutas personales. Las claves de prueba incluidas dentro de los archivos Qt originales son fixtures públicos de terceros, no identidades del usuario.
+- Fuentes y guía de publicación se generan desde los archivos revisados; se excluyen .git, perfiles personales, bibliotecas DJ, logs de pruebas, builds y medios de cámara. El ZIP Sources conserva las fuentes Qt completas, recetas, licencias y SBOM. La captura del README muestra datos de demostración con una conexión loopback.
 
-## INFERENCIAS Y LÍMITES
+## LÍMITES
 
-El escaneo por patrones reduce el riesgo de publicación accidental, pero no demuestra ausencia absoluta de secretos ni sustituye una auditoría de seguridad completa.
+El escaneo por patrones no demuestra ausencia absoluta de secretos. La publicación no equivale a una auditoría de seguridad completa ni a nuevas pruebas con programas DJ reales.
 
-La documentación histórica de RC3.1 registra pruebas locales TLS/portadas, OBS portable 32.2.2 y actualización. Estas pruebas no se han repetido íntegramente en esta publicación. Los 61 checks nuevos corresponden al instalador, no certifican rendering o programas DJ.
+Continúan pendientes las portadas entre dos PCs físicos actualizados, Windows limpio, una nueva matriz completa OBS 32.x y sesiones prolongadas. No se afirma compilación reproducible verificada. Las recetas históricas requieren SDK externos y algunos tests requieren fixtures del workspace original.
 
-## PENDIENTES DE VALIDACIÓN DEL PRODUCTO
-
-- Portadas entre dos PCs físicos con ambos componentes actualizados.
-- Reconstrucción y uso en Windows limpio; no se afirma reproducibilidad verificada.
-- Nueva matriz completa OBS 32.x y sesiones prolongadas con todas las versiones DJ.
-- Las recetas históricas contienen referencias a SDK y fixtures externos. Se deben proporcionar los SDK compatibles y adaptar las rutas; BUILD_TESTING=OFF evita pruebas históricas que requieren archivos del workspace original.
-
-Estos límites se conservan en las notas de la Release Candidate; no se presenta RC3.1 como certificación universal.
+La ausencia de Bonjour en otro equipo puede impedir el descubrimiento de Serato. La publicación no certifica que se haya resuelto una conexión real en ese equipo ni instala Bonjour automáticamente.

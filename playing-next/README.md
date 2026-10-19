@@ -1,3 +1,9 @@
+## RC3.2 — Companion compacto y avisos Serato
+
+Ventana inicial de 460 × 780 píxeles lógicos, adaptación a pantalla/escalado, contenido desplazable y acceso permanente a Configuración. Los diálogos se limitan al área útil. Seleccionar programa DJ aplica y guarda el cambio inmediatamente. Se añaden avisos de preparación de Serato y errores Bonjour; guía bilingüe y captura actualizadas. El binario del plugin OBS es idéntico al de RC3.1.
+
+Las pruebas de desarrollo de esta versión cubren UI/perfil/preview (93 checks a 100 % y 200 %; diseño compacto previo a 150 % con 87 checks), ejecutable real (56 checks) y paquete con dependencias locales (60 checks). No equivalen a certificación de la conexión real con todas las aplicaciones DJ o de portadas entre dos PCs físicos.
+
 ## RC3.1 — portadas entre dos PCs y guía ilustrada
 
 El transporte Companion incorpora envío de la portada local por TLS, después de

@@ -20,6 +20,9 @@
 #include <QTimer>
 #include <QInputDialog>
 #include <QPlainTextEdit>
+#include <QScrollArea>
+#include <QScrollBar>
+#include <QScreen>
 #include <iostream>
 #include <stdexcept>
 using namespace playing::companion;
@@ -99,6 +102,24 @@ void automatic(const QString &db) {
         child<QPushButton>(offline,"stop")->click(); check(child<QLabel>(offline,"status")->text()=="Sin conexión","Automatic retry cancelled by Stop");
     }
 }
+void selectionPreview(const QString &db) {
+    QTemporaryDir dir; check(dir.isValid(),"Preview selection fixture");
+    const auto path=dir.filePath("profile.pcs"),history=dir.filePath("history.txt");
+    auto p=profile(); p.receiver.reset(); ProtectedStore store(path); store.save(encodeProfile(p));
+    write(history,"22:10 : Local Artist - Preview without sender\r\n");
+    Window window(path,db.toUtf8().toStdString());
+    child<QComboBox>(window,"provider")->setCurrentIndex(3);
+    const auto saved=decodeProfile(*store.load());
+    check(saved.sender.selection && saved.sender.selection->providerId=="serato","DJ selector waits for Start Sender");
+    check(child<QLabel>(window,"detectorStatus")->text().contains("Ver canción"),"Serato discovery setup hint missing");
+    child<QLineEdit>(window,"history")->setText(history);
+    child<QComboBox>(window,"provider")->setCurrentIndex(4);
+    child<QCheckBox>(window,"preview")->setChecked(true);
+    check(wait([&] {return child<QLabel>(window,"track")->text()=="Preview without sender";}),"Local preview ignored selected DJ before Start Sender");
+    check(child<QLabel>(window,"network")->text().contains("Disconnected"),"Local preview opened sender listener");
+    child<QCheckBox>(window,"preview")->setChecked(false);
+    check(child<QLabel>(window,"track")->text()=="Esperando canción","Local preview stop retained active track");
+}
 void gui(Profile p,const QString &db,const QString &output,const QString &image) {
     QTemporaryDir dir; check(dir.isValid(),"UI fixture directory");
     p.receiver.reset(); p.streamerImage=playing::core::ImageReference{playing::core::ImageKind::LocalFile,image.toUtf8().toStdString(),""};
@@ -108,6 +129,28 @@ void gui(Profile p,const QString &db,const QString &output,const QString &image)
     const auto history=dir.filePath("history.txt"); write(history,QByteArray::fromStdString(u8"22:01 : Sonny Fodera - Mind Still (Original Mix)\r\n"));
     Window sender(djPath,db.toUtf8().toStdString()),receiver(rxPath,db.toUtf8().toStdString());
     sender.setAttribute(Qt::WA_DontShowOnScreen); receiver.setAttribute(Qt::WA_DontShowOnScreen); sender.show(); receiver.show(); QApplication::processEvents();
+    check(sender.width()<=460 && sender.height()<=780,"Dashboard still oversized");
+    check(sender.screen()->availableGeometry().contains(sender.frameGeometry()),"Dashboard exceeds available desktop at current DPI");
+    const auto normalSize=sender.size();
+    sender.resize(420,420); QApplication::processEvents();
+    auto dashboard=child<QScrollArea>(sender,"dashboardScroll");
+    auto configure=child<QPushButton>(sender,"configure");
+    check(sender.rect().contains(QRect(configure->mapTo(&sender,QPoint()),configure->size())),"Settings button clipped on short window");
+    auto pairButton=child<QPushButton>(sender,"pairDashboard");
+    dashboard->ensureWidgetVisible(pairButton); QApplication::processEvents();
+    check(dashboard->viewport()->rect().contains(QRect(pairButton->mapTo(dashboard->viewport(),QPoint()),pairButton->size())),"Pair button unreachable by scrolling");
+    check(dashboard->horizontalScrollBar()->maximum()==0,"Compact dashboard needs horizontal scrolling");
+    check(sender.grab().save(output+".short.png"),"Short dashboard screenshot");
+    sender.resize(normalSize); dashboard->verticalScrollBar()->setValue(0); QApplication::processEvents();
+    auto settingsWindow=child<QDialog>(sender,"settingsDialog"); settingsWindow->setAttribute(Qt::WA_DontShowOnScreen); settingsWindow->show(); QApplication::processEvents();
+    check(settingsWindow->screen()->availableGeometry().contains(settingsWindow->frameGeometry()),"Settings exceeds available desktop at current DPI");
+    settingsWindow->resize(520,360); QApplication::processEvents();
+    auto closeSettings=child<QPushButton>(sender,"closeSettings");
+    check(settingsWindow->rect().contains(QRect(closeSettings->mapTo(settingsWindow,QPoint()),closeSettings->size())),"Settings close button clipped");
+    auto settingsScroll=child<QScrollArea>(sender,"settingsScroll"); auto stopButton=child<QPushButton>(sender,"stop");
+    settingsScroll->ensureWidgetVisible(stopButton); QApplication::processEvents();
+    check(settingsScroll->viewport()->rect().contains(QRect(stopButton->mapTo(settingsScroll->viewport(),QPoint()),stopButton->size())),"Stop button unreachable in short settings");
+    settingsWindow->close();
     check(child<QLabel>(sender,"network")->text().contains("Disconnected"),"Startup opened connection");
     check(child<QLabel>(sender,"track")->text()=="Esperando canción","Startup invented track");
     check(child<QLabel>(sender,"artwork")->pixmap().width()>0,"Profile fallback preview");
@@ -162,6 +205,6 @@ int main(int argc,char **argv) {
     QApplication app(argc,argv); app.setQuitOnLastWindowClosed(false);
     std::cerr<<"Qt UI runtime ready\n";
     QTimer modalGuard; modalGuard.setInterval(50); QObject::connect(&modalGuard,&QTimer::timeout,&app,[] {if(auto box=qobject_cast<QMessageBox *>(QApplication::activeModalWidget())) {++unexpectedDialogs; std::cerr<<"Unexpected application error dialog\n"; box->accept();}}); modalGuard.start();
-    try {check(argc==4,"DB/output/profile-image arguments"); check(QSslSocket::setActiveBackend("schannel"),"Schannel backend"); std::cerr<<"Creating native identity\n"; auto p=profile(); std::cerr<<"Testing profile\n"; codec(p); std::cerr<<"Testing GUI\n"; gui(p,QString::fromLocal8Bit(argv[1]),QString::fromLocal8Bit(argv[2]),QString::fromLocal8Bit(argv[3])); automatic(QString::fromLocal8Bit(argv[1])); check(unexpectedDialogs==0,"Unexpected error dialog during UI flow"); std::cout<<"PASS "<<checks<<" Companion identity/profile/UI checks; loopback, same process\n"; return 0;}
+    try {check(argc==4,"DB/output/profile-image arguments"); check(QSslSocket::setActiveBackend("schannel"),"Schannel backend"); std::cerr<<"Creating native identity\n"; auto p=profile(); std::cerr<<"Testing profile\n"; codec(p); std::cerr<<"Testing GUI\n"; gui(p,QString::fromLocal8Bit(argv[1]),QString::fromLocal8Bit(argv[2]),QString::fromLocal8Bit(argv[3])); automatic(QString::fromLocal8Bit(argv[1])); selectionPreview(QString::fromLocal8Bit(argv[1])); check(unexpectedDialogs==0,"Unexpected error dialog during UI flow"); std::cout<<"PASS "<<checks<<" Companion identity/profile/UI checks; loopback, same process\n"; return 0;}
     catch(const std::exception &e) {std::cerr<<"FAIL "<<e.what()<<'\n'; return 1;}
 }

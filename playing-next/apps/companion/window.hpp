@@ -6,7 +6,7 @@
 #include "playing/companion/protected-store.hpp"
 #include <QWidget>
 class QLabel; class QLineEdit; class QSpinBox; class QComboBox; class QCheckBox; class QListWidget; class QPushButton;
-class QCloseEvent; class QMouseEvent;
+class QCloseEvent; class QMouseEvent; class QShowEvent;
 namespace playing::companion {
 class Window final : public QWidget {
 public:
@@ -15,7 +15,10 @@ public:
 protected:
     void closeEvent(QCloseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 private:
+    void fitToScreen();
+    void applyDjSelection();
     void update();
     void stop();
     void save(const Profile &next);
@@ -31,7 +34,7 @@ private:
     PairingServer pairingServer_;
     PairingClient pairingClient_;
     providers::ConsumerToken remoteToken_;
-    QLabel *status_=nullptr,*track_=nullptr;
+    QLabel *status_=nullptr,*track_=nullptr,*detectorStatus_=nullptr;
     QLineEdit *address_=nullptr,*history_=nullptr,*code_=nullptr;
     QSpinBox *port_=nullptr;
     QComboBox *provider_=nullptr;
