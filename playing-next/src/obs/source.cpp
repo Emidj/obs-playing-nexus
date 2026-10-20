@@ -463,7 +463,7 @@ bool visibility(obs_properties_t *props,obs_property_t *,obs_data_t *settings) {
     for(const auto key:{"canvas_height","title_overflow","artist_overflow","title_x","title_y","artist_x","artist_y","title_width","title_height","artist_width","artist_height","title_align","artist_align"})obs_property_set_visible(obs_properties_get(props,key),!normal);
     for(const auto key:{"title_x","title_y","artist_x","artist_y","title_width","title_height","artist_width","artist_height"})obs_property_set_visible(obs_properties_get(props,key),!normal&&!automatic);
     const std::string provider=obs_data_get_string(settings,"provider");
-    obs_property_set_visible(obs_properties_get(props,"manual_profile_url"),!normal&&obs_data_get_int(settings,"editor_mode")==1);
+    obs_property_set_visible(obs_properties_get(props,"manual_profile_url"),!normal);
     obs_property_set_visible(obs_properties_get(props,"clear_streamer_image"),!normal&&obs_data_get_string(settings,"streamer_image")[0]!=0);
     const bool demo=obs_data_get_bool(settings,"demo_enabled");
     obs_property_set_visible(obs_properties_get(props,"demo_image"),demo&&!normal);
@@ -473,16 +473,22 @@ bool visibility(obs_properties_t *props,obs_property_t *,obs_data_t *settings) {
     obs_property_set_visible(obs_properties_get(props,"mode"),true);obs_property_set_enabled(obs_properties_get(props,"mode"),history&&!demo);
     obs_property_set_visible(obs_properties_get(props,"history"),!demo&&history&&obs_data_get_int(settings,"mode")==1);
     obs_property_set_visible(obs_properties_get(props,"encoding"),!demo&&provider=="virtualdj"&&obs_data_get_int(settings,"mode")==1);
-    obs_property_set_visible(obs_properties_get(props,"receiver_profile"),remote&&!demo&&obs_data_get_int(settings,"editor_mode")==1);
+    obs_property_set_visible(obs_properties_get(props,"receiver_profile"),remote&&!demo);
     obs_property_set_visible(obs_properties_get(props,"pair_receiver"),!demo);
     obs_property_set_visible(obs_properties_get(props,"title_minimum"),!normal&&obs_data_get_int(settings,"title_overflow")==3);
     obs_property_set_visible(obs_properties_get(props,"artist_minimum"),!normal&&obs_data_get_int(settings,"artist_overflow")==3);
     obs_property_set_visible(obs_properties_get(props,"normal_preset"),false);obs_property_set_visible(obs_properties_get(props,"pro_preset"),false);
-    const auto mode=std::clamp<long long>(obs_data_get_int(settings,"editor_mode"),0,2);
-    for(const auto key:advanced){auto property=obs_properties_get(props,key);obs_property_set_visible(property,obs_property_visible(property)&&mode==1);}
-    for(const auto key:layout){auto property=obs_properties_get(props,key);obs_property_set_visible(property,obs_property_visible(property)&&mode==2);}
-    obs_property_set_visible(obs_properties_get(props,"editor_hint"),mode==2);
-    obs_property_set_description(obs_properties_get(props,"editor_hint"),normal?playing::ui::text("Clasicos: distribucion automatica. Ajusta ancho y separacion de filas; el marco sigue el texto."):automatic?playing::ui::text("Mueve el texto con los dos sliders; cero restaura su posicion original. La portada se adapta automaticamente al marco."):playing::ui::text("Layout manual: ajusta las cajas de titulo/artista y la portada dentro del lienzo."));
+    // One editor: only the controls selected for the simplified panel are shown.
+    // Older scene/preset keys and callbacks are retained without exposing them.
+    const char *shown[]={"pair_receiver","show_existing","artwork_enabled","artwork_fallback","twitch_profile_auto",
+        "provider","mode","preset_family","preset_style","pro_hue","pro_light_intensity","pro_light_pulse",
+        "pro_panel_opacity","animation_speed","normal_transition","normal_duration","hide_seconds","title_overflow","artist_overflow","canvas_width","canvas_height",
+        "text_title_font","text_artist_font","text_title_color","text_artist_color","text_offset_x","text_offset_y","title_align","artist_align",
+        "demo_enabled","demo_previous","demo_next","status","nexus_credit"};
+    for(auto property=obs_properties_first(props);property;obs_property_next(&property)){
+        const auto key=obs_property_name(property);
+        if(std::none_of(std::begin(shown),std::end(shown),[key](const char *value){return std::strcmp(key,value)==0;}))obs_property_set_visible(property,false);
+    }
     return true;
 }
 struct PropertiesContext {std::shared_ptr<State> state;long long geometry=0;};
@@ -671,6 +677,11 @@ bool previewTrack(obs_properties_t *,obs_property_t *property,void *data) {
 obs_properties_t *properties(void *data) {
     auto stored=new PropertiesContext{data?static_cast<Source *>(data)->state:std::shared_ptr<State>{},0};
     auto props=obs_properties_create_param(stored,[](void *value){delete static_cast<PropertiesContext *>(value);});
+    obs_properties_add_button2(props,"pair_receiver",playing::ui::text("Conectar Companion"),pairReceiver,data);
+    obs_properties_add_bool(props,"show_existing",playing::ui::text("Mostrar el tema encontrado al activar la fuente"));
+    auto cover=obs_properties_add_bool(props,"artwork_enabled",playing::ui::text("Mostrar portada / imagen de perfil"));obs_property_set_modified_callback(cover,visibility);
+    obs_properties_add_bool(props,"artwork_fallback",playing::ui::text("Usar perfil del streamer si no hay portada"));
+    obs_properties_add_bool(props,"twitch_profile_auto",playing::ui::text("Obtener imagen del canal Twitch conectado en OBS"));
     auto provider=obs_properties_add_list(props,"provider",playing::ui::text("Programa DJ"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_STRING);
     obs_property_list_add_string(provider,"VirtualDJ","virtualdj");obs_property_list_add_string(provider,playing::ui::text("Serato DJ Pro (Automatic)"),"serato");
     if(!service.databaseLibrary.empty())obs_property_list_add_string(provider,"rekordbox","rekordbox");
@@ -681,8 +692,6 @@ obs_properties_t *properties(void *data) {
     obs_property_list_add_int(category,playing::ui::text("Clasicos"),0);obs_property_list_add_int(category,"PRO",1);obs_property_set_modified_callback(category,categoryChanged);
     auto selectedStyle=obs_properties_add_list(props,"preset_style",playing::ui::text("Estilo"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);obs_property_set_modified_callback(selectedStyle,styleChanged);
     obs_properties_add_button2(props,"preset_manager",playing::ui::text("Gestor de presets / favoritos"),openPresetManager,data);
-    auto editorMode=obs_properties_add_list(props,"editor_mode",playing::ui::text("Editor de diseno"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
-    obs_property_list_add_int(editorMode,playing::ui::text("Basico (Basic)"),0);obs_property_list_add_int(editorMode,playing::ui::text("Avanzado (Advanced)"),1);obs_property_list_add_int(editorMode,playing::ui::text("Distribucion (Layout)"),2);obs_property_set_modified_callback(editorMode,visibility);
     obs_properties_add_button2(props,"preset_save_as",playing::ui::text("Guardar diseno como..."),saveDesignAs,data);
     obs_properties_add_text(props,"editor_hint",playing::ui::text("Layout"),OBS_TEXT_INFO);
     auto normal=obs_properties_add_list(props,"normal_preset",playing::ui::text("Clasicos"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
@@ -707,11 +716,6 @@ obs_properties_t *properties(void *data) {
     auto encoding=obs_properties_add_list(props,"encoding",playing::ui::text("Codificacion de historial VirtualDJ"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);
     obs_property_list_add_int(encoding,playing::ui::text("Automatic"),0);obs_property_list_add_int(encoding,"ANSI",1);obs_property_list_add_int(encoding,"UTF-16LE",2);
     obs_properties_add_path(props,"receiver_profile",playing::ui::text("Perfil protegido de vinculacion"),OBS_PATH_FILE,playing::ui::text("Profile (*.pcs)"),nullptr);
-    obs_properties_add_button2(props,"pair_receiver",playing::ui::text("Conectar Companion"),pairReceiver,data);
-    obs_properties_add_bool(props,"show_existing",playing::ui::text("Mostrar el tema encontrado al activar la fuente"));
-    auto cover=obs_properties_add_bool(props,"artwork_enabled",playing::ui::text("Mostrar portada / imagen de perfil"));obs_property_set_modified_callback(cover,visibility);
-    obs_properties_add_bool(props,"artwork_fallback",playing::ui::text("Usar perfil del streamer si no hay portada"));
-    obs_properties_add_bool(props,"twitch_profile_auto",playing::ui::text("Obtener imagen del canal Twitch conectado en OBS"));
     obs_properties_add_text(props,"twitch_channel",playing::ui::text("Canal Twitch (opcional; vacio usa tu cuenta OBS)"),OBS_TEXT_DEFAULT);
     obs_properties_add_button2(props,"choose_streamer_image",playing::ui::text("Seleccionar imagen manual..."),manualProfileImage,data);
     obs_properties_add_button2(props,"manual_profile_url",playing::ui::text("Introducir URL HTTPS (opcional)"),manualProfileImage,data);

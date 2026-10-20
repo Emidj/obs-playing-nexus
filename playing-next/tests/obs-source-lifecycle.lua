@@ -22,6 +22,7 @@ local function run()
         assert(property ~= nil and obs.obs_property_visible(property), 'Manual customization hidden: ' .. key)
     end
     assert(obs.obs_properties_get(properties, 'preset_save_as') ~= nil, 'Direct Save As missing')
+    assert(obs.obs_properties_get(properties, 'editor_mode') == nil, 'Removed editor selector remains')
     assert(obs.obs_properties_get(properties, 'performance_profile') == nil, 'Removed performance selector remains')
     assert(obs.obs_properties_get(properties, 'streamer_image') == nil, 'Manual image is still a text field')
     assert(obs.obs_properties_get(properties, 'choose_streamer_image') ~= nil, 'Manual image file button missing')
@@ -30,8 +31,8 @@ local function run()
     for _, mode in ipairs({0, 1, 2, 0}) do
         obs.obs_data_set_int(settings, 'editor_mode', mode)
         obs.obs_properties_apply_settings(properties, settings)
-        assert(obs.obs_property_visible(obs.obs_properties_get(properties, 'title_outline_width')) == (mode == 1), 'Advanced mode visibility')
-        assert(obs.obs_property_visible(obs.obs_properties_get(properties, 'title_width')) == (mode == 2), 'Layout mode visibility')
+        assert(not obs.obs_property_visible(obs.obs_properties_get(properties, 'title_outline_width')), 'Removed outline control returned')
+        assert(not obs.obs_property_visible(obs.obs_properties_get(properties, 'title_width')), 'Removed layout control returned')
         assert(obs.obs_property_visible(obs.obs_properties_get(properties, 'text_title_font')), 'Mode hid primary typography')
         assert(obs.obs_source_get_width(source) == 640 and obs.obs_source_get_height(source) == 120, 'Editor mode changed geometry')
     end

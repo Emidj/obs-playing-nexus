@@ -1,6 +1,6 @@
 # OBS Playing NEXUS — conectar tus dos PCs
 
-**Guía ilustrada · Windows · RC3.5**
+**Guía ilustrada · Windows · RC3.6**
 
 **Español** · [English](README.en.md)
 
@@ -96,15 +96,12 @@ Ruta habitual del Companion para el permiso del firewall:
 %LOCALAPPDATA%\OBS NEXUS\OBS Playing Companion\obs-playing-companion.exe
 ```
 
-## 7. Diagnóstico de imágenes
+## 7. Si falta una imagen
 
-En las propiedades de la fuente pulsa **Diagnóstico de imágenes**. Distingue
-la portada del lector DJ, la consulta del perfil de Twitch y la imagen preparada
-para dibujar. No muestra claves ni rutas de archivos.
-
-Una consulta fallida a Twitch tiene hasta tres reintentos (tras 5, 15 y 45 segundos),
-sin consultas mientras la fuente está oculta. Si indica HTTP 401, vuelve a conectar
-la cuenta de Twitch en OBS y pulsa **Recargar imagen de perfil**.
+El asistente «Conectar Companion» distingue conexión, canción e imagen disponible.
+Para usar el perfil de Twitch, comprueba las tres opciones de imagen del bloque
+superior y que tu cuenta esté conectada en OBS. Si has vuelto a conectar Twitch,
+cierra y abre OBS para renovar la consulta.
 
 Si tampoco hay portada en Companion, comprueba si está incrustada en el archivo
 local y su formato. Ver una miniatura en Serato no demuestra que el lector pueda
@@ -120,3 +117,11 @@ perfiles `.pcs`, contraseñas ni credenciales.**
 Español, inglés, italiano, francés y alemán incluidos. El plugin sigue el idioma
 de OBS; Companion y el instalador siguen Windows. Otros idiomas usan inglés.
 Los nombres de estilos, tus presets y los datos musicales se conservan.
+
+## Panel único de ajustes
+
+Desde RC3.6 hay un solo editor, sin selector Básico/Avanzado/Distribución.
+Conexión y opciones de portada están arriba, seguidas de programa/lectura,
+categoría/estilo, luz y movimiento, texto y alineación. Las pruebas de canción
+quedan al final. Los controles ajenos a estos bloques ya no se muestran;
+los valores guardados y presets anteriores se conservan.

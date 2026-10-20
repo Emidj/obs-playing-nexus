@@ -16,14 +16,14 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OBS Playing NEXUS Setup")]
 [assembly: AssemblyProduct("OBS Playing NEXUS")]
 [assembly: AssemblyCompany("OBS NEXUS / DjEmiMas")]
-[assembly: AssemblyVersion("1.0.0.8")]
-[assembly: AssemblyFileVersion("1.0.0.8")]
-[assembly: AssemblyInformationalVersion("1.0.0-rc3.5")]
+[assembly: AssemblyVersion("1.0.0.9")]
+[assembly: AssemblyFileVersion("1.0.0.9")]
+[assembly: AssemblyInformationalVersion("1.0.0-rc3.6")]
 
 internal sealed class OwnedFile { public string Path; public string Hash; public string Original; public string OriginalHash; }
-internal sealed class InstallState { public string Product="OBSPlayingNext"; public string Version="1.0.0-rc3.5"; public string Role; public string Target; public string DesktopPath,DesktopHash,DesktopOriginal,DesktopOriginalHash; public List<OwnedFile> Files=new List<OwnedFile>(); }
+internal sealed class InstallState { public string Product="OBSPlayingNext"; public string Version="1.0.0-rc3.6"; public string Role; public string Target; public string DesktopPath,DesktopHash,DesktopOriginal,DesktopOriginalHash; public List<OwnedFile> Files=new List<OwnedFile>(); }
 internal static class Engine {
-    internal const string Version="1.0.0-rc3.5";
+    internal const string Version="1.0.0-rc3.6";
     internal static string DesktopRoot=Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
     internal static void Shortcut(string destination,string target){Safe(destination);Directory.CreateDirectory(Path.GetDirectoryName(destination));object shell=null,link=null;try{shell=Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell",true));link=shell.GetType().InvokeMember("CreateShortcut",BindingFlags.InvokeMethod,null,shell,new object[]{destination});foreach(var pair in new[]{new[]{"TargetPath",Child(target,"obs-playing-companion.exe")},new[]{"WorkingDirectory",target},new[]{"IconLocation",Child(target,"obs-playing-companion.exe")+",0"},new[]{"Description","OBS Playing Companion"}})link.GetType().InvokeMember(pair[0],BindingFlags.SetProperty,null,link,new object[]{pair[1]});link.GetType().InvokeMember("Save",BindingFlags.InvokeMethod,null,link,null);}finally{if(link!=null)Marshal.FinalReleaseComObject(link);if(shell!=null)Marshal.FinalReleaseComObject(shell);}}
     internal static readonly JavaScriptSerializer Json=new JavaScriptSerializer { MaxJsonLength=64*1024*1024 };

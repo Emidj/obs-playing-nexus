@@ -1,6 +1,6 @@
 # OBS Playing NEXUS — connect your two PCs
 
-**Illustrated guide · Windows · RC3.5**
+**Illustrated guide · Windows · RC3.6**
 
 [Español](README.md) · **English**
 
@@ -96,15 +96,12 @@ Default Companion path for the firewall permission:
 %LOCALAPPDATA%\OBS NEXUS\OBS Playing Companion\obs-playing-companion.exe
 ```
 
-## 7. Image diagnostics
+## 7. If an image is missing
 
-Press **Image diagnostics** in the source properties. It distinguishes DJ
-artwork, the Twitch profile lookup and the image prepared for drawing. It does
-not show credentials or file paths.
-
-A failed Twitch lookup has up to three retries (after 5, 15 and 45 seconds),
-with no lookups while the source is hidden. For HTTP 401, reconnect your Twitch
-account in OBS and press **Reload profile image**.
+The Connect Companion assistant distinguishes connection, track and image
+availability. To use your Twitch profile, check the three image options at the
+top and that your account is connected in OBS. After reconnecting Twitch,
+close and reopen OBS to refresh the lookup.
 
 If Companion also lacks artwork, check whether the image is embedded in the
 local file and its format. A thumbnail in Serato does not prove the reader can
@@ -120,3 +117,10 @@ pairing codes, `.pcs` profiles, passwords or credentials.**
 Spanish, English, Italian, French and German are included. The plugin follows
 the OBS language; Companion and the installer follow Windows. Other languages
 use English. Style names, your presets and music metadata remain unchanged.
+
+## Single settings panel
+
+RC3.6 uses one editor, without a Basic/Advanced/Layout selector. Connection and
+artwork options are first, followed by DJ application/reading, category/style,
+light and motion, text and alignment. Track test controls are at the bottom.
+Controls outside these blocks are hidden; saved values and older presets remain.

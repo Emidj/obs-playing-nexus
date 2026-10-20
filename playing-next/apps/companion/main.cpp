@@ -16,7 +16,7 @@ int main(int argc,char **argv) {
     QApplication app(argc,argv);
     playing::ui::setLanguage(QLocale::system().uiLanguages().value(0,QLocale::system().bcp47Name()).toUtf8().constData());
     playing::ui::StandardButtons buttons;app.installTranslator(&buttons); app.setApplicationName("OBS Playing Companion"); app.setOrganizationName("OBS Playing Next");
-    app.setApplicationVersion("1.0.0-rc3.5"); app.setWindowIcon(QIcon(":/branding/nexus-app.ico"));
+    app.setApplicationVersion("1.0.0-rc3.6"); app.setWindowIcon(QIcon(":/branding/nexus-app.ico"));
     QCommandLineParser parser; parser.addHelpOption(); parser.addOption({"profile-dir",playing::ui::text("Directorio propio del perfil protegido"),"path"}); parser.addOption({"db-library",playing::ui::text("Dependencia DB auditada"),"path"}); parser.process(app);
     try {
         const auto profileDir=parser.isSet("profile-dir")?parser.value("profile-dir"):QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);

@@ -21,7 +21,7 @@ foreach($file in @('obs-playing-companion.exe','obs-playing-db.dll','Qt6Core.dll
 foreach($dir in @('plugins','licenses','sbom','docs')){Copy-Item (Join-Path $companion $dir) "$out/companion/$dir" -Recurse}
 foreach($role in @('native','companion')){Compress-Archive -Path "$out/$role/*" -DestinationPath "$out/$role.zip"}
 $compiler=Join-Path $env:WINDIR 'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
-$exe=Join-Path $out 'OBS-Playing-NEXUS-Setup-1.0.0-rc3.5.exe'
+$exe=Join-Path $out 'OBS-Playing-NEXUS-Setup-1.0.0-rc3.6.exe'
 $icon=Join-Path $workspace 'playing-next/packaging/branding/nexus-app.ico'
 $arguments=@('/nologo','/target:winexe','/platform:x64','/optimize+',"/win32icon:$icon","/resource:$icon,app.ico","/out:$exe",'/reference:System.dll','/reference:System.Core.dll','/reference:System.Drawing.dll','/reference:System.Windows.Forms.dll','/reference:System.Web.Extensions.dll','/reference:System.IO.Compression.dll','/reference:System.IO.Compression.FileSystem.dll',"/resource:$out/native.zip,native.zip","/resource:$out/companion.zip,companion.zip","/resource:$workspace/playing-next/packaging/branding/nexus-installer.png,branding.png",('/win32manifest:'+(Join-Path $PSScriptRoot 'app.manifest')),(Join-Path $PSScriptRoot 'Setup.cs'))
 $arguments += (Join-Path $PSScriptRoot 'I18n.cs')
@@ -36,6 +36,6 @@ Copy-Item "$companion/sbom" "$out/sources/sbom" -Recurse
 Copy-Item $PSScriptRoot "$out/sources/installer" -Recurse
 Copy-Item "$PSScriptRoot/*" "$out/sources/playing-next/installer" -Recurse -Force
 Copy-Item "$workspace/playing-next/CORRECCIONES.md" "$out/sources/playing-next/CORRECCIONES.md" -Force
-Compress-Archive -Path "$out/sources/*" -DestinationPath "$out/OBS-Playing-NEXUS-1.0.0-rc3.5-Sources.zip"
-Get-Item $exe,"$out/native.zip","$out/companion.zip","$out/OBS-Playing-NEXUS-1.0.0-rc3.5-Sources.zip" | ForEach-Object{[pscustomobject]@{File=$_.Name;Bytes=$_.Length;SHA256=(Get-FileHash $_.FullName).Hash}} | ConvertTo-Json | Set-Content "$out/build-manifest.json"
+Compress-Archive -Path "$out/sources/*" -DestinationPath "$out/OBS-Playing-NEXUS-1.0.0-rc3.6-Sources.zip"
+Get-Item $exe,"$out/native.zip","$out/companion.zip","$out/OBS-Playing-NEXUS-1.0.0-rc3.6-Sources.zip" | ForEach-Object{[pscustomobject]@{File=$_.Name;Bytes=$_.Length;SHA256=(Get-FileHash $_.FullName).Hash}} | ConvertTo-Json | Set-Content "$out/build-manifest.json"
 Get-Content "$out/build-manifest.json"

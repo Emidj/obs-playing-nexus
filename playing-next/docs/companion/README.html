@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Configurar Companion · OBS Playing NEXUS</title><style>html{color-scheme:dark}body{margin:0;background:#08111d;color:#d8e4f1;font:17px/1.65 "Segoe UI",Arial,sans-serif}main{max-width:1050px;margin:auto;padding:35px 28px 65px}h1{font-size:36px;color:#fff;line-height:1.2}h2{margin-top:55px;padding:13px 0;border-bottom:2px solid #184764;color:#7cdaff}strong{color:#fff}a{color:#72d5ff}li{margin:8px 0}figure{margin:26px 0}img{display:block;max-width:100%;height:auto;border-radius:16px}img[src*="companion-ejemplo"]{max-width:440px;margin:auto}code{font-family:Consolas,monospace;background:#17283b;padding:2px 6px;border-radius:5px}pre{overflow:auto;background:#17283b;padding:18px;border-radius:12px;font-size:14px}.table{overflow:auto}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #29435c;padding:13px;text-align:left;vertical-align:top}th{background:#123653}em{color:#a7bcd0}footer{border-top:1px solid #29435c;margin-top:45px;padding-top:18px;color:#8aa2ba}@media print{html{color-scheme:light}body{background:white;color:#202a35;font-size:11pt}main{padding:0}h1,h2,strong{color:#10283e}h2{break-after:avoid}figure,table,li{break-inside:avoid}a{color:#08639b}code,pre{background:#edf2f8}th{background:#dfedf6}em{color:#46596a}}</style></head><body><main><h1>OBS Playing NEXUS — conectar tus dos PCs</h1>
-<p><strong>Guía ilustrada · Windows · RC3.5</strong></p>
+<p><strong>Guía ilustrada · Windows · RC3.6</strong></p>
 <p><strong>Español</strong> · <a href="README.en.html">English</a></p>
 <p>Abre <strong>README.html</strong> con doble clic para leer la guía offline con imágenes. Conserva la carpeta <code>imagenes</code> junto al documento.</p>
 <h2>1. Instalar en cada PC</h2>
@@ -45,11 +45,12 @@
 </table></div>
 <p>Ruta habitual del Companion para el permiso del firewall:</p>
 <pre><code>%LOCALAPPDATA%\OBS NEXUS\OBS Playing Companion\obs-playing-companion.exe</code></pre>
-<h2>7. Diagnóstico de imágenes</h2>
-<p>En las propiedades de la fuente pulsa <strong>Diagnóstico de imágenes</strong>. Distingue la portada del lector DJ, la consulta del perfil de Twitch y la imagen preparada para dibujar. No muestra claves ni rutas de archivos.</p>
-<p>Una consulta fallida a Twitch tiene hasta tres reintentos (tras 5, 15 y 45 segundos), sin consultas mientras la fuente está oculta. Si indica HTTP 401, vuelve a conectar la cuenta de Twitch en OBS y pulsa <strong>Recargar imagen de perfil</strong>.</p>
+<h2>7. Si falta una imagen</h2>
+<p>El asistente «Conectar Companion» distingue conexión, canción e imagen disponible. Para usar el perfil de Twitch, comprueba las tres opciones de imagen del bloque superior y que tu cuenta esté conectada en OBS. Si has vuelto a conectar Twitch, cierra y abre OBS para renovar la consulta.</p>
 <p>Si tampoco hay portada en Companion, comprueba si está incrustada en el archivo local y su formato. Ver una miniatura en Serato no demuestra que el lector pueda obtenerla; esta versión no certifica portadas de servicios de streaming.</p>
 <p>Para pedir ayuda, indica versiones y el mensaje visible. <strong>No compartas códigos, perfiles <code>.pcs</code>, contraseñas ni credenciales.</strong></p>
 <p><em>Las imágenes son esquemas del asistente, no capturas de una prueba entre dos PCs físicos.</em></p>
 <h2>Idiomas de la interfaz</h2>
-<p>Español, inglés, italiano, francés y alemán incluidos. El plugin sigue el idioma de OBS; Companion y el instalador siguen Windows. Otros idiomas usan inglés. Los nombres de estilos, tus presets y los datos musicales se conservan.</p><footer>NEXUS OBS Plugins by DjEmiMas · Guía offline de Companion</footer></main></body></html>
+<p>Español, inglés, italiano, francés y alemán incluidos. El plugin sigue el idioma de OBS; Companion y el instalador siguen Windows. Otros idiomas usan inglés. Los nombres de estilos, tus presets y los datos musicales se conservan.</p>
+<h2>Panel único de ajustes</h2>
+<p>Desde RC3.6 hay un solo editor, sin selector Básico/Avanzado/Distribución. Conexión y opciones de portada están arriba, seguidas de programa/lectura, categoría/estilo, luz y movimiento, texto y alineación. Las pruebas de canción quedan al final. Los controles ajenos a estos bloques ya no se muestran; los valores guardados y presets anteriores se conservan.</p><footer>NEXUS OBS Plugins by DjEmiMas · Guía offline de Companion</footer></main></body></html>
