@@ -1,6 +1,6 @@
 # OBS Playing NEXUS — conectar tus dos PCs
 
-**Guía ilustrada · Windows · RC3.6**
+**Guía ilustrada · Windows · RC3.7**
 
 **Español** · [English](README.en.md)
 
@@ -125,3 +125,19 @@ Conexión y opciones de portada están arriba, seguidas de programa/lectura,
 categoría/estilo, luz y movimiento, texto y alineación. Las pruebas de canción
 quedan al final. Los controles ajenos a estos bloques ya no se muestran;
 los valores guardados y presets anteriores se conservan.
+
+## Anunciar canciones en el chat de Twitch
+
+En RC3.7, desde las propiedades de Playing NEXUS en el **PC de streaming**:
+
+1. Activa **Anunciar canciones en el chat de Twitch**. Empieza desactivado.
+2. Pulsa **Conectar chat de Twitch…**, después **Autorizar chat de Twitch**.
+3. Pulsa **Abrir Twitch** y autoriza la misma cuenta que usas para emitir en OBS. Si Twitch pide un código, usa el mostrado en la ventana. No compartas ese código.
+4. Personaliza **Mensaje del chat** con `{artist}` y `{title}`. Ejemplo: `🎵 Now playing: {artist} — {title}`.
+5. Ajusta la espera; por defecto son 3 segundos para que el cambio de canción se estabilice.
+
+Solo envía mientras OBS transmite a Twitch, con una canción real y título y artista disponibles. Funciona tanto con el lector local como con Companion; no necesitas configurar el chat en el PC DJ. Los temas ficticios, las pausas y los cambios de portada no generan anuncios. Varias fuentes que muestran la misma canción producen un único mensaje. Si indican canciones diferentes, el anuncio queda en espera hasta que coincidan o quede una sola fuente habilitada.
+
+Para detener los anuncios, desmarca la casilla en las fuentes donde la hayas activado. Se cancelan los mensajes pendientes; un mensaje ya recibido por Twitch no se puede retirar con este control. **Desconectar chat en este equipo** olvida la autorización local del chat sin desconectar la cuenta de emisión de OBS ni otros plugins.
+
+La autorización del chat es independiente de la usada para la foto de perfil. Solo solicita permiso de escritura en el chat y se guarda protegida por Windows, nunca en la escena. Evita repetir la canción al mostrar otra escena o reconectar. Deja un mínimo de 10 segundos entre intentos y conserva el tema más reciente. Si Twitch no confirma un envío, no lo reintenta automáticamente. En una sesión de Shared Chat, Twitch puede mostrar el mensaje en los canales participantes según sus reglas.

@@ -41,6 +41,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "twitch-profile.hpp"
+#include "chat-announcer.hpp"
 #include "playing/companion/protected-store.hpp"
 #include <util/config-file.h>
 #ifdef PLAYING_SOURCE_TEST_HOOKS
@@ -68,6 +69,10 @@ struct State {
     std::uint64_t profileGeneration=0;
     bool manualProfile=false;
     QString profileStatus;
+    bool chatEnabled=false;
+    QString chatFormat;
+    int chatDelayMs=3000;
+    std::uint64_t chatId=0; // GUI-only identifier, unrelated to Track identity.
     std::optional<core::ImageReference> automaticProfile;
     bool showExisting=true;
     int hideAfterMs=0;
@@ -97,10 +102,13 @@ struct Service {
     QObject *dispatcher=nullptr;
     std::unique_ptr<obs::SessionHost> host;
     obs::TwitchProfiles *profiles=nullptr;
+    obs::ChatAnnouncer *chat=nullptr;
+    std::uint64_t chatSequence=0;
     std::mutex graphicsMutex;
     std::unique_ptr<oto::ObsVisualRenderer> renderer;
     std::unique_ptr<visual::TransitionSurface> transitionSurface;
     std::atomic<bool> closing{false};
+    std::atomic<bool> streamStopping{false};
     std::vector<std::weak_ptr<State>> states; // GUI only.
     std::vector<QPointer<QDialog>> dialogs;
     std::string databaseLibrary;
@@ -254,6 +262,14 @@ void clearGpu() {
     {std::lock_guard<std::mutex> lock(service.graphicsMutex);service.transitionSurface.reset();service.renderer.reset();service.uploads=0;service.draws=0;}
     obs_leave_graphics();
 }
+void syncChatBroadcast(){
+    if(!service.chat||service.closing)return;
+    auto *stream=obs_frontend_get_streaming_service();auto *settings=stream?obs_service_get_settings(stream):nullptr;
+    const auto name=QString::fromUtf8(settings?obs_data_get_string(settings,"service"):"");
+    const bool twitch=name.startsWith("Twitch",Qt::CaseInsensitive);if(settings)obs_data_release(settings);
+    auto *profile=obs_frontend_get_profile_config();const char *login=profile?config_get_string(profile,"Twitch","Name"):nullptr;
+    service.chat->broadcast(twitch&&!service.streamStopping&&obs_frontend_streaming_active(),QString::fromUtf8(login?login:""));
+}
 void command(const std::shared_ptr<State> &state) noexcept {
     if(service.closing.load()) return;
     std::lock_guard<std::mutex> gate(service.dispatchMutex);
@@ -262,9 +278,14 @@ void command(const std::shared_ptr<State> &state) noexcept {
         if(service.closing.load()) return;
         try {
             providers::Request request;QString profilePath;bool active=false,closed=false,showExisting=true;int hideAfterMs=0;std::uint64_t revision=0;core::TrackState demo;
-            visual::TrackLayout textLayout;
-            {std::lock_guard<std::mutex> lock(state->mutex);request=state->request;profilePath=state->profilePath;active=state->active;closed=state->closed;revision=state->revision;showExisting=state->showExisting;hideAfterMs=state->hideAfterMs;textLayout=state->textLayout;demo=state->demo;}
+            visual::TrackLayout textLayout;bool chatEnabled=false;QString chatFormat;int chatDelayMs=3000;
+            {std::lock_guard<std::mutex> lock(state->mutex);request=state->request;profilePath=state->profilePath;active=state->active;closed=state->closed;revision=state->revision;showExisting=state->showExisting;hideAfterMs=state->hideAfterMs;textLayout=state->textLayout;demo=state->demo;chatEnabled=state->chatEnabled;chatFormat=state->chatFormat;chatDelayMs=state->chatDelayMs;}
             if(!closed&&state->id&&state->applied==revision)return;
+            if(!state->chatId){state->chatId=++service.chatSequence;
+                state->consumer->trackChanged=[weak=std::weak_ptr<State>(state)](core::SnapshotPtr snapshot){if(auto current=weak.lock();current&&service.chat&&!service.closing)service.chat->observe(current->chatId,std::move(snapshot));};}
+            if(closed)service.chat->remove(state->chatId);
+            else service.chat->configure(state->chatId,chatEnabled&&active,chatFormat,chatDelayMs);
+            syncChatBroadcast();
             if(!service.host) service.host=std::make_unique<obs::SessionHost>(service.databaseLibrary,service.assetRoot);
             if(!state->listed) {service.states.push_back(state);state->listed=true;}
             if(state->id&&closed) {service.host->detach(state->id);state->id=0;}
@@ -328,12 +349,16 @@ void update(void *data,obs_data_t *settings) noexcept {
     auto object=QJsonDocument::fromJson(QByteArray(obs_data_get_json(settings))).object();
     object.remove("editor_mode"); // UI preference; never invalidate visible pixels.
     object.remove("performance_profile"); // Consumer scheduling; appearance unchanged.
+    for(const auto key:{"chat_enabled","chat_message","chat_delay"})object.remove(key);
     for(const auto key:{"preset_manager_id","pro_hue","pro_light_intensity","pro_light_pulse","pro_panel_opacity","animation_speed","demo_title","demo_artist","demo_index","preset_family","preset_style","text_top_distance","text_line_gap","text_offset_x","text_offset_y"})object.remove(key);
     for(const auto key:{"text_title_font","text_artist_font","text_title_color","text_artist_color","title_outline_width","title_outline_color","title_shadow_offset","title_shadow_color","artist_outline_width","artist_outline_color","artist_shadow_offset","artist_shadow_color"})object.remove(key);
     const auto key=QJsonDocument(object).toJson(QJsonDocument::Compact);
     {std::lock_guard<std::mutex> lock(state->mutex);
      state->retainAppearance=!state->configurationKey.isEmpty()&&key==state->configurationKey;
      state->configurationKey=key;
+     state->chatEnabled=obs_data_get_bool(settings,"chat_enabled");
+     state->chatFormat=QString::fromUtf8(obs_data_get_string(settings,"chat_message")).left(2048);
+     state->chatDelayMs=static_cast<int>(std::clamp<long long>(obs_data_get_int(settings,"chat_delay"),1,30))*1000;
      state->request={obs_data_get_string(settings,"provider"),obs_data_get_int(settings,"mode")==1?providers::Mode::History:providers::Mode::Automatic,
          obs_data_get_string(settings,"history")};
      if(state->request.providerId=="serato")state->request.mode=providers::Mode::Automatic;
@@ -420,6 +445,9 @@ void defaults(obs_data_t *settings) {
     obs_data_set_default_int(settings,"text_margin",12);obs_data_set_default_int(settings,"text_line_gap",12);obs_data_set_default_int(settings,"text_image_gap",16);obs_data_set_default_int(settings,"text_cover_size",192);
     obs_data_set_default_bool(settings,"artwork_fallback",true);
     obs_data_set_default_bool(settings,"twitch_profile_auto",true);
+    obs_data_set_default_bool(settings,"chat_enabled",false);
+    obs_data_set_default_string(settings,"chat_message","🎵 Now playing: {artist} — {title}");
+    obs_data_set_default_int(settings,"chat_delay",3);
     obs_data_set_default_int(settings,"artwork_width",100);obs_data_set_default_int(settings,"artwork_height",100);
     obs_data_set_default_int(settings,"normal_duration",800);obs_data_set_default_int(settings,"normal_gap",12);
     obs_data_set_default_int(settings,"normal_speed",40);obs_data_set_default_int(settings,"normal_pause",2);
@@ -481,6 +509,7 @@ bool visibility(obs_properties_t *props,obs_property_t *,obs_data_t *settings) {
     // One editor: only the controls selected for the simplified panel are shown.
     // Older scene/preset keys and callbacks are retained without exposing them.
     const char *shown[]={"pair_receiver","show_existing","artwork_enabled","artwork_fallback","twitch_profile_auto",
+        "chat_enabled","chat_connect","chat_message","chat_delay",
         "provider","mode","preset_family","preset_style","pro_hue","pro_light_intensity","pro_light_pulse",
         "pro_panel_opacity","animation_speed","normal_transition","normal_duration","hide_seconds","title_overflow","artist_overflow","canvas_width","canvas_height",
         "text_title_font","text_artist_font","text_title_color","text_artist_color","text_offset_x","text_offset_y","title_align","artist_align",
@@ -489,6 +518,7 @@ bool visibility(obs_properties_t *props,obs_property_t *,obs_data_t *settings) {
         const auto key=obs_property_name(property);
         if(std::none_of(std::begin(shown),std::end(shown),[key](const char *value){return std::strcmp(key,value)==0;}))obs_property_set_visible(property,false);
     }
+    for(const auto key:{"chat_connect","chat_message","chat_delay"})obs_property_set_visible(obs_properties_get(props,key),obs_data_get_bool(settings,"chat_enabled"));
     return true;
 }
 struct PropertiesContext {std::shared_ptr<State> state;long long geometry=0;};
@@ -674,6 +704,10 @@ bool previewTrack(obs_properties_t *,obs_property_t *property,void *data) {
     obs_data_set_string(settings,"demo_title",titles[index]);obs_data_set_string(settings,"demo_artist",artists[index]);
     obs_source_update(source->source,settings);obs_data_release(settings);return true;
 }
+bool connectChat(obs_properties_t *,obs_property_t *,void *){
+    if(service.closing)return false;
+    QMetaObject::invokeMethod(service.dispatcher,[]{if(service.chat&&!service.closing)service.dialogs.push_back(service.chat->dialog(static_cast<QWidget *>(obs_frontend_get_main_window())));},Qt::QueuedConnection);return false;
+}
 obs_properties_t *properties(void *data) {
     auto stored=new PropertiesContext{data?static_cast<Source *>(data)->state:std::shared_ptr<State>{},0};
     auto props=obs_properties_create_param(stored,[](void *value){delete static_cast<PropertiesContext *>(value);});
@@ -682,6 +716,11 @@ obs_properties_t *properties(void *data) {
     auto cover=obs_properties_add_bool(props,"artwork_enabled",playing::ui::text("Mostrar portada / imagen de perfil"));obs_property_set_modified_callback(cover,visibility);
     obs_properties_add_bool(props,"artwork_fallback",playing::ui::text("Usar perfil del streamer si no hay portada"));
     obs_properties_add_bool(props,"twitch_profile_auto",playing::ui::text("Obtener imagen del canal Twitch conectado en OBS"));
+    auto chatToggle=obs_properties_add_bool(props,"chat_enabled",playing::ui::text("Anunciar canciones en el chat de Twitch"));obs_property_set_modified_callback(chatToggle,visibility);
+    obs_properties_add_button2(props,"chat_connect",playing::ui::text("Conectar chat de Twitch…"),connectChat,data);
+    auto chatMessage=obs_properties_add_text(props,"chat_message",playing::ui::text("Mensaje del chat"),OBS_TEXT_DEFAULT);
+    obs_property_set_long_description(chatMessage,playing::ui::text("Incluye {title} y {artist}. Solo canciones reales durante la transmisión; los mensajes repetidos se omiten."));
+    obs_properties_add_int_slider(props,"chat_delay",playing::ui::text("Espera antes del anuncio (s)"),1,30,1);
     auto provider=obs_properties_add_list(props,"provider",playing::ui::text("Programa DJ"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_STRING);
     obs_property_list_add_string(provider,"VirtualDJ","virtualdj");obs_property_list_add_string(provider,playing::ui::text("Serato DJ Pro (Automatic)"),"serato");
     if(!service.databaseLibrary.empty())obs_property_list_add_string(provider,"rekordbox","rekordbox");
@@ -770,7 +809,7 @@ obs_properties_t *properties(void *data) {
 void shutdownGui(void *) {
     {std::lock_guard<std::mutex> gate(service.dispatchMutex);
      service.closing=true;
-     delete service.dispatcher;service.dispatcher=nullptr;service.profiles=nullptr;} // Cancels pending context-bound commands.
+     delete service.dispatcher;service.dispatcher=nullptr;service.profiles=nullptr;service.chat=nullptr;} // Cancels pending context-bound commands.
     for(auto &dialog:service.dialogs)delete dialog.data();service.dialogs.clear();
     service.host.reset();service.states.clear();clearGpu();
 #ifdef PLAYING_SOURCE_TEST_HOOKS
@@ -783,6 +822,13 @@ void frontend(enum obs_frontend_event event,void *) {
         if(QThread::currentThread()==qApp->thread())shutdownGui(nullptr);
         else obs_queue_task(OBS_TASK_UI,shutdownGui,nullptr,true);
     }
+    else if(event==OBS_FRONTEND_EVENT_STREAMING_STARTED||event==OBS_FRONTEND_EVENT_STREAMING_STOPPING||event==OBS_FRONTEND_EVENT_STREAMING_STOPPED||event==OBS_FRONTEND_EVENT_PROFILE_CHANGED||event==OBS_FRONTEND_EVENT_FINISHED_LOADING){
+        if(event==OBS_FRONTEND_EVENT_STREAMING_STARTED)service.streamStopping=false;
+        if(event==OBS_FRONTEND_EVENT_STREAMING_STOPPING||event==OBS_FRONTEND_EVENT_STREAMING_STOPPED)service.streamStopping=true;
+        std::lock_guard<std::mutex> gate(service.dispatchMutex);if(service.dispatcher&&!service.closing)QMetaObject::invokeMethod(service.dispatcher,[event]{
+            if(event==OBS_FRONTEND_EVENT_STREAMING_STOPPING||event==OBS_FRONTEND_EVENT_STREAMING_STOPPED)service.chat->broadcast(false,{});else syncChatBroadcast();
+        },Qt::QueuedConnection);
+    }
 }
 }
 bool obs_module_load(void) {
@@ -790,6 +836,8 @@ bool obs_module_load(void) {
     try{visual::normal::normalCatalogue();visual::normal::normalAliases();visual::animation::profiles();}
     catch(const std::exception &error){blog(LOG_ERROR,"[playing-next] Preset catalogue rejected: %s",error.what());return false;}
     service.dispatcher=new QObject;service.dispatcher->moveToThread(qApp->thread());service.profiles=new obs::TwitchProfiles(service.dispatcher);
+    char *chatConfig=obs_module_config_path("twitch-chat.pcs");
+    service.chat=new obs::ChatAnnouncer(QString::fromUtf8(chatConfig?chatConfig:""),service.dispatcher);bfree(chatConfig);
     service.tlsPluginRoot=QFileInfo(QString::fromUtf8(obs_get_module_binary_path(obs_current_module()))).dir().filePath("playing-qt-plugins");
     QFile backend(QDir(service.tlsPluginRoot).filePath("tls/qschannelbackend.dll"));
     if(backend.open(QIODevice::ReadOnly)&&QCryptographicHash::hash(backend.readAll(),QCryptographicHash::Sha256).toHex()=="bff4f5b7c44c42b902d202dd9aa61f6cbf7daeb353a0f400f933a056688987da"&&!QCoreApplication::libraryPaths().contains(service.tlsPluginRoot)) {

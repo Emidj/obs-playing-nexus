@@ -1,6 +1,6 @@
 # OBS Playing NEXUS — connect your two PCs
 
-**Illustrated guide · Windows · RC3.6**
+**Illustrated guide · Windows · RC3.7**
 
 [Español](README.md) · **English**
 
@@ -124,3 +124,18 @@ RC3.6 uses one editor, without a Basic/Advanced/Layout selector. Connection and
 artwork options are first, followed by DJ application/reading, category/style,
 light and motion, text and alignment. Track test controls are at the bottom.
 Controls outside these blocks are hidden; saved values and older presets remain.
+# Twitch track announcements
+
+In RC3.7, open the Playing NEXUS source properties on the **streaming PC**:
+
+1. Enable **Announce tracks in Twitch chat**. It is off by default.
+2. Click **Connect Twitch chat…**, then **Authorize Twitch chat**.
+3. Click **Open Twitch** and authorize the same account you use to stream in OBS. If Twitch asks for a code, use the one displayed in the window. Do not share it.
+4. Customize **Chat message** using `{artist}` and `{title}`, for example `🎵 Now playing: {artist} — {title}`.
+5. Set the announcement delay; the default is 3 seconds so metadata can settle.
+
+Messages are sent only while OBS is streaming to Twitch, with a real track and both title and artist available. Local readers and Companion are supported; no chat setup is needed on the DJ PC. Fictional tracks, pauses and artwork updates do not trigger messages. Multiple sources showing the same track produce one message. If enabled sources disagree, announcements wait until they agree or only one remains enabled.
+
+To stop announcements, clear the checkbox on each source where you enabled it. Pending messages are cancelled; this cannot remove a message already received by Twitch. **Disconnect chat on this computer** forgets the local chat grant without disconnecting OBS streaming or other plugins.
+
+Chat authorization is separate from the profile image connection. It requests only chat writing permission and is protected by Windows, never stored in the scene. Showing another scene or reconnecting does not repeat the same track. Attempts are at least 10 seconds apart, keeping the newest eligible track. Unconfirmed sends are not retried automatically. In a Shared Chat session, Twitch may display the message in the participating channels according to its rules.

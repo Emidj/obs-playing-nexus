@@ -178,6 +178,7 @@ void SessionHost::active(Id id, bool value) {
         images_.cancel(id);entry.imageSnapshot.reset();entry.image.reset();++entry.imageGeneration;
         registry_.release(entry.token); entry.token = {};entry.demoActive=false;entry.needsAnimation=false;
         entry.last.reset(); entry.consumer->publication.publish({});
+        entry.observed.reset();if(entry.consumer->trackChanged)entry.consumer->trackChanged({});
         entry.initialTrack=entry.visibleTrack=0;entry.deadline=0;
         entry.timeline->visible(false,clock_.elapsed());entry.normalBase.reset();entry.idleFrame.reset();
         entry.consumer->issue.store(providers::ProviderIssue::None);
@@ -281,6 +282,7 @@ void SessionHost::publishFrames(bool animationOnly) {
         if(animationOnly)++schedulingStats_.animationVisits;
         bool entryAnimating=false;
         const auto snapshot = entry.demoCore?entry.demoCore->snapshot():registry_.snapshot(entry.token);
+        if(!animationOnly&&entry.observed!=snapshot){entry.observed=snapshot;if(entry.consumer->trackChanged)entry.consumer->trackChanged(entry.demoCore?core::SnapshotPtr{}:snapshot);}
         if(snapshot && snapshot->track && !entry.initialTrack)entry.initialTrack=snapshot->trackRevision;
         const bool hidden=snapshot && !entry.showExisting && snapshot->trackRevision==entry.initialTrack;
         if(snapshot && snapshot->track && snapshot->playback==core::Playback::Playing && !hidden && entry.visibleTrack!=snapshot->trackRevision){

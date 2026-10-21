@@ -36,6 +36,8 @@ int main(int argc,char **argv) {
         write(path,QByteArray(u8"21:05 : Björk - Jóga 🎵\r\n"));
         visual::TrackLayout layout;layout.title.box=QRect(12,8,600,46);layout.artist.box=QRect(12,65,600,38);
         auto a=std::make_shared<obs::Consumer>(),b=std::make_shared<obs::Consumer>();
+        core::SnapshotPtr observed;unsigned observations=0;
+        a->trackChanged=[&](core::SnapshotPtr value){observed=std::move(value);++observations;};
         visual::TrackFramePtr retained;
         {
         obs::SessionHost host;
@@ -58,8 +60,10 @@ int main(int argc,char **argv) {
         check(retained->snapshot==peer->snapshot,"Core snapshot not shared");
         check(retained->title==peer->title&&retained->artist==peer->artist,"Visual layers not shared");
         check(retained->snapshot->track->title==u8"Jóga 🎵","Real Unicode history lost");
+        check(observed==retained->snapshot&&observations>0,"Raw track observer missed provider publication");
         check(host.visualStats().renders==2,"Duplicate CPU rendering");
         const auto stats=host.visualStats();pump(350);
+        const auto stableObservations=observations;pump(150);check(observations==stableObservations,"Unchanged track observer kept firing");
         check(host.visualStats().renders==stats.renders&&host.visualStats().hits==stats.hits,"Unchanged state prepared again");
         auto moved=layout;moved.canvas=QSize(800,180);moved.title.box.moveLeft(24);
         const auto reads=host.refreshes();host.configure(first,moved,true,0);
@@ -76,10 +80,12 @@ int main(int argc,char **argv) {
         write(path,QByteArray("21:06 : Bjork - Changed song\r\n"));
         await([&]{auto f=a->publication.read();return f&&f->snapshot&&f->snapshot->track&&f->snapshot->track->title=="Changed song";});
         check(retained->snapshot->track->title==u8"Jóga 🎵","Retained snapshot mutated");
+        check(observed&&observed->track&&observed->track->title=="Changed song","Chat observer retained previous track");
         bool crossRead=false,wrongOwner=false;
         std::thread other([&]{crossRead=bool(a->publication.read());try{host.refresh();}catch(const std::logic_error &){wrongOwner=true;}});other.join();
         check(crossRead&&wrongOwner,"Render handoff/owner boundary");
         host.active(first,false);check(!a->publication.read()&&b->publication.read(),"Deactivate did not isolate consumer");
+        check(!observed,"Hidden source retained a chat candidate");
         check(host.sessions()==1&&host.consumers()==1,"Premature shared session release");
         host.active(second,false);check(!b->publication.read()&&!host.scheduled()&&host.sessions()==0,"Last consumer did not stop");
         const auto ticks=host.refreshes();pump(350);host.refresh();
@@ -107,6 +113,7 @@ int main(int argc,char **argv) {
         check(blank(a)&&host.sessions()==1,"Initial visibility must be per consumer");
         await([&]{return blank(b);});
         check(blank(a),"Expiration reveals hidden initial track");
+        check(observed&&observed->track,"Visual hiding removed raw announcement metadata");
         write(path,QByteArray("21:09 : Artist - Policy next\r\n"));
         await([&]{return ready(a)&&ready(b);});
         check(a->publication.read()->snapshot==b->publication.read()->snapshot,"Policy duplicated core");

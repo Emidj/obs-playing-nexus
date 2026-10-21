@@ -17,6 +17,7 @@ local pulse
 local languages={'es-ES','en-US','it-IT','fr-FR','de-DE'}
 local expected={'Conectar Companion','Connect Companion','Connetti Companion','Connecter Companion','Companion verbinden'}
 local program={'Programa DJ','DJ application','Programma DJ','Logiciel DJ','DJ-Programm'}
+local chat={'Anunciar canciones en el chat de Twitch','Announce tracks in Twitch chat','Annuncia i brani nella chat di Twitch','Annoncer les morceaux dans le chat Twitch','Titel im Twitch-Chat ankündigen'}
 local function check(ok,why)checks=checks+1;assert(ok,why)end
 pulse=function()
  local ok,err=pcall(function()
@@ -31,6 +32,7 @@ pulse=function()
    probe.obs_module_set_locale(languages[stage]);local props=native.obs_source_properties(source)
    check(ffi.string(native.obs_property_description(native.obs_properties_get(props,'pair_receiver')))==expected[stage],'Connection button not translated: '..languages[stage])
    check(ffi.string(native.obs_property_description(native.obs_properties_get(props,'provider')))==program[stage],'DJ selector not translated: '..languages[stage])
+   check(ffi.string(native.obs_property_description(native.obs_properties_get(props,'chat_enabled')))==chat[stage],'Chat opt-in not translated: '..languages[stage])
    local list=native.obs_properties_get(props,'pro_preset')
    for i=0,tonumber(native.obs_property_list_item_count(list))-1 do check(not ffi.string(native.obs_property_list_item_name(list,i)):find('en desarrollo',1,true),'Development label remains')end
    native.obs_properties_destroy(props)

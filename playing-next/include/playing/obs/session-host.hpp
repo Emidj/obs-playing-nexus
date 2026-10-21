@@ -8,12 +8,15 @@
 #include <QTimer>
 #include <QElapsedTimer>
 #include <map>
+#include <functional>
 namespace playing::obs {
 // GUI-owned foundation for native sources. No OBS callbacks/graphics here.
 // A publication may outlive its consumer and may be read on the render thread.
 struct Consumer {
     visual::TrackPublication publication;
     std::atomic<providers::ProviderIssue> issue{providers::ProviderIssue::None};
+    // GUI-only raw Track State notification, independent of visual hiding/transitions.
+    std::function<void(core::SnapshotPtr)> trackChanged;
 };
 struct SchedulingStats {
     std::uint64_t animationPasses=0,animationVisits=0,staticSkips=0,dynamicCopies=0;
@@ -77,6 +80,7 @@ private:
         bool demoActive=false;
         bool needsAnimation=false;
         double animationRateShift=0,decorationRateShift=0;
+        core::SnapshotPtr observed;
     };
     providers::ProviderRegistry registry_;
     visual::TrackVisualHost visual_;

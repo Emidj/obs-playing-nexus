@@ -306,3 +306,7 @@ Si Windows deniega escritura al instalar o retirar el plugin, el instalador
 solicita elevación con runas y reintenta la misma operación. No requiere reinicio
 manual como administrador. La confirmación UAC pertenece a Windows y requiere
 aceptación del usuario. Companion continúa por usuario; no se eleva por defecto.
+
+## RC3.7 — anuncios opcionales en el chat de Twitch
+
+Casilla desactivada por defecto, mensaje con {artist}/{title}, espera configurable de 1–30 s (3 s inicial), autorización de chat independiente mediante el navegador y credenciales DPAPI. Envío centralizado solo con una canción real mientras OBS transmite a la cuenta Twitch autorizada. Deduplicación entre fuentes, mínimo 10 s entre intentos, cancelación al desactivar/parar y sin repetición automática de un POST no confirmado. Companion no requiere configuración de chat. UI y autorización en cinco idiomas; validación local documentada en outputs/OBS-Playing-NEXUS-RC3.7.md. La autorización de usuario y el ensayo contra Twitch real quedan pendientes.

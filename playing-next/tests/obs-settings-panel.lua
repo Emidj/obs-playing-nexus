@@ -16,7 +16,7 @@ local source,settings,props
 local checks=0
 local function check(ok,why)checks=checks+1;assert(ok,why)end
 local allowed={}
-for _,key in ipairs({'pair_receiver','show_existing','artwork_enabled','artwork_fallback','twitch_profile_auto','provider','mode','preset_family','preset_style',
+for _,key in ipairs({'pair_receiver','show_existing','artwork_enabled','artwork_fallback','twitch_profile_auto','chat_enabled','chat_connect','chat_message','chat_delay','provider','mode','preset_family','preset_style',
  'pro_hue','pro_light_intensity','pro_light_pulse','pro_panel_opacity','animation_speed','normal_transition','normal_duration',
  'hide_seconds','title_overflow','artist_overflow','canvas_width','canvas_height','text_title_font','text_artist_font','text_title_color','text_artist_color',
  'text_offset_x','text_offset_y','title_align','artist_align','demo_enabled','demo_previous','demo_next','nexus_credit','status'})do allowed[key]=true end
@@ -37,12 +37,16 @@ local function run()
   settings=native.obs_data_create_from_json('{"provider":"serato","mode":0,"preset_family":1,"preset_style":1,"pro_preset":1,"normal_preset":0,"canvas_width":960,"canvas_height":367,"demo_enabled":false,"text_offset_x":8,"text_offset_y":18,"pro_hue":35,"pro_light_intensity":65,"title_outline_width":3,"streamer_image":"C:/saved-custom-cover.png"}')
   source=native.obs_source_create_private('obs_playing_next_development','Single settings editor',settings);check(source~=nil,'Source')
   props=native.obs_source_properties(source);check(native.obs_properties_get(props,'editor_mode')==nil,'Three-mode selector remains')
+  check(visible('chat_enabled') and not visible('chat_connect') and not visible('chat_message'),'Chat controls not opt-in')
+  native.obs_data_set_bool(settings,'chat_enabled',true);native.obs_properties_apply_settings(props,settings)
+  check(visible('chat_connect') and visible('chat_message') and visible('chat_delay'),'Chat configuration hidden after enabling')
+  native.obs_data_set_bool(settings,'chat_enabled',false);native.obs_properties_apply_settings(props,settings)
   local baseline
   for _,oldMode in ipairs({0,1,2,0})do
    native.obs_data_set_int(settings,'editor_mode',oldMode);native.obs_properties_apply_settings(props,settings)
    local keys=visibleKeys();for i,key in ipairs(first)do check(keys[i]==key,'Connection/image block is not first: '..key)end
    local signature=table.concat(keys,',');if baseline then check(signature==baseline,'Saved editor mode still changes visible controls')else baseline=signature end
-   for key in pairs(allowed)do if key~='status' then check(visible(key),'Selected PRO control hidden: '..key)end end
+   for key in pairs(allowed)do if key~='status' and key~='chat_connect' and key~='chat_message' and key~='chat_delay' then check(visible(key),'Selected PRO control hidden: '..key)end end
    check(native.obs_data_get_int(settings,'text_offset_x')==8 and native.obs_data_get_int(settings,'text_offset_y')==18,'Saved text position changed')
    check(native.obs_data_get_int(settings,'title_outline_width')==3 and ffi.string(native.obs_data_get_string(settings,'streamer_image'))=='C:/saved-custom-cover.png','Hidden saved settings were discarded')
    for _,key in ipairs({'title_overflow','artist_overflow'})do local list=native.obs_properties_get(props,key);check(native.obs_property_list_item_count(list)==5,'Long-text modes lost');check(native.obs_property_list_item_int(list,4)==4,'Ping-pong lost')end
