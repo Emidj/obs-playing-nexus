@@ -1,5 +1,9 @@
 # Compatibilidad OBS — alcance de fase 25
 
+El lector Traktor Pro 3.x/4.x es posterior a esta matriz histórica. Su alcance y
+evidencia actual están en [TRAKTOR.md](TRAKTOR.md): pruebas reales 3.5.0 build 270 y 4.4.1 build 22,
+con el resto de las ramas 3.x/4.x sujeto a validación automática de estructuras.
+
 Producto objetivo: OBS Studio 32.x, Windows x64. El SDK de compilación 31.1.1
 no sustituye las pruebas con runtimes reales. Cada matriz fija el SHA de la DLL.
 

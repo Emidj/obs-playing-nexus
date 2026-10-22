@@ -67,3 +67,11 @@ UCRT y Schannel los proporciona Windows, no se copian DLLs de System32.
 Referencia: [lista de redistribución de Visual Studio 2022](https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution).
 La preparación de este paquete no certifica el instalador final ni sustituye
 la revisión de licencias de cualquier módulo que se incorpore posteriormente.
+# Traktor application mark
+
+The Companion provider icon `packaging/branding/traktor-official.png` is the
+original Traktor application mark, copyright/trademark Native Instruments.
+Used to identify the compatible DJ application at the user's request. This
+asset is excluded from the project's MIT license; no Native Instruments code
+is bundled and no endorsement is implied. Provenance is recorded in
+`packaging/branding/README.md`.

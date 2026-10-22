@@ -78,7 +78,7 @@ void store() {
 }
 void nativePath(const QString &identityDir,const std::string &dbLibrary) {
     ProviderRegistry native;
-    check(registerNativeDetectors(native,dbLibrary) && native.descriptors().size()==3,"Native factories registration");
+    check(registerNativeDetectors(native,dbLibrary) && native.descriptors().size()==4,"Native factories registration");
     check(native.activeRequests().empty() && !registerNativeDetectors(native,dbLibrary),"Registration opened workers or accepted nonempty registry");
     QTemporaryDir dir; check(dir.isValid(),"History fixture directory");
     const auto history=dir.filePath("history.txt"); write(history,QByteArray::fromStdString(u8"21:03 : Björk - Jóga 🎵\r\n"));

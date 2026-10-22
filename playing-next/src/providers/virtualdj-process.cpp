@@ -27,6 +27,15 @@ public:
         if (!QueryFullProcessImageNameW(handle_.get(), 0, path.data(), &size)) return {};
         path.resize(size); return path;
     }
+    std::optional<Region> query(std::uint64_t address) override {
+        if(address<65536 || address>=UINT64_C(140737488355328))return {};
+        MEMORY_BASIC_INFORMATION info{};
+        if(!VirtualQueryEx(handle_.get(),reinterpret_cast<const void *>(address),&info,sizeof(info)))return {};
+        const bool writable=info.State==MEM_COMMIT && info.Type==MEM_PRIVATE
+            && !(info.Protect&(PAGE_GUARD|PAGE_NOACCESS))
+            && (info.Protect&(PAGE_READWRITE|PAGE_WRITECOPY|PAGE_EXECUTE_READWRITE|PAGE_EXECUTE_WRITECOPY));
+        return Region{reinterpret_cast<std::uint64_t>(info.BaseAddress),info.RegionSize,writable};
+    }
     bool read(std::uint64_t address, void *output, std::size_t bytes) override {
         constexpr auto limit = UINT64_C(140737488355328);
         if (!output || address < 65536 || address >= limit || !bytes || bytes > 65536 || bytes >= limit - address) return false;

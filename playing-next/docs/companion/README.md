@@ -39,6 +39,12 @@ En instalaciones nuevas ya están activados al abrir Companion. No necesitas
 marcar «Ver canción en este PC» o «Iniciar envío automáticamente» para conectarlo.
 Si hay varios programas DJ reproduciendo, elige el que quieras en la misma ventana.
 
+**Traktor Pro 3.x / 4.x:** usa detección automática o selecciona **Traktor Pro 3 / 4**.
+El diseño sigue el deck reproduciéndose marcado **MASTER**. No necesitas
+Broadcast ni Bonjour para Traktor. Las portadas se obtienen de su caché local;
+actualiza Companion y el plugin OBS. Pruebas reales: 3.5.0 y 4.4.1.
+El resto de 3.x/4.x queda sujeto a comprobación automática de estructura.
+
 El permiso de red de Windows, si aparece, se confirma en Windows. La vinculación
 queda abierta durante dos minutos; si caduca, pulsa **Volver a buscar conexión**
 en Companion y **Buscar de nuevo** en OBS. Cerrar el asistente del PC DJ cierra

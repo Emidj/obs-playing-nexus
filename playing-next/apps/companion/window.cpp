@@ -61,6 +61,7 @@ bool confirmPair(QWidget *parent,const QString &title,const QString &text) {
     return box.exec()==QMessageBox::Yes;
 }
 QPixmap icon(const QString &kind,int size=64) {
+    if(kind=="traktor") return QPixmap(":/branding/traktor-official.png").scaled(size,size,Qt::KeepAspectRatio,Qt::SmoothTransformation);
     QPixmap image(size,size); image.fill(Qt::transparent); QPainter p(&image); p.setRenderHint(QPainter::Antialiasing); p.scale(size/64.0,size/64.0);
     const QColor blue("#00acff"); p.setPen(QPen(blue,4)); p.setBrush(Qt::NoBrush);
     if(kind=="wifi") {for(int radius:{26,18,10}) p.drawArc(QRectF(32-radius,38-radius,radius*2,radius*2),40*16,100*16); p.setBrush(blue); p.drawEllipse(QPointF(32,45),4,4);}
@@ -71,7 +72,7 @@ QPixmap icon(const QString &kind,int size=64) {
     return image;
 }
 QWidget *card(QVBoxLayout *root,const QString &heading,QVBoxLayout **content) {
-    auto frame=new QWidget; frame->setObjectName("card"); auto layout=new QVBoxLayout(frame); layout->setContentsMargins(12,10,12,10); layout->setSpacing(8);
+    auto frame=new QWidget; frame->setObjectName("card"); auto layout=new QVBoxLayout(frame); layout->setContentsMargins(10,8,10,8); layout->setSpacing(4);
     auto title=new QLabel(heading); title->setObjectName("sectionTitle"); layout->addWidget(title); root->addWidget(frame); *content=layout; return frame;
 }
 class Bars final : public QWidget {
@@ -92,40 +93,40 @@ Window::Window(QString profilePath,std::string databaseLibrary)
     if(providers::network::registerProvider(remote_,channel_)!=providers::Registration::Registered) throw std::runtime_error("Remote provider unavailable");
     remoteToken_=remote_.acquire({"network",providers::Mode::Automatic,""}).token;
     if(!remoteToken_) throw std::runtime_error("Remote session unavailable");
-    setWindowTitle(playing::ui::text("OBS Playing Companion · Vista previa")); setWindowFlags(Qt::Window|Qt::FramelessWindowHint); resize(460,780); setObjectName("mainWindow");
-    setStyleSheet("QWidget {font-family: 'Bahnschrift'; font-size: 15px; color:#f3f5ff; background:#020d17;} QWidget#card {border:1px solid #12405d; border-radius:16px; background:#03101c;} QLabel {background:transparent; border:0;} QLabel#sectionTitle {color:#91b0db; font-size:18px; font-weight:600;} QPushButton {padding:7px 10px; border:1px solid #426183; border-radius:12px; background:#101e30;} QPushButton:hover {border-color:#00aeff; background:#11283c;} QPushButton:pressed {background:#123955;} QPushButton#providerRow {text-align:left; border-color:transparent; background:transparent;} QPushButton#providerRow[active=true] {border-color:#00b5ff;} QLineEdit,QComboBox,QSpinBox,QListWidget,QPlainTextEdit {padding:7px; background:#061624; border:1px solid #244c69; border-radius:8px;} QTabWidget::pane {border:1px solid #244c69;} QTabBar::tab {background:#11243a; padding:9px;} QCheckBox {spacing:9px;} QScrollArea {border:0;} QScrollBar:vertical {width:7px; background:#061421;} QScrollBar::handle:vertical {background:#264b69; min-height:30px;} QScrollBar::add-line:vertical,QScrollBar::sub-line:vertical {height:0;}");
-    auto root=new QVBoxLayout(this); root->setContentsMargins(12,10,12,10); root->setSpacing(10);
-    auto header=new QHBoxLayout; auto logo=new QLabel; logo->setPixmap(icon("disc",48)); header->addWidget(logo);
-    auto heading=new QLabel("OBS PLAYING<br><span style='color:#00aeff'>COMPANION</span>"); heading->setStyleSheet("font-size:22px; font-weight:700;"); header->addWidget(heading); header->addStretch();
-    auto minimize=new QPushButton("—"),close=new QPushButton("×"); for(auto control:{minimize,close}) {control->setFixedSize(40,40); control->setStyleSheet("border:0; background:transparent; font-size:28px; padding:0;"); header->addWidget(control);}
+    setWindowTitle(QStringLiteral("OBS Playing Companion")); setWindowFlags(Qt::Window|Qt::FramelessWindowHint); resize(440,640); setObjectName("mainWindow");
+    setStyleSheet("QWidget {font-family: 'Bahnschrift'; font-size: 14px; color:#f3f5ff; background:#020d17;} QWidget#card {border:1px solid #12405d; border-radius:12px; background:#03101c;} QLabel {background:transparent; border:0;} QLabel#sectionTitle {color:#91b0db; font-size:15px; font-weight:600;} QPushButton {padding:6px 8px; border:1px solid #426183; border-radius:12px; background:#101e30;} QPushButton:hover {border-color:#00aeff; background:#11283c;} QPushButton:pressed {background:#123955;} QPushButton#providerRow {padding:0; text-align:left; border-color:transparent; background:transparent;} QPushButton#providerRow[active=true] {border-color:#00b5ff;} QLineEdit,QComboBox,QSpinBox,QListWidget,QPlainTextEdit {padding:7px; background:#061624; border:1px solid #244c69; border-radius:8px;} QTabWidget::pane {border:1px solid #244c69;} QTabBar::tab {background:#11243a; padding:9px;} QCheckBox {spacing:9px;} QScrollArea {border:0;} QScrollBar:vertical {width:7px; background:#061421;} QScrollBar::handle:vertical {background:#264b69; min-height:30px;} QScrollBar::add-line:vertical,QScrollBar::sub-line:vertical {height:0;}");
+    auto root=new QVBoxLayout(this); root->setContentsMargins(8,8,8,8); root->setSpacing(6);
+    auto header=new QHBoxLayout; auto logo=new QLabel; logo->setPixmap(icon("disc",40)); header->addWidget(logo);
+    auto heading=new QLabel("OBS PLAYING<br><span style='color:#00aeff'>COMPANION</span>"); heading->setStyleSheet("font-size:19px; font-weight:700;"); header->addWidget(heading); header->addStretch();
+    auto minimize=new QPushButton("—"),close=new QPushButton("×"); for(auto control:{minimize,close}) {control->setFixedSize(32,32); control->setStyleSheet("border:0; background:transparent; font-size:25px; padding:0;"); header->addWidget(control);}
     QObject::connect(minimize,&QPushButton::clicked,this,&QWidget::showMinimized); QObject::connect(close,&QPushButton::clicked,this,&QWidget::close); root->addLayout(header);
-    auto scroll=new QScrollArea; scroll->setObjectName("dashboardScroll"); scroll->setWidgetResizable(true); root->addWidget(scroll,1); auto dashboard=new QWidget; auto cards=new QVBoxLayout(dashboard); cards->setContentsMargins(0,0,0,0); cards->setSpacing(10); scroll->setWidget(dashboard);
-    QVBoxLayout *songLayout=nullptr; card(cards,playing::ui::text("CURRENT TRACK"),&songLayout); auto songRow=new QHBoxLayout;
-    artwork_=new QLabel; artwork_->setObjectName("artwork"); artwork_->setFixedSize(128,128); artwork_->setAlignment(Qt::AlignCenter); artwork_->setStyleSheet("background:#081827; border:1px solid #364d70; border-radius:13px;"); artwork_->setPixmap(icon("disc",82)); songRow->addWidget(artwork_);
-    auto songText=new QVBoxLayout; track_=new QLabel; track_->setObjectName("track"); track_->setWordWrap(true); track_->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Preferred); track_->setStyleSheet("font-size:22px; font-weight:600;"); artist_=new QLabel; artist_->setWordWrap(true); artist_->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Preferred); artist_->setStyleSheet("font-size:18px; color:#91b0db;"); songText->addWidget(track_); songText->addWidget(artist_); songText->addStretch(); bars_=new Bars; bars_->setFixedHeight(34); bars_->setToolTip(playing::ui::text("Indicador decorativo de reproducción; no mide el audio.")); songText->addWidget(bars_); songRow->addLayout(songText,1); songLayout->addLayout(songRow);
-    QVBoxLayout *netLayout=nullptr; card(cards,playing::ui::text("NETWORK"),&netLayout); auto netRow=new QHBoxLayout; auto wifi=new QLabel; wifi->setPixmap(icon("wifi",40)); netRow->addWidget(wifi); network_=new QLabel; network_->setObjectName("network"); netRow->addWidget(network_,1); endpoint_=new QLabel; endpoint_->setStyleSheet("font-size:16px;"); netRow->addWidget(endpoint_); netLayout->addLayout(netRow);
-    QVBoxLayout *clientsLayout=nullptr; card(cards,playing::ui::text("CONNECTED CLIENTS"),&clientsLayout); auto titleItem=clientsLayout->takeAt(0); auto clientsHeading=new QHBoxLayout; clientsHeading->addWidget(titleItem->widget()); delete titleItem; clientsHeading->addStretch(); count_=new QLabel; count_->setStyleSheet("color:#00aeff; font-size:18px;"); clientsHeading->addWidget(count_); clientsLayout->insertLayout(0,clientsHeading); auto clientRow=new QHBoxLayout; auto pc=new QLabel; pc->setPixmap(icon("pc",36)); clientRow->addWidget(pc);
-    clientsTitle_=qobject_cast<QLabel *>(clientsHeading->itemAt(0)->widget()); clientsTitle_->setObjectName("clientsTitle"); clientsTitle_->setStyleSheet("color:#91b0db; font-size:18px; font-weight:600;");
-    devices_=new QListWidget; devices_->setObjectName("devices"); devices_->setFixedHeight(48); clientRow->addWidget(devices_,1);
-    linkedDj_=new QLabel; linkedDj_->setObjectName("linkedDj"); linkedDj_->setTextFormat(Qt::PlainText); linkedDj_->setWordWrap(true); linkedDj_->setMinimumHeight(48); clientRow->addWidget(linkedDj_,1); clientsLayout->addLayout(clientRow);
+    auto scroll=new QScrollArea; scroll->setObjectName("dashboardScroll"); scroll->setWidgetResizable(true); scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); root->addWidget(scroll,1); auto dashboard=new QWidget; auto cards=new QVBoxLayout(dashboard); cards->setContentsMargins(0,0,0,0); cards->setSpacing(6); scroll->setWidget(dashboard);
+    QVBoxLayout *songLayout=nullptr; card(cards,playing::ui::text("CURRENT TRACK"),&songLayout); auto songRow=new QHBoxLayout; songRow->setSpacing(8);
+    artwork_=new QLabel; artwork_->setObjectName("artwork"); artwork_->setFixedSize(88,88); artwork_->setAlignment(Qt::AlignCenter); artwork_->setStyleSheet("background:#081827; border:1px solid #364d70; border-radius:9px;"); artwork_->setPixmap(icon("disc",62)); songRow->addWidget(artwork_);
+    auto songText=new QVBoxLayout; songText->setSpacing(2); track_=new QLabel; track_->setObjectName("track"); track_->setWordWrap(true); track_->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Preferred); track_->setStyleSheet("font-size:18px; font-weight:600;"); artist_=new QLabel; artist_->setWordWrap(true); artist_->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Preferred); artist_->setStyleSheet("font-size:15px; color:#91b0db;"); songText->addWidget(track_); songText->addWidget(artist_); songText->addStretch(); bars_=new Bars; bars_->setFixedHeight(22); bars_->setToolTip(playing::ui::text("Indicador decorativo de reproducción; no mide el audio.")); songText->addWidget(bars_); songRow->addLayout(songText,1); songLayout->addLayout(songRow);
+    QVBoxLayout *netLayout=nullptr; card(cards,playing::ui::text("NETWORK"),&netLayout); auto netRow=new QHBoxLayout; auto wifi=new QLabel; wifi->setPixmap(icon("wifi",28)); netRow->addWidget(wifi); network_=new QLabel; network_->setObjectName("network"); network_->setWordWrap(true); network_->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Preferred); netRow->addWidget(network_,1); endpoint_=new QLabel; endpoint_->setStyleSheet("font-size:14px;"); netRow->addWidget(endpoint_); netLayout->addLayout(netRow);
+    QVBoxLayout *clientsLayout=nullptr; card(cards,playing::ui::text("CONNECTED CLIENTS"),&clientsLayout); auto titleItem=clientsLayout->takeAt(0); auto clientsHeading=new QHBoxLayout; clientsHeading->addWidget(titleItem->widget()); delete titleItem; clientsHeading->addStretch(); count_=new QLabel; count_->setStyleSheet("color:#00aeff; font-size:16px;"); clientsHeading->addWidget(count_); clientsLayout->insertLayout(0,clientsHeading); auto clientRow=new QHBoxLayout; auto pc=new QLabel; pc->setPixmap(icon("pc",28)); clientRow->addWidget(pc);
+    clientsTitle_=qobject_cast<QLabel *>(clientsHeading->itemAt(0)->widget()); clientsTitle_->setObjectName("clientsTitle"); clientsTitle_->setStyleSheet("color:#91b0db; font-size:15px; font-weight:600;");
+    devices_=new QListWidget; devices_->setObjectName("devices"); devices_->setFixedHeight(36); clientRow->addWidget(devices_,1);
+    linkedDj_=new QLabel; linkedDj_->setObjectName("linkedDj"); linkedDj_->setTextFormat(Qt::PlainText); linkedDj_->setWordWrap(true); linkedDj_->setMinimumHeight(36); clientRow->addWidget(linkedDj_,1); clientsLayout->addLayout(clientRow);
     QVBoxLayout *detectorLayout=nullptr; card(cards,playing::ui::text("AUTO DETECTOR"),&detectorLayout);
-    for(const auto &id:{QString("rekordbox"),QString("virtualdj"),QString("serato")}) {auto row=new QPushButton; row->setObjectName("providerRow"); row->setProperty("providerId",id); row->setMinimumHeight(48); auto rowLayout=new QHBoxLayout(row); rowLayout->setContentsMargins(8,4,8,4); auto logoLabel=new QLabel; logoLabel->setPixmap(icon(id,34)); rowLayout->addWidget(logoLabel); auto nameLabel=new QLabel(id=="rekordbox"?"rekordbox":id=="virtualdj"?"VirtualDJ":"Serato DJ Pro"); nameLabel->setStyleSheet("font-size:18px;"); rowLayout->addWidget(nameLabel); rowLayout->addStretch(); auto indicator=new QLabel("●"); indicator->setObjectName("indicator"); rowLayout->addWidget(indicator); for(auto label:{logoLabel,nameLabel,indicator}) label->setAttribute(Qt::WA_TransparentForMouseEvents); detectorLayout->addWidget(row); providerRows_.push_back(row);}
+    for(const auto &id:{QString("rekordbox"),QString("virtualdj"),QString("serato"),QString("traktor")}) {auto row=new QPushButton; row->setObjectName("providerRow"); row->setProperty("providerId",id); row->setMinimumHeight(36); auto rowLayout=new QHBoxLayout(row); rowLayout->setContentsMargins(6,1,6,1); rowLayout->setSpacing(8); auto logoLabel=new QLabel; logoLabel->setPixmap(icon(id,34)); rowLayout->addWidget(logoLabel); auto nameLabel=new QLabel(id=="rekordbox"?"rekordbox":id=="virtualdj"?"VirtualDJ":id=="traktor"?"Traktor Pro 3 / 4":"Serato DJ Pro"); nameLabel->setStyleSheet("font-size:16px;"); rowLayout->addWidget(nameLabel); rowLayout->addStretch(); auto indicator=new QLabel("●"); indicator->setObjectName("indicator"); rowLayout->addWidget(indicator); for(auto label:{logoLabel,nameLabel,indicator}) label->setAttribute(Qt::WA_TransparentForMouseEvents); detectorLayout->addWidget(row); providerRows_.push_back(row);}
     auto pairDashboard=button(detectorLayout,playing::ui::text("Conectar con OBS"),"pairDashboard");
     detectorStatus_=new QLabel; detectorStatus_->setObjectName("detectorStatus"); detectorStatus_->setWordWrap(true); detectorStatus_->setStyleSheet("font-size:14px; color:#91b0db;"); detectorLayout->addWidget(detectorStatus_);
-    auto footer=new QHBoxLayout; auto configure=new QPushButton("⚙"); configure->setObjectName("configure"); configure->setFixedSize(46,40); configure->setStyleSheet("font-size:30px;"); configure->setToolTip(playing::ui::text("Configuración y dispositivos")); footer->addWidget(configure); footer->addStretch(); running_=new QLabel; footer->addWidget(running_); footer->addWidget(new QSizeGrip(this)); root->addLayout(footer);
-    auto settingsDialog=new ScreenDialog(this); settingsDialog->setObjectName("settingsDialog"); settingsDialog->setWindowTitle(playing::ui::text("Configuración del Companion")); settingsDialog->resize(570,670);
+    auto footer=new QHBoxLayout; auto configure=new QPushButton("⚙"); configure->setObjectName("configure"); configure->setFixedSize(36,32); configure->setStyleSheet("font-size:24px; padding:0;"); configure->setToolTip(playing::ui::text("Configuración y dispositivos")); footer->addWidget(configure); footer->addStretch(); running_=new QLabel; footer->addWidget(running_); footer->addWidget(new QSizeGrip(this)); root->addLayout(footer);
+    auto settingsDialog=new ScreenDialog(this); settingsDialog->setObjectName("settingsDialog"); settingsDialog->setWindowTitle(playing::ui::text("Configuración del Companion")); settingsDialog->resize(520,600);
     auto settingsRoot=new QVBoxLayout(settingsDialog); auto settingsScroll=new QScrollArea; settingsScroll->setObjectName("settingsScroll"); settingsScroll->setWidgetResizable(true); settingsRoot->addWidget(settingsScroll);
     auto settingsBody=new QWidget; settingsScroll->setWidget(settingsBody); auto settingsLayout=new QVBoxLayout(settingsBody);
     auto tabs=new QTabWidget; settingsLayout->addWidget(tabs);
     auto djPage=new QWidget; auto djLayout=new QVBoxLayout(djPage); auto form=new QFormLayout;
-    provider_=new QComboBox; provider_->setObjectName("provider"); provider_->addItems({playing::ui::text("Detectar automáticamente"),"VirtualDJ","rekordbox","Serato",playing::ui::text("Historial VirtualDJ"),playing::ui::text("Historial rekordbox")}); form->addRow(playing::ui::text("Programa DJ"),provider_);
+    provider_=new QComboBox; provider_->setObjectName("provider"); provider_->addItems({playing::ui::text("Detectar automáticamente"),"VirtualDJ","rekordbox","Serato",playing::ui::text("Historial VirtualDJ"),playing::ui::text("Historial rekordbox"),"Traktor Pro 3 / 4"}); form->addRow(playing::ui::text("Programa DJ"),provider_);
     history_=new QLineEdit; history_->setObjectName("history"); history_->setPlaceholderText(playing::ui::text("Vacío: buscar historial automáticamente")); form->addRow(playing::ui::text("Historial"),history_);
     auto browse=button(djLayout,playing::ui::text("Elegir historial…"),"browse");
     QObject::connect(browse,&QPushButton::clicked,this,[this] {const auto path=QFileDialog::getOpenFileName(this,playing::ui::text("Elegir historial")); if(!path.isEmpty()) history_->setText(path);});
     address_=new QLineEdit(profile_.sender.address); address_->setObjectName("address"); form->addRow(playing::ui::text("Dirección del PC DJ"),address_);
     port_=new QSpinBox; port_->setObjectName("port"); port_->setRange(1024,65535); port_->setValue(profile_.sender.port); form->addRow(playing::ui::text("Puerto"),port_);
     lan_=new QCheckBox(playing::ui::text("Permitir conexión desde otro PC de mi red")); lan_->setChecked(profile_.sender.localNetwork); form->addRow(lan_);
-    if(profile_.sender.selection) {const auto &r=*profile_.sender.selection; provider_->setCurrentIndex(r.mode==providers::Mode::History?(r.providerId=="virtualdj"?4:5):(r.providerId=="virtualdj"?1:r.providerId=="rekordbox"?2:3)); history_->setText(QString::fromUtf8(r.historyPath)); if(!detector_.select(r)) throw std::runtime_error("Saved selection invalid");}
+    if(profile_.sender.selection) {const auto &r=*profile_.sender.selection; provider_->setCurrentIndex(r.mode==providers::Mode::History?(r.providerId=="virtualdj"?4:5):(r.providerId=="virtualdj"?1:r.providerId=="rekordbox"?2:r.providerId=="traktor"?6:3)); history_->setText(QString::fromUtf8(r.historyPath)); if(!detector_.select(r)) throw std::runtime_error("Saved selection invalid");}
     preview_=new QCheckBox(playing::ui::text("Ver canción en este PC")); preview_->setObjectName("preview"); preview_->setChecked(profile_.startup==StartupMode::Sender); form->addRow(preview_);
     djLayout->insertLayout(0,form);
     autoSend_=new QCheckBox(playing::ui::text("Iniciar envío automáticamente al abrir")); autoSend_->setObjectName("autoSend"); autoSend_->setChecked(profile_.startup==StartupMode::Sender); djLayout->addWidget(autoSend_);
@@ -219,10 +220,14 @@ Window::Window(QString profilePath,std::string databaseLibrary)
         auto text=new QPlainTextEdit(code); text->setReadOnly(true); layout->addWidget(text);
         auto close=button(layout,playing::ui::text("Cerrar"),"closePairing"); QObject::connect(close,&QPushButton::clicked,&dialog,&QDialog::accept); dialog.resize(560,300); dialog.exec();
     });});
+    djLayout->addWidget(new QLabel(playing::ui::text("Configuración y dispositivos")));
+    pairedDevices_=new QListWidget;pairedDevices_->setObjectName("pairedDevices");pairedDevices_->setFixedHeight(72);djLayout->addWidget(pairedDevices_);
     auto revoke=button(djLayout,playing::ui::text("Revocar vinculación seleccionada"),"revokeDevice");
     QObject::connect(revoke,&QPushButton::clicked,this,[this] {guarded([this] {
-        const auto row=devices_->currentRow(); if(row<0) return; const auto id=profile_.devices.at(static_cast<std::size_t>(row)).credential.id;
-        Profile next=profile_; next.devices.erase(next.devices.begin()+row); save(next); sender_.revoke(id); update();
+        const auto selected=pairedDevices_->currentItem();if(!selected)return;const auto id=selected->data(Qt::UserRole).toByteArray();
+        if(std::none_of(profile_.devices.begin(),profile_.devices.end(),[&](const auto &d){return d.credential.id==id;}))return;
+        Profile next=profile_;next.devices.erase(std::remove_if(next.devices.begin(),next.devices.end(),[&](const auto &d){return d.credential.id==id;}),next.devices.end());
+        save(next);sender_.revoke(id);update();
     });});
     tabs->addTab(djPage,playing::ui::text("PC DJ"));
     auto receiverPage=new QWidget; auto receiverLayout=new QVBoxLayout(receiverPage);
@@ -281,7 +286,7 @@ Window::Window(QString profilePath,std::string databaseLibrary)
     QObject::connect(configure,&QPushButton::clicked,settingsDialog,&QDialog::exec);
     QObject::connect(provider_,&QComboBox::currentIndexChanged,this,[this] {guarded([this] {applyDjSelection(); update();});});
     QObject::connect(history_,&QLineEdit::editingFinished,this,[this] {guarded([this] {applyDjSelection(); update();});});
-    for(auto row:providerRows_) QObject::connect(row,&QPushButton::clicked,this,[this,row] {const auto id=row->property("providerId").toString(); provider_->setCurrentIndex(id=="virtualdj"?1:id=="rekordbox"?2:3);});
+    for(auto row:providerRows_) QObject::connect(row,&QPushButton::clicked,this,[this,row] {const auto id=row->property("providerId").toString(); provider_->setCurrentIndex(id=="virtualdj"?1:id=="rekordbox"?2:id=="traktor"?6:3);});
     tabs->setCurrentIndex(0);
     sender_.clientsChanged=[this] {detector_.syncDemand(); update();}; detector_.changed=[this] {update();};
     receiver_.changed=[this] {remote_.refresh({"network",providers::Mode::Automatic,""}); update();}; update();
@@ -294,7 +299,8 @@ Window::Window(QString profilePath,std::string databaseLibrary)
 Window::~Window() {pairingServer_.changed={}; pairingServer_.requested={}; pairingClient_.changed={}; pairingClient_.completed={}; pairingServer_.stop(); pairingClient_.stop(); sender_.clientsChanged={}; detector_.changed={}; receiver_.changed={}; receiver_.stop(); sender_.stop(); detector_.setPreview(false); remote_.release(remoteToken_);}
 void Window::applyDjSelection() {
     std::optional<providers::Request> request; const auto index=provider_->currentIndex();
-    if(index) request=providers::Request{index==1 || index==4?"virtualdj":index==2 || index==5?"rekordbox":"serato",index>=4?providers::Mode::History:providers::Mode::Automatic,index>=4?history_->text().toUtf8().toStdString():""};
+    const bool history=index==4||index==5;
+    if(index) request=providers::Request{index==1 || index==4?"virtualdj":index==2 || index==5?"rekordbox":index==6?"traktor":"serato",history?providers::Mode::History:providers::Mode::Automatic,history?history_->text().toUtf8().toStdString():""};
     const auto &saved=profile_.sender.selection;
     if(!request && !saved) return;
     if(request && saved && request->providerId==saved->providerId && request->mode==saved->mode && request->historyPath==saved->historyPath && request->encoding==saved->encoding) return;
@@ -313,13 +319,24 @@ void Window::guarded(const std::function<void()> &action) {
 }
 void Window::stop() {startupPending_=false; pairingClient_.stop(); pairingServer_.stop(); receiver_.stop(); sender_.stop(); preview_->setChecked(false); detector_.setPreview(false); update();}
 void Window::update() {
-    const auto selected=devices_->currentRow(); devices_->clear(); const auto clients=sender_.clients();
+    const auto selected=devices_->currentItem()?devices_->currentItem()->data(Qt::UserRole).toByteArray():QByteArray{};
+    const auto pairedSelected=pairedDevices_->currentItem()?pairedDevices_->currentItem()->data(Qt::UserRole).toByteArray():QByteArray{};
+    devices_->clear();pairedDevices_->clear();const auto clients=sender_.clients();
+    QListWidgetItem *activeSelection=nullptr,*pairedSelection=nullptr;
+    for(const auto &client:clients){
+        const auto saved=std::find_if(profile_.devices.begin(),profile_.devices.end(),[&](const auto &d){return d.credential.id==client.deviceId;});
+        const auto name=saved==profile_.devices.end()?playing::ui::string("PC de streaming"):saved->name;
+        auto item=new QListWidgetItem(name+"  ·  "+client.address+playing::ui::text("  ·  Connected"),devices_);
+        item->setData(Qt::UserRole,client.deviceId);item->setForeground(QColor("#14ed79"));
+        if(client.deviceId==selected)activeSelection=item;
+    }
     for(const auto &d:profile_.devices) {
         const auto active=std::find_if(clients.begin(),clients.end(),[&](const auto &c) {return c.deviceId==d.credential.id;});
-        devices_->addItem(d.name+(active==clients.end()?playing::ui::text("  ·  Sin conexión"):"  ·  "+active->address+playing::ui::text("  ·  Connected")));
-        devices_->item(devices_->count()-1)->setForeground(QColor(active==clients.end()?"#91b0db":"#14ed79"));
+        auto item=new QListWidgetItem(d.name+(active==clients.end()?playing::ui::text("  ·  Sin conexión"):"  ·  "+active->address+playing::ui::text("  ·  Connected")),pairedDevices_);
+        item->setData(Qt::UserRole,d.credential.id);item->setForeground(QColor(active==clients.end()?"#91b0db":"#14ed79"));
+        if(d.credential.id==pairedSelected)pairedSelection=item;
     }
-    if(selected>=0 && selected<devices_->count()) devices_->setCurrentRow(selected);
+    devices_->setCurrentItem(activeSelection);pairedDevices_->setCurrentItem(pairedSelection);
     core::SnapshotPtr snapshot=detector_.snapshot(); QString status=playing::ui::text("Sin conexión");
     if(receiver_.connected()) {status=playing::ui::text("Conectado al PC DJ"); snapshot=remote_.snapshot(remoteToken_);}
     else if(receiver_.reconnectPending()) status=playing::ui::text("Conexión perdida. Reintentando…");
@@ -362,24 +379,24 @@ void Window::update() {
     track_->setText(snapshot && snapshot->metadata?QString::fromUtf8(snapshot->metadata->title):playing::ui::text("Esperando canción"));
     artist_->setText(snapshot && snapshot->metadata?QString::fromUtf8(snapshot->metadata->artist):playing::ui::text("Sin reproducción activa"));
     bars_->setEnabled(snapshot && snapshot->playback==core::Playback::Playing);
-    const bool connected=receiver_.connected() || !clients.empty(); network_->setText(connected?playing::ui::text("●  Connected"):playing::ui::text("●  Disconnected")); network_->setStyleSheet(QString("color:%1; font-size:16px;").arg(connected?"#10f080":"#91b0db"));
+    const bool connected=receiver_.connected() || !clients.empty(); network_->setText(connected?playing::ui::text("●  Connected"):playing::ui::text("●  Disconnected")); network_->setStyleSheet(QString("color:%1; font-size:14px;").arg(connected?"#10f080":"#91b0db"));
     const auto address=receiverView_?(profile_.receiver?profile_.receiver->address:QString("—")):address_->text(); const auto port=receiverView_?(profile_.receiver?profile_.receiver->port:quint16(0)):sender_.port();
     endpoint_->setText(QString("<span style='color:#91b0db'>IP</span>　%1<br><span style='color:#91b0db'>%3</span>　%2").arg(address.toHtmlEscaped()).arg(port?QString::number(port):"—").arg(playing::ui::string("Puerto")));
-    count_->setText(QString::number(clients.size())); const bool running=sender_.port()!=0 || receiver_.connected() || receiver_.connecting() || receiver_.reconnectPending() || preview_->isChecked(); running_->setText(running?playing::ui::text("●  Running"):playing::ui::text("●  Stopped")); running_->setStyleSheet(QString("color:%1; font-size:17px;").arg(running?"#10f080":"#91b0db"));
+    count_->setText(QString::number(clients.size())); const bool running=sender_.port()!=0 || receiver_.connected() || receiver_.connecting() || receiver_.reconnectPending() || preview_->isChecked(); running_->setText(running?playing::ui::text("●  Running"):playing::ui::text("●  Stopped")); running_->setStyleSheet(QString("color:%1; font-size:15px;").arg(running?"#10f080":"#91b0db"));
     const auto candidates=detector_.candidates();
-    for(auto row:providerRows_) {const auto id=row->property("providerId").toString().toStdString(); const bool active=std::find(candidates.begin(),candidates.end(),id)!=candidates.end(); row->setProperty("active",active); row->findChild<QLabel *>("indicator")->setStyleSheet(QString("font-size:26px; color:%1;").arg(active?"#11f380":"#446789")); row->style()->unpolish(row); row->style()->polish(row);}
+    for(auto row:providerRows_) {const auto id=row->property("providerId").toString().toStdString(); const bool active=std::find(candidates.begin(),candidates.end(),id)!=candidates.end(); row->setProperty("active",active); row->findChild<QLabel *>("indicator")->setStyleSheet(QString("font-size:22px; color:%1;").arg(active?"#11f380":"#446789")); row->style()->unpolish(row); row->style()->polish(row);}
     auto image=core::resolveArtwork(snapshot && snapshot->track?snapshot->track->artwork:core::Artwork{},profile_.streamerImage);
     if(image && image->kind!=core::ImageKind::LocalFile) image=profile_.streamerImage;
     if(!(image==displayedImage_)) {
         displayedImage_=image;
-        const auto load=[](const std::optional<core::ImageReference> &ref) {
+        const auto load=[box=artwork_->size()-QSize(4,4)](const std::optional<core::ImageReference> &ref) {
             if(!ref || ref->kind!=core::ImageKind::LocalFile) return QPixmap{};
             const auto path=QString::fromUtf8(ref->location); const QFileInfo info(path); if(!info.isFile() || info.size()>16*1024*1024) return QPixmap{};
             QImageReader reader(path); const auto size=reader.size(); if(!size.isValid() || size.width()>4096 || size.height()>4096) return QPixmap{};
-            reader.setScaledSize(size.scaled(128,128,Qt::KeepAspectRatio)); return QPixmap::fromImage(reader.read());
+            reader.setScaledSize(size.scaled(box,Qt::KeepAspectRatio)); return QPixmap::fromImage(reader.read());
         };
         auto pixmap=load(image); if(pixmap.isNull()) pixmap=load(profile_.streamerImage);
-        artwork_->setPixmap(pixmap.isNull()?icon("disc",82):pixmap);
+        artwork_->setPixmap(pixmap.isNull()?icon("disc",62):pixmap);
     }
 }
 void Window::fitToScreen() {fitAvailableScreen(this);}

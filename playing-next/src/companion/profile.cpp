@@ -56,12 +56,12 @@ QJsonObject sender(const SenderPreferences &s) {
     QHostAddress address; require(s.port>=1024 && address.setAddress(s.address) && address.protocol()==QAbstractSocket::IPv4Protocol && !address.isNull() && address!=QHostAddress::AnyIPv4 && address!=QHostAddress::Broadcast && !address.isMulticast() && (s.localNetwork || address.isLoopback()));
     const auto provider=s.selection?QString::fromStdString(s.selection->providerId):"auto";
     const auto history=s.selection?QString::fromUtf8(s.selection->historyPath):QString{};
-    require(provider=="auto" || provider=="virtualdj" || provider=="rekordbox" || provider=="serato");
+    require(provider=="auto" || provider=="virtualdj" || provider=="rekordbox" || provider=="serato" || provider=="traktor");
     if(s.selection) {
         require(s.selection->encoding==providers::HistoryEncoding::Automatic);
         require(s.selection->mode==providers::Mode::Automatic || s.selection->mode==providers::Mode::History);
         if(s.selection->mode==providers::Mode::Automatic) require(history.isEmpty());
-        else require(provider!="serato" && history.toUtf8().toStdString()==s.selection->historyPath && history.size()<=4096 && !history.contains(QChar::Null) && (history.isEmpty() || QFileInfo(history).isAbsolute()));
+        else require(provider!="serato" && provider!="traktor" && history.toUtf8().toStdString()==s.selection->historyPath && history.size()<=4096 && !history.contains(QChar::Null) && (history.isEmpty() || QFileInfo(history).isAbsolute()));
     }
     return {{"address",s.address},{"port",s.port},{"lan",s.localNetwork},{"provider",provider},{"mode",s.selection && s.selection->mode==providers::Mode::History?"history":"automatic"},{"history",history}};
 }

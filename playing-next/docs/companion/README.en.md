@@ -39,6 +39,12 @@ These are already enabled when opening a new Companion installation. You do not
 need to tick «Ver canción en este PC» or «Iniciar envío automáticamente» to connect.
 If multiple DJ applications are playing, select the one you want in the same window.
 
+**Traktor Pro 3.x / 4.x:** use automatic detection or select **Traktor Pro 3 / 4**. The
+overlay follows the playing deck marked **MASTER**. Broadcast and Bonjour are
+not required for Traktor. Artwork comes from its local cache; update Companion
+and the OBS plugin. Live tests: 3.5.0 and 4.4.1. Other 3.x/4.x versions
+require successful automatic structure validation.
+
 If Windows requests network permission, confirm it in Windows. Pairing stays
 open for two minutes. If it expires, press **Retry connection setup** in Companion
 and **Search again** in OBS. Closing the DJ assistant closes the pairing window;

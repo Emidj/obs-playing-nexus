@@ -1,4 +1,4 @@
-# Mapa de licencias de RC3.7
+# Mapa de licencias de 1.0.0
 
 No se ha cambiado la licencia de los archivos originales.
 

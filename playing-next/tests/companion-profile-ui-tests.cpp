@@ -116,6 +116,18 @@ void selectionPreview(const QString &db) {
     const auto saved=decodeProfile(*store.load());
     check(saved.sender.selection && saved.sender.selection->providerId=="serato","DJ selector waits for Start Sender");
     check(child<QLabel>(window,"detectorStatus")->text().contains("Ver canción"),"Serato discovery setup hint missing");
+    child<QComboBox>(window,"provider")->setCurrentIndex(6);
+    const auto traktor=decodeProfile(*store.load());
+    check(traktor.sender.selection&&traktor.sender.selection->providerId=="traktor"&&traktor.sender.selection->mode==playing::providers::Mode::Automatic&&traktor.sender.selection->historyPath.empty(),"Traktor automatic selector/profile persistence");
+    check(window.findChildren<QPushButton *>("providerRow").size()==4,"Traktor dashboard row missing");
+    const QPixmap officialTraktor(":/branding/traktor-official.png");
+    check(!officialTraktor.isNull()&&officialTraktor.size()==QSize(1024,1024),"Original Traktor icon resource missing");
+    for(auto row:window.findChildren<QPushButton *>("providerRow"))if(row->property("providerId").toString()=="traktor"){
+        const auto labels=row->findChildren<QLabel *>();
+        check(!labels.empty()&&labels.front()->pixmap().toImage()==officialTraktor.scaled(34,34,Qt::KeepAspectRatio,Qt::SmoothTransformation).toImage(),"Traktor row does not display official icon");
+    }
+    auto invalidTraktor=traktor;invalidTraktor.sender.selection->mode=playing::providers::Mode::History;
+    check(fails([&]{encodeProfile(invalidTraktor);}),"Traktor history profile accepted");
     child<QLineEdit>(window,"history")->setText(history);
     child<QComboBox>(window,"provider")->setCurrentIndex(4);
     child<QCheckBox>(window,"preview")->setChecked(true);
@@ -145,11 +157,26 @@ void gui(Profile p,const QString &db,const QString &output,const QString &image)
     const auto history=dir.filePath("history.txt"); write(history,QByteArray::fromStdString(u8"22:01 : Sonny Fodera - Mind Still (Original Mix)\r\n"));
     Window sender(djPath,db.toUtf8().toStdString()),receiver(rxPath,db.toUtf8().toStdString());
     sender.setAttribute(Qt::WA_DontShowOnScreen); receiver.setAttribute(Qt::WA_DontShowOnScreen); sender.show(); receiver.show(); QApplication::processEvents();
-    check(sender.width()<=460 && sender.height()<=780,"Dashboard still oversized");
+    check(sender.width()<=440 && sender.height()<=640,"Dashboard still oversized");
     check(sender.screen()->availableGeometry().contains(sender.frameGeometry()),"Dashboard exceeds available desktop at current DPI");
+    auto dashboard=child<QScrollArea>(sender,"dashboardScroll");
+    const auto visibleInDashboard=[dashboard](QWidget *widget){return dashboard->viewport()->rect().contains(QRect(widget->mapTo(dashboard->viewport(),QPoint()),widget->size()));};
+    check(sender.grab().save(output+".compact.png"),"Compact default dashboard screenshot");
+    auto cover=child<QLabel>(sender,"artwork");
+    check(cover->size()==QSize(88,88),"Compact cover slot changed");
+    check(cover->pixmap().width()<=cover->contentsRect().width()&&cover->pixmap().height()<=cover->contentsRect().height(),"Cover image clipped inside compact slot");
+    check(dashboard->horizontalScrollBar()->maximum()==0,"Compact dashboard needs horizontal scrolling");
+    const bool fullDefault=sender.size()==QSize(440,640);
+    if(fullDefault)check(dashboard->verticalScrollBar()->maximum()==0,"Default compact dashboard needs scrolling");
+    for(auto row:sender.findChildren<QPushButton *>("providerRow")){
+        if(!fullDefault){dashboard->ensureWidgetVisible(row);QApplication::processEvents();}
+        check(visibleInDashboard(row),"Provider row unreachable on compact dashboard");
+    }
+    auto connectButton=child<QPushButton>(sender,"pairDashboard");
+    if(!fullDefault){dashboard->ensureWidgetVisible(connectButton);QApplication::processEvents();}
+    check(visibleInDashboard(connectButton),"Connect button unreachable on compact dashboard");
     const auto normalSize=sender.size();
     sender.resize(420,420); QApplication::processEvents();
-    auto dashboard=child<QScrollArea>(sender,"dashboardScroll");
     auto configure=child<QPushButton>(sender,"configure");
     check(sender.rect().contains(QRect(configure->mapTo(&sender,QPoint()),configure->size())),"Settings button clipped on short window");
     auto pairButton=child<QPushButton>(sender,"pairDashboard");
@@ -168,6 +195,7 @@ void gui(Profile p,const QString &db,const QString &output,const QString &image)
     check(settingsScroll->viewport()->rect().contains(QRect(stopButton->mapTo(settingsScroll->viewport(),QPoint()),stopButton->size())),"Stop button unreachable in short settings");
     settingsWindow->close();
     check(child<QLabel>(sender,"network")->text().contains(playing::ui::string("●  Disconnected")),"Startup opened connection");
+    check(child<QListWidget>(sender,"devices")->count()==0&&child<QListWidget>(sender,"pairedDevices")->count()==1,"Offline saved PC appears as connected");
     check(child<QLabel>(sender,"track")->text()=="Esperando canción","Startup invented track");
     check(child<QLabel>(sender,"artwork")->pixmap().width()>0,"Profile fallback preview");
     child<QCheckBox>(receiver,"autoReconnect")->setChecked(true); check(decodeProfile(*rxStore.load()).autoReconnect,"GUI retry preference not protected/persisted");
@@ -184,23 +212,41 @@ void gui(Profile p,const QString &db,const QString &output,const QString &image)
     check(named && !newCode.isEmpty(),"Pairing dialog flow");
     const auto savedPair=decodeProfile(*djStore.load()); const auto imported=parsePairingCode(newCode);
     check(savedPair.devices.size()==2 && savedPair.devices[1].name=="SECOND-PC" && savedPair.devices[1].credential.secret==imported.device.secret,"UI created/persisted credential");
+    auto pairedDevices=child<QListWidget>(sender,"pairedDevices");
+    check(child<QListWidget>(sender,"devices")->count()==0&&pairedDevices->count()==2,"Saved PCs leaked into connected dashboard");
+    pairedDevices->setSortingEnabled(true);
+    const auto selectPaired=[pairedDevices](const QByteArray &id){
+        for(int i=0;i<pairedDevices->count();++i)if(pairedDevices->item(i)->data(Qt::UserRole).toByteArray()==id){pairedDevices->setCurrentItem(pairedDevices->item(i));return;}
+        throw std::runtime_error("Saved device id missing from settings");
+    };
+    selectPaired(imported.device.id);
     check(savedPair.sender.port==port && savedPair.sender.selection && savedPair.sender.selection->mode==playing::providers::Mode::History,"Sender preferences not persisted");
     const ReceiverSettings settings{"127.0.0.1",port,"OBS Playing Companion",pin,p.devices[0].credential};
     child<QLineEdit>(receiver,"pairingCode")->setText(pairingCode(settings)); child<QPushButton>(receiver,"connectReceiver")->click();
     check(wait([&] {return child<QLabel>(receiver,"track")->text()=="Mind Still (Original Mix)";}),"GUI native history through TLS");
     check(child<QLabel>(sender,"network")->text().contains(QString::fromUtf8(playing::ui::text("Conectado"))) && child<QLabel>(receiver,"network")->text().contains(QString::fromUtf8(playing::ui::text("Conectado"))),"GUI connection state");
+    check(child<QListWidget>(sender,"devices")->count()==1&&pairedDevices->count()==2,"Authenticated client not separated from saved PCs");
+    check(pairedDevices->currentItem()&&pairedDevices->currentItem()->data(Qt::UserRole).toByteArray()==imported.device.id,"Client refresh changed selected saved device");
     check(child<QLabel>(sender,"clientsTitle")->text()==playing::ui::string("CONNECTED CLIENTS")&&child<QLabel>(receiver,"clientsTitle")->text()=="PC DJ VINCULADO","Role-specific client heading");
     check(child<QLabel>(receiver,"linkedDj")->text().contains("Conectado")&&child<QListWidget>(receiver,"devices")->isHidden(),"Receiver falsely shows local clients");
     check(child<QListWidget>(sender,"devices")->item(0)->text().contains(QString::fromUtf8(playing::ui::text("Conectado"))) && child<QListWidget>(sender,"devices")->item(0)->text().contains("127.0.0.1"),"Actual authenticated client address");
     check(child<QLineEdit>(receiver,"pairingCode")->text().isEmpty(),"Pair code retained in edit");
     check(decodeProfile(*rxStore.load()).receiver->device.secret==p.devices[0].credential.secret,"Receiver pairing not persisted");
     receiver.close(); check(wait([&] {return child<QLabel>(sender,"network")->text().contains(playing::ui::string("●  Disconnected"));}),"Window close retained authenticated client");
+    check(child<QListWidget>(sender,"devices")->count()==0&&pairedDevices->count()==2,"Disconnected PC remains in active dashboard or lost pairing");
     check(child<QLabel>(receiver,"track")->text()=="Esperando canción","Window close retained song"); receiver.show();
     child<QPushButton>(receiver,"reconnectReceiver")->click(); check(wait([&] {return child<QLabel>(receiver,"track")->text()=="Mind Still (Original Mix)";}),"Saved pairing reconnect after window close");
+    check(child<QListWidget>(sender,"devices")->count()==1&&pairedDevices->count()==2,"Reconnect did not restore exactly one active PC");
     check(sender.grab().save(output),"Dashboard screenshot");
-    child<QListWidget>(sender,"devices")->setCurrentRow(0); child<QPushButton>(sender,"revokeDevice")->click();
-    check(wait([&] {return child<QLabel>(receiver,"track")->text()=="Esperando canción";}),"Revocation kept remote song");
+    selectPaired(p.devices[0].credential.id);
+    check(pairedDevices->currentRow()==1,"Sorted settings fixture did not differ from profile order");
+    child<QCheckBox>(sender,"preview")->setChecked(true);
+    check(pairedDevices->currentItem()&&pairedDevices->currentItem()->data(Qt::UserRole).toByteArray()==p.devices[0].credential.id,"Metadata refresh changed revocation target");
+    child<QPushButton>(sender,"revokeDevice")->click();
+    check(wait([&] {return child<QLabel>(receiver,"track")->text()=="Esperando canción"&&child<QListWidget>(sender,"devices")->count()==0;}),"Revocation kept remote song/client");
     check(decodeProfile(*djStore.load()).devices.size()==1 && decodeProfile(*djStore.load()).devices[0].name=="SECOND-PC","Revocation not persisted");
+    check(child<QListWidget>(sender,"devices")->count()==0&&pairedDevices->count()==1&&pairedDevices->item(0)->data(Qt::UserRole).toByteArray()==imported.device.id,"Revocation removed wrong saved PC or retained active client");
+    check(!pairedDevices->currentItem(),"Removed device selection moved to another revocation target");
     check(child<QPushButton>(sender,"automaticPairSender")&&child<QPushButton>(receiver,"findDj"),"Guided pairing controls missing");
     child<QCheckBox>(receiver,"autoReceive")->setChecked(true);
     const auto oldIdentity=decodeProfile(*rxStore.load()).identity.privateKey.toDer();
@@ -213,7 +259,7 @@ void gui(Profile p,const QString &db,const QString &output,const QString &image)
     child<QPushButton>(sender,"stop")->click(); check(child<QLabel>(sender,"status")->text()=="Sin conexión","Stop button");
     sender.close(); receiver.close();
     check(decodeProfile(*djStore.load()).identity.privateKey.toDer()==p.identity.privateKey.toDer(),"Identity changed after close");
-    {Window reopened(djPath,db.toUtf8().toStdString()); check(child<QListWidget>(reopened,"devices")->count()==1 && child<QListWidget>(reopened,"devices")->item(0)->text().startsWith("SECOND-PC"),"Revoked device restored"); check(child<QSpinBox>(reopened,"port")->value()==port && child<QComboBox>(reopened,"provider")->currentIndex()==4,"Sender settings restart");}
+    {Window reopened(djPath,db.toUtf8().toStdString()); check(child<QListWidget>(reopened,"devices")->count()==0&&child<QListWidget>(reopened,"pairedDevices")->count()==1&&child<QListWidget>(reopened,"pairedDevices")->item(0)->text().startsWith("SECOND-PC"),"Restart restored stale active PC or revoked pairing"); check(child<QSpinBox>(reopened,"port")->value()==port && child<QComboBox>(reopened,"provider")->currentIndex()==4,"Sender settings restart");}
 }
 }
 int main(int argc,char **argv) {playing::ui::setLanguage("es");

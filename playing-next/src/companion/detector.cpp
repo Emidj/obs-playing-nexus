@@ -3,6 +3,7 @@
 #include "playing/providers/virtualdj-live.hpp"
 #include "playing/providers/rekordbox-live.hpp"
 #include "playing/providers/serato-live.hpp"
+#include "playing/providers/traktor-live.hpp"
 #include <QThread>
 #include <QDir>
 #include <QFileInfo>
@@ -90,6 +91,7 @@ ProviderIssue Detector::issue() const {requireOwner(); return issue_;}
 bool registerNativeDetectors(ProviderRegistry &registry,const std::string &library) {
     if(!registry.descriptors().empty()) return false;
     if(rekordbox::registerProvider(registry,library)!=Registration::Registered) return false;
-    return registerVirtualDj(registry)==Registration::Registered && registerSerato(registry)==Registration::Registered;
+    return registerVirtualDj(registry)==Registration::Registered && registerSerato(registry)==Registration::Registered
+        && traktor::registerProvider(registry)==Registration::Registered;
 }
 } // namespace playing::companion

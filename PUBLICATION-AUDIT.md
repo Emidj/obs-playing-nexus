@@ -1,13 +1,9 @@
-# Publicación RC3.7 — 21 de octubre de 2026
+# Publicación oficial 1.0.0 — 22 de octubre de 2026
 
-## HECHOS
+Preparación aislada sobre RC3.7, incorporando RC3.8/RC3.9 y entrega estable. Se preservan historial, galerías, identidades, presets y licencias. Instalador oficial sin modificar: SHA256 47DF4C0A9F6D27A0FC01D99CD7B6E16B267CF9E92CFF9F722AD5ADBD85C1F48D. Fuentes de desarrollo: SHA256 6E6E4C9BDD14D9C5164BCF19008C7CC4A19D87D9AE3FA69417027268C6A031C5.
 
-Preparación aislada sobre RC3.6 conservando historial, galerías y avisos MIT/GPL/Qt. Instalador oficial sin modificar: SHA256 2939D8D03DF79CFA722893450797B15C2564BC5F2DBAEACBEA6283D3CCC83F8E. Fuentes originales: SHA256 9F340CA6269F99E7E46850A8DBB96D3DC53A18633E25457AF4BA8F6A15D50B0C.
+Informe final: 49/49 suites, 69 checks del instalador, 60 de Companion, dos suites UI/dispositivos al 150 %, lifecycle OBS portable 32.2.2 y 23 originales. Son evidencias de desarrollo, no ensayos nuevos de publicación. Instalación externa/compatibilidad OBS constan como aceptación del usuario. Traktor real probado en 3.5.0 build 270 y 4.4.1 build 22; otras versiones requieren validación de estructura.
 
-El informe de desarrollo registra pruebas locales de chat, regresión, propiedades, idiomas, paquete e instalador; no son nuevos ensayos de publicación. No se enviaron mensajes reales a Twitch. La autorización es opt-in, separada de OBS y con grant DPAPI local, excluido de la distribución. El identificador OAuth público de aplicación no es un secreto.
+Se comprueban hashes, catálogo y patrones de secretos/rutas personales. El escaneo no demuestra ausencia absoluta de secretos. Dependencias originales/licencias conservadas; fixtures Qt son claves públicas de prueba. Logo Traktor de terceros con procedencia y atribución, sin presentarlo como arte propio ni como recurso MIT/GPL. Fuentes de publicación excluyen perfiles, grants, builds y registros privados.
 
-Se verifican hashes, catálogo de idiomas y patrones de secretos/rutas personales. El escaneo no demuestra ausencia absoluta de secretos. Las fuentes incluyen archivos públicos revisados y dependencias originales sin perfiles ni builds. Los fixtures de claves Qt son públicos upstream. Los 23 diseños originales se preservan.
-
-## LÍMITES
-
-Pendientes autorización humana Twitch y prueba de chat en emisión real, matriz OBS completa, Windows limpio y dos PCs físicos. Shared Chat puede propagar mensajes a canales participantes. No se afirma resolución de portada Serato ni compilación reproducible en equipo limpio.
+Pendientes chat real Twitch, benchmark nuevo y Traktor entre dos PCs físicos. No se certifican todas las versiones/roots/hardware ni compilación reproducible limpia. El estado estable responde a la aceptación del autor con este alcance.

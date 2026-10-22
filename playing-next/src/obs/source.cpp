@@ -366,7 +366,7 @@ void update(void *data,obs_data_t *settings) noexcept {
      const auto encoding=obs_data_get_int(settings,"encoding");
      state->request.encoding=encoding==1?providers::HistoryEncoding::Ansi:encoding==2?providers::HistoryEncoding::Utf16LE:providers::HistoryEncoding::Automatic;
      if(state->request.providerId!="virtualdj"||state->request.mode==providers::Mode::Automatic)state->request.encoding=providers::HistoryEncoding::Automatic;
-     if(state->request.providerId=="network"||state->request.providerId=="serato"){state->request.mode=providers::Mode::Automatic;state->request.historyPath.clear();state->request.encoding=providers::HistoryEncoding::Automatic;}
+     if(state->request.providerId=="network"||state->request.providerId=="serato"||state->request.providerId=="traktor"){state->request.mode=providers::Mode::Automatic;state->request.historyPath.clear();state->request.encoding=providers::HistoryEncoding::Automatic;}
      state->profilePath=QString::fromUtf8(obs_data_get_string(settings,"receiver_profile"));
      state->showExisting=obs_data_get_bool(settings,"show_existing");
      state->hideAfterMs=static_cast<int>(std::clamp<long long>(obs_data_get_int(settings,"hide_seconds"),0,3600))*1000;
@@ -723,6 +723,7 @@ obs_properties_t *properties(void *data) {
     obs_properties_add_int_slider(props,"chat_delay",playing::ui::text("Espera antes del anuncio (s)"),1,30,1);
     auto provider=obs_properties_add_list(props,"provider",playing::ui::text("Programa DJ"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_STRING);
     obs_property_list_add_string(provider,"VirtualDJ","virtualdj");obs_property_list_add_string(provider,playing::ui::text("Serato DJ Pro (Automatic)"),"serato");
+    obs_property_list_add_string(provider,"Traktor Pro 3 / 4","traktor");
     if(!service.databaseLibrary.empty())obs_property_list_add_string(provider,"rekordbox","rekordbox");
     obs_property_list_add_string(provider,playing::ui::text("Companion — PC DJ"),"network");
     auto mode=obs_properties_add_list(props,"mode",playing::ui::text("Lectura"),OBS_COMBO_TYPE_LIST,OBS_COMBO_FORMAT_INT);

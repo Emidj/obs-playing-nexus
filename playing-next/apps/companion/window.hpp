@@ -47,7 +47,7 @@ private:
     bool startupPending_=true;
     bool receiverView_=false;
     QLabel *clientsTitle_=nullptr,*linkedDj_=nullptr;
-    QListWidget *devices_=nullptr;
+    QListWidget *devices_=nullptr,*pairedDevices_=nullptr;
     QLabel *artist_=nullptr,*artwork_=nullptr,*network_=nullptr,*endpoint_=nullptr,*count_=nullptr,*running_=nullptr;
     QWidget *bars_=nullptr;
     std::vector<QPushButton *> providerRows_;

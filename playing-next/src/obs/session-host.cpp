@@ -4,6 +4,7 @@
 #include "playing/providers/virtualdj-live.hpp"
 #include "playing/providers/serato-live.hpp"
 #include "playing/providers/rekordbox-live.hpp"
+#include "playing/providers/traktor-live.hpp"
 #include <QGuiApplication>
 #include <QFileInfo>
 #include <QThread>
@@ -69,6 +70,7 @@ SessionHost::SessionHost(const std::string &trustedDatabaseLibrary,QString asset
     connect(&animation_, &QTimer::timeout, this, [this] { publishScheduled(true); });
     providers::registerVirtualDj(registry_);
     providers::registerSerato(registry_);
+    providers::traktor::registerProvider(registry_);
     if (!trustedDatabaseLibrary.empty()) {
         const QFileInfo file(QString::fromUtf8(trustedDatabaseLibrary.c_str()));
         if (!file.isAbsolute() || !file.isFile()) throw std::invalid_argument("Require trusted absolute DB library");

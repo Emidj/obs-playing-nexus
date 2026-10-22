@@ -7,8 +7,12 @@ namespace playing::providers::virtualdj {
 enum class ProcessIssue { None, Missing, Multiple, Access, Version, Architecture, Read };
 class ProcessMemory : public Memory {
 public:
+    struct Region { std::uint64_t address=0,bytes=0;bool privateWritable=false; };
     virtual bool alive() const noexcept = 0;
     virtual std::wstring imagePath() const = 0;
+    // Optional bounded address-space query for read-only discovery. Existing
+    // fixed-layout readers and fixtures do not need to implement this method.
+    virtual std::optional<Region> query(std::uint64_t) { return {}; }
 };
 struct Connection {
     ProcessIssue issue = ProcessIssue::Missing;

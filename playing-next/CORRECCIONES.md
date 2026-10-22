@@ -310,3 +310,16 @@ aceptación del usuario. Companion continúa por usuario; no se eleva por defect
 ## RC3.7 — anuncios opcionales en el chat de Twitch
 
 Casilla desactivada por defecto, mensaje con {artist}/{title}, espera configurable de 1–30 s (3 s inicial), autorización de chat independiente mediante el navegador y credenciales DPAPI. Envío centralizado solo con una canción real mientras OBS transmite a la cuenta Twitch autorizada. Deduplicación entre fuentes, mínimo 10 s entre intentos, cancelación al desactivar/parar y sin repetición automática de un POST no confirmado. Companion no requiere configuración de chat. UI y autorización en cinco idiomas; validación local documentada en outputs/OBS-Playing-NEXUS-RC3.7.md. La autorización de usuario y el ensayo contra Twitch real quedan pendientes.
+
+## 1.0.0 estable — 22 de octubre de 2026
+
+El usuario cierra la versión estable sobre RC3.9 e incluye un Companion más
+compacto. Se mantienen las identidades de fuente/instalación y perfiles para
+preservar escenas, dispositivos y presets. Versiones RC anteriores conservadas.
+Instalación en otro PC y compatibilidad OBS aceptadas como completadas por el
+usuario. No se afirma un benchmark nuevo, anuncios reales a Twitch ni una nueva
+prueba física Traktor entre dos PCs: quedan como seguimiento posterior.
+
+El panel de clientes del Companion muestra conexiones actuales; los PCs guardados
+se administran aparte en configuración. Desconectar retira el equipo del panel,
+sin borrar su vinculación ni confundir la selección de revocación al refrescar.

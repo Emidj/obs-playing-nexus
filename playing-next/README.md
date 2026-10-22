@@ -1,8 +1,29 @@
-## RC3.2 — Companion compacto y avisos Serato
+# OBS Playing NEXUS 1.0.0
 
-Ventana inicial de 460 × 780 píxeles lógicos, adaptación a pantalla/escalado, contenido desplazable y acceso permanente a Configuración. Los diálogos se limitan al área útil. Seleccionar programa DJ aplica y guarda el cambio inmediatamente. Se añaden avisos de preparación de Serato y errores Bonjour; guía bilingüe y captura actualizadas. El binario del plugin OBS es idéntico al de RC3.1.
+Versión estable Windows x64 / OBS Studio 32.x, cerrada por petición del usuario
+el 22 de octubre de 2026. Instalador único para el plugin y Companion, que se
+utiliza únicamente en el PC DJ. Incluye Traktor Pro 3/4, VirtualDJ, rekordbox y
+Serato, portadas, estilos, personalización y anuncios opcionales de Twitch.
+El Companion usa una ventana compacta adaptable al área de pantalla disponible.
 
-Las pruebas de desarrollo de esta versión cubren UI/perfil/preview (93 checks a 100 % y 200 %; diseño compacto previo a 150 % con 87 checks), ejecutable real (56 checks) y paquete con dependencias locales (60 checks). No equivalen a certificación de la conexión real con todas las aplicaciones DJ o de portadas entre dos PCs físicos.
+Instalador: `OBS-Playing-NEXUS-Setup-1.0.0.exe`.
+Fuentes y avisos: `OBS-Playing-NEXUS-1.0.0-Sources.zip`, entregados aparte.
+[Notas de versión y alcance de validación](RELEASE-1.0.0.md).
+Las secciones siguientes conservan el historial de desarrollo.
+
+## RC3.9 — Traktor Pro 3.x y 4.x
+
+Un mismo selector Traktor Pro 3 / 4 detecta ambas familias. Layouts separados
+con RTTI validada, deck MASTER y portada de su caché nativa. Pruebas reales:
+3.5.0 build 270 y 4.4.1 build 22; no equivalen a probar cada versión 3.x/4.x.
+Contrato y límites: [TRAKTOR.md](TRAKTOR.md).
+
+## RC3.8 — Traktor Pro 4.x
+
+Nuevo lector nativo en OBS y Companion: título, artista, deck MASTER y portada
+desde la caché de Traktor. Detección de la rama 4.x y validación dinámica de RTTI.
+Prueba real en 4.4.1 build 22; otros 4.x habilitados, sin matriz de instalaciones.
+Contrato, configuración y límites: [TRAKTOR.md](TRAKTOR.md).
 
 ## RC3.1 — portadas entre dos PCs y guía ilustrada
 

@@ -12,4 +12,5 @@ Microsoft runtime DLLs remain unmodified proprietary redistributables from
 VC/Redist/MSVC/14.44.35112/x64/Microsoft.VC143.CRT; UCRT is supplied by Windows.
 https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution
 Do not redistribute a user's profile.pcs: DPAPI binds it to that Windows user.
-This test package is not a final installer or certification on a second PC.
+These sources accompany OBS Playing NEXUS 1.0.0. The shipping installer is
+provided separately; see docs/RELEASE-1.0.0.md for validation scope.

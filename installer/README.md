@@ -1,4 +1,4 @@
-# Instalador OBS Playing NEXUS RC3.7
+# Instalador OBS Playing NEXUS 1.0.0
 
 Un EXE con opciones Plugin OBS / Companion. Recursos runtime embebidos, fuentes separadas.
 Incluye la guía ilustrada offline en `docs/companion/README.html` del Companion y

@@ -31,6 +31,8 @@ foreach($name in @('msvcp140.dll','msvcp140_1.dll','msvcp140_2.dll','vcruntime14
 @('[Paths]','Prefix=.','Plugins=plugins') | Set-Content -LiteralPath (Join-Path $package 'qt.conf') -Encoding ascii
 @('@echo off','start "" "%~dp0obs-playing-companion.exe" --profile-dir "%~dp0perfil-PC-DJ"') | Set-Content -LiteralPath (Join-Path $package 'Abrir Companion PC DJ.cmd') -Encoding ascii
 Copy-Payload (Join-Path $PSScriptRoot 'GUIA-DOS-PCS.txt') 'GUIA-DOS-PCS.txt'
+Copy-Payload (Join-Path $workspace 'playing-next/TRAKTOR.md') 'docs/TRAKTOR.md'
+Copy-Payload (Join-Path $workspace 'playing-next/RELEASE-1.0.0.md') 'docs/RELEASE-1.0.0.md'
 foreach($name in @('README.md','README.html','README.en.md','README.en.html')){Copy-Payload (Join-Path $workspace "playing-next/docs/companion/$name") "docs/companion/$name"}
 foreach($image in (Get-ChildItem (Join-Path $workspace 'playing-next/docs/companion/imagenes') -File)){Copy-Payload $image.FullName ('docs/companion/imagenes/'+$image.Name)}
 Copy-Payload (Join-Path $workspace 'THIRD-PARTY-NOTICES.txt') 'THIRD-PARTY-NOTICES.txt'
@@ -69,7 +71,8 @@ Microsoft runtime DLLs remain unmodified proprietary redistributables from
 VC/Redist/MSVC/14.44.35112/x64/Microsoft.VC143.CRT; UCRT is supplied by Windows.
 https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution
 Do not redistribute a user's profile.pcs: DPAPI binds it to that Windows user.
-This test package is not a final installer or certification on a second PC.
+These sources accompany OBS Playing NEXUS 1.0.0. The shipping installer is
+provided separately; see docs/RELEASE-1.0.0.md for validation scope.
 '@ | Set-Content -LiteralPath (Join-Path $package 'source/REBUILD.txt') -Encoding utf8
 $manifest=Get-ChildItem -LiteralPath $package -File -Recurse | ForEach-Object {[pscustomobject]@{Path=$_.FullName.Substring($package.Length+1).Replace('\','/');Bytes=$_.Length;SHA256=(Get-FileHash -LiteralPath $_.FullName).Hash}}
 $manifest | Sort-Object Path | Export-Csv -LiteralPath (Join-Path $package 'SHA256SUMS.csv') -NoTypeInformation -Encoding utf8
