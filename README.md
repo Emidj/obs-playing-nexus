@@ -20,9 +20,9 @@ Traktor MASTER representa el maestro de tempo, no una medición del audio audibl
 
 *Promotional illustration of a now-playing overlay in OBS.*
 
-<img src="docs/images/companion-demo.png" alt="OBS Playing Companion with demonstration track and local connection" width="440">
+<img src="docs/images/companion-demo.png" alt="OBS Playing Companion 1.0.0 compact interface" width="440">
 
-*Companion screenshot with demonstration data and a local loopback connection.*
+*Actual Companion 1.0.0 compact interface, idle and disconnected.*
 
 ## Instalación
 
