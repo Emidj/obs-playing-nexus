@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(OBSPlayingNextCore VERSION 1.0.0 LANGUAGES CXX)
+project(OBSPlayingNextCore VERSION 1.0.1 LANGUAGES CXX)
 
 if(WIN32 AND NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
   message(FATAL_ERROR "OBS Playing Next supports Windows x64 only.")
@@ -655,4 +655,16 @@ if(PLAYING_BUILD_OBS_PROBE)
   if(MSVC)
     target_compile_options(playing-core-probe PRIVATE /W4 /WX /utf-8)
   endif()
+endif()
+
+# Public read-only metadata bridge; independent of diagnostic source hooks.
+if(BUILD_TESTING AND TARGET obs-playing-next)
+  add_executable(playing-now-playing-publisher-tests tests/now-playing-publisher-tests.cpp)
+  target_link_libraries(playing-now-playing-publisher-tests PRIVATE Playing::Core OBS::libobs)
+  target_compile_features(playing-now-playing-publisher-tests PRIVATE cxx_std_17)
+  if(MSVC)
+    target_compile_options(playing-now-playing-publisher-tests PRIVATE /W4 /WX /utf-8)
+  endif()
+  add_test(NAME playing-now-playing-public-snapshot COMMAND playing-now-playing-publisher-tests)
+  set_tests_properties(playing-now-playing-public-snapshot PROPERTIES TIMEOUT 30)
 endif()

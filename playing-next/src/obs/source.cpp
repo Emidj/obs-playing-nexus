@@ -1,6 +1,7 @@
 #include "playing/ui/i18n.hpp"
 // SPDX-License-Identifier: MIT
 #include <obs-module.h>
+#include "nexus-now-playing-publisher.hpp"
 #include "playing/visual/vertical-pro-geometry.hpp"
 #include "preset-manager.hpp"
 #include <QMessageBox>
@@ -389,7 +390,7 @@ void update(void *data,obs_data_t *settings) noexcept {
     command(state);
 }
 void *create(obs_data_t *settings,obs_source_t *obsSource) noexcept {
-    try {auto source=std::make_unique<Source>();source->source=obsSource;update(source.get(),settings);return source.release();}
+    try {auto source=std::make_unique<Source>();source->source=obsSource;update(source.get(),settings);nexus_now_playing::attach<Source>(obsSource,source.get());return source.release();}
     catch(...) {blog(LOG_ERROR,"[playing-next] Source creation failed");return nullptr;}
 }
 void destroy(void *data) noexcept {

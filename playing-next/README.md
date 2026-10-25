@@ -1,3 +1,9 @@
+# OBS Playing NEXUS 1.0.1
+
+25 de octubre de 2026. Actualización del plugin con consulta pública para OBS News Ticker NEXUS.
+Instalador único, con el Companion estable 1.0.0 sin cambios. Identidades, escenas y ajustes conservados.
+[Notas 1.0.1](RELEASE-1.0.1.md).
+
 # OBS Playing NEXUS 1.0.0
 
 Versión estable Windows x64 / OBS Studio 32.x, cerrada por petición del usuario
@@ -10,6 +16,13 @@ Instalador: `OBS-Playing-NEXUS-Setup-1.0.0.exe`.
 Fuentes y avisos: `OBS-Playing-NEXUS-1.0.0-Sources.zip`, entregados aparte.
 [Notas de versión y alcance de validación](RELEASE-1.0.0.md).
 Las secciones siguientes conservan el historial de desarrollo.
+
+## Integración News Ticker — desarrollo, 25 de octubre de 2026
+
+La fuente nativa publica ahora una consulta de solo lectura para OBS News Ticker
+NEXUS. El contrato y la prueba están en [NOW-PLAYING-BRIDGE.md](NOW-PLAYING-BRIDGE.md).
+Se incorpora a las compilaciones de desarrollo; el nuevo instalador 1.0.1 incluye esta actualización; el OBS habitual no se modifica automáticamente. No cambia Core, providers,
+Companion ni los presets existentes; tampoco usa exports de diagnóstico.
 
 ## RC3.9 — Traktor Pro 3.x y 4.x
 
