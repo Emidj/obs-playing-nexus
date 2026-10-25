@@ -12,6 +12,12 @@ Includes 23 original designs. Compatibility depends on the version and state of 
 - The installer includes Playing and Companion only. News Ticker is distributed separately.
 - Existing identities, scenes, profiles, presets and all 23 original designs are preserved.
 
+## Updated 1.0.1 installer — hidden Playing support
+
+Playing now keeps DJ detection active while its source is hidden when an updated News Ticker requests track data. The read demand expires after three seconds without renewal. Visibility and Twitch chat announcements keep their independent behavior. Both Playing and News Ticker must be updated; the ticker is distributed separately.
+
+This is a plugin payload change inside the installer, not just an installer interface change. The version remains 1.0.1. Earlier validation results describe their original builds; publication verifies the corrected artifact hashes and source delta and does not claim a new live-stream test.
+
 ## Preview
 
 ![OBS Playing NEXUS promotional preview](docs/images/obs-playing-nexus-preview.png)
@@ -24,7 +30,7 @@ Includes 23 original designs. Compatibility depends on the version and state of 
 
 ## Installation
 
-Download the [official 1.0.0 installer](https://github.com/Emidj/obs-playing-nexus/releases/tag/v1.0.1). Close OBS and Companion before updating. Choose the OBS plugin on the streaming PC and Companion on the DJ PC. Installation into Program Files may request administrator permission. Update both components to 1.0.0 for artwork transfer between PCs.
+Download the [official 1.0.1 installer](https://github.com/Emidj/obs-playing-nexus/releases/tag/v1.0.1). Close OBS and Companion before updating. Choose the OBS plugin on the streaming PC and Companion on the DJ PC. Installation into Program Files may request administrator permission. Update both components to 1.0.0 for artwork transfer between PCs.
 
 Read the [English illustrated guide](playing-next/docs/companion/README.en.md) or the [Spanish guide](playing-next/docs/companion/README.md). The installer includes uninstallation and preserves backups of replaced versions.
 
@@ -34,7 +40,7 @@ The installer is unsigned. Compare its SHA256 with the release manifest.
 
 See [REBUILD.txt](REBUILD.txt), [technical documentation](playing-next/README.md) and [publication audit](PUBLICATION-AUDIT.md). Building requires Windows x64, Visual Studio 2022 C++, CMake 3.28 or later and compatible Qt/OBS SDKs. Existing recipes contain paths from the original development environment; a clean Windows build has not been verified.
 
-The corresponding 1.0.0 sources include the shared engine in `shared/`, Qt sources, recipes, patches and SBOM. Original Qt archives are distributed in the complete Sources ZIP alongside the installer; they must remain in the release even though they are excluded from Git history.
+The corresponding 1.0.1 sources include the shared engine in `shared/`, Qt sources, recipes, patches and SBOM. Original Qt archives are distributed in the complete Sources ZIP alongside the installer; they must remain in the release even though they are excluded from Git history.
 
 ## Licenses
 

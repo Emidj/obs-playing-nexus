@@ -1,4 +1,4 @@
-> Release status: the production bridge described below is included in official 1.0.1. Earlier development notes below describe the pre-release state; 1.0.0 remains unchanged. See RELEASE-1.0.1.md.
+> Current release: hidden-source read demand is included in the updated official 1.0.1 installer. Earlier notes below describe historical checkpoints.
 
 # Now Playing pÃºblico para OBS News Ticker NEXUS
 
@@ -56,3 +56,7 @@ Paquete de actualización independiente en outputs/OBS-Playing-NEXUS-News-Ticker
 No modifica el instalador estable 1.0.0 ni instala automáticamente en OBS habitual.
 En News Ticker elegir el modo OBS Playing automático y mantener una sola fuente
 Playing activa. Varias fuentes requieren resolver la selección en News Ticker.
+
+## Ocultar Playing sin interrumpir News Ticker
+
+La fuente publica el procedimiento opcional nexus_now_playing_demand_v1. El ticker renueva una demanda de lectura con caducidad de tres segundos. La detección permanece activa con Playing oculto; el estado de visibilidad de OBS y los anuncios de chat conservan su comportamiento independiente. Al cesar las lecturas, la demanda caduca automáticamente. Requiere actualizar tanto Playing como Ticker.

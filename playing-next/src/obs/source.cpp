@@ -80,6 +80,8 @@ struct State {
     visual::TrackLayout textLayout;
     std::string error;
     bool active=false,closed=false;
+    bool tickerDemand=false;
+    std::chrono::steady_clock::time_point tickerDeadline{};
     bool retainAppearance=false;
     QByteArray configurationKey;
     core::TrackState demo;
@@ -278,9 +280,9 @@ void command(const std::shared_ptr<State> &state) noexcept {
     if(!QMetaObject::invokeMethod(service.dispatcher,[state] {
         if(service.closing.load()) return;
         try {
-            providers::Request request;QString profilePath;bool active=false,closed=false,showExisting=true;int hideAfterMs=0;std::uint64_t revision=0;core::TrackState demo;
+            providers::Request request;QString profilePath;bool active=false,closed=false,showExisting=true,tickerDemand=false;int hideAfterMs=0;std::uint64_t revision=0;core::TrackState demo;
             visual::TrackLayout textLayout;bool chatEnabled=false;QString chatFormat;int chatDelayMs=3000;
-            {std::lock_guard<std::mutex> lock(state->mutex);request=state->request;profilePath=state->profilePath;active=state->active;closed=state->closed;revision=state->revision;showExisting=state->showExisting;hideAfterMs=state->hideAfterMs;textLayout=state->textLayout;demo=state->demo;chatEnabled=state->chatEnabled;chatFormat=state->chatFormat;chatDelayMs=state->chatDelayMs;}
+            {std::lock_guard<std::mutex> lock(state->mutex);request=state->request;profilePath=state->profilePath;active=state->active;tickerDemand=state->tickerDemand;closed=state->closed;revision=state->revision;showExisting=state->showExisting;hideAfterMs=state->hideAfterMs;textLayout=state->textLayout;demo=state->demo;chatEnabled=state->chatEnabled;chatFormat=state->chatFormat;chatDelayMs=state->chatDelayMs;}
             if(!closed&&state->id&&state->applied==revision)return;
             if(!state->chatId){state->chatId=++service.chatSequence;
                 state->consumer->trackChanged=[weak=std::weak_ptr<State>(state)](core::SnapshotPtr snapshot){if(auto current=weak.lock();current&&service.chat&&!service.closing)service.chat->observe(current->chatId,std::move(snapshot));};}
@@ -299,7 +301,7 @@ void command(const std::shared_ptr<State> &state) noexcept {
                 if(!state->id) {state->id=request.providerId=="demo-preview"?service.host->attachDemo(demo,textLayout,state->consumer):service.host->attach(request,textLayout,state->consumer,showExisting,hideAfterMs);state->attached=request;}
                 else service.host->configure(state->id,textLayout,showExisting,hideAfterMs);
                 if(request.providerId=="demo-preview")service.host->demoTrack(state->id,demo);
-                service.host->active(state->id,active);
+                service.host->active(state->id,active||tickerDemand);
                 state->applied=revision;
                 bool getProfile=false;QString channel;std::uint64_t profileGeneration=0;{std::lock_guard<std::mutex> lock(state->mutex);if(active&&textLayout.artworkEnabled&&textLayout.profileFallback&&state->automaticProfileEnabled&&!state->profileRequested&&!textLayout.streamerProfile){state->profileRequested=true;profileGeneration=++state->profileGeneration;channel=state->twitchChannel;state->profileStatus=playing::ui::string("Consultando imagen de Twitch…");getProfile=true;}}
                 if(getProfile){
@@ -389,8 +391,28 @@ void update(void *data,obs_data_t *settings) noexcept {
     // Revision gates rendering until the GUI applies this immutable settings copy.
     command(state);
 }
+// Read demand is independent of OBS visibility and never enables chat.
+void expireTickerDemand(std::weak_ptr<State> weak) {
+    const auto state=weak.lock();if(!state||service.closing)return;
+    bool expired=false;
+    {std::lock_guard<std::mutex> lock(state->mutex);
+     if(state->closed||!state->tickerDemand)return;
+     if(std::chrono::steady_clock::now()>=state->tickerDeadline){state->tickerDemand=false;++state->revision;expired=true;}}
+    if(expired)command(state);
+    else QTimer::singleShot(1000,service.dispatcher,[weak]{expireTickerDemand(weak);});
+}
+void tickerDemand(void *opaque,calldata_t *) noexcept {
+    try {
+        auto state=static_cast<Source*>(opaque)->state;bool start=false;
+        {std::lock_guard<std::mutex> lock(state->mutex);if(state->closed)return;
+         state->tickerDeadline=std::chrono::steady_clock::now()+std::chrono::seconds(3);
+         if(!state->tickerDemand){state->tickerDemand=true;++state->revision;start=true;}}
+        if(start){command(state);std::lock_guard<std::mutex> dispatch(service.dispatchMutex);
+            if(service.dispatcher&&!service.closing)QMetaObject::invokeMethod(service.dispatcher,[weak=std::weak_ptr<State>(state)]{expireTickerDemand(weak);},Qt::QueuedConnection);}
+    }catch(...){blog(LOG_WARNING,"[playing-next] Ticker demand could not be acquired");}
+}
 void *create(obs_data_t *settings,obs_source_t *obsSource) noexcept {
-    try {auto source=std::make_unique<Source>();source->source=obsSource;update(source.get(),settings);nexus_now_playing::attach<Source>(obsSource,source.get());return source.release();}
+    try {auto source=std::make_unique<Source>();source->source=obsSource;update(source.get(),settings);nexus_now_playing::attach<Source>(obsSource,source.get());proc_handler_add(obs_source_get_proc_handler(obsSource),"void nexus_now_playing_demand_v1()",tickerDemand,source.get());return source.release();}
     catch(...) {blog(LOG_ERROR,"[playing-next] Source creation failed");return nullptr;}
 }
 void destroy(void *data) noexcept {
@@ -401,7 +423,7 @@ void destroy(void *data) noexcept {
 void activity(void *data,bool value) noexcept {
     auto state=static_cast<Source *>(data)->state;
     {std::lock_guard<std::mutex> lock(state->mutex);state->active=value;++state->revision;}
-    if(!value) state->consumer->publication.publish({});
+    {std::lock_guard<std::mutex> lock(state->mutex);if(!value&&!state->tickerDemand)state->consumer->publication.publish({});}
     command(state);
 }
 void activate(void *data) {activity(data,true);}void deactivate(void *data) {activity(data,false);}
