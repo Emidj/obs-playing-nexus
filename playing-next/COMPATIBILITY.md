@@ -1,3 +1,23 @@
+# Instalador adaptativo 1.1.0 — 28 de octubre de 2026
+
+La 1.1.0 admite las ramas OBS 31.x, 32.x y 33.x Windows x64. Detecta la versión y
+elige estructura legacy (31/32), ProgramData moderno (33 normal) o plugins local
+(33 portable). Ver [1.1.0](RELEASE-1.1.0.md). Las notas siguientes conservan el
+estudio previo; la restricción a OBS 32 del instalador 1.0.1 es histórica.
+
+La DLL 1.1.0 se compila con Qt 6.6.3 y selecciona el backend TLS apropiado.
+OBS 31.0.0: carga de DLL/imports y TLS Qt 6.6 verificados; ejecución completa
+de OBS pendiente por un bloqueo de arranque previo a los plugins en este equipo.
+OBS 31.1.2, 32.2.2 y 33.0.0: instalación, detección automática, dibujo y cierre
+verificados en copias portables aisladas. No certifica todos los builds de cada rama.
+
+# Estudio adicional OBS 31 / 33 — 28 de octubre de 2026
+
+[Ajustes y pruebas en OBS 31.1.2 y 33.0.0](OBS-31-33-STUDY.md).
+Carga/panel y un ensayo de dibujo/TLS loopback verificados en esas versiones.
+No equivale a certificar todas las ramas 31.x/33.x. El instalador oficial 1.0.1
+mantiene por ahora su validación de OBS 32.x. La matriz siguiente es histórica.
+
 # Compatibilidad OBS — alcance de fase 25
 
 El lector Traktor Pro 3.x/4.x es posterior a esta matriz histórica. Su alcance y

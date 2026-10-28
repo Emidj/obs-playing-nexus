@@ -1,5 +1,15 @@
 # Dependencias del Companion opt-in
 
+## Distribución 1.1.0: backend Schannel para OBS 31.0
+
+El plugin se compila contra Qt 6.6.3. Se distribuyen backends Schannel de Qt
+6.6.3 y 6.8.3, seleccionados según el Qt del OBS de destino. No se sustituyen
+las bibliotecas Qt del anfitrión. Qt conserva su licencia LGPL-3.0 y avisos.
+El paquete de fuentes incluye qtbase 6.6.3 y la receta obs-deps 2024-09-12,
+además de los fuentes 6.8.3 del Companion. Las URL y SHA256 constan en qt66/verified.json.
+Fuente: https://download.qt.io/archive/qt/6.6/6.6.3/submodules/qtbase-everywhere-src-6.6.3.zip
+Receta: https://github.com/obsproject/obs-deps/tree/2024-09-12
+
 Fase10-D usa el backend Qt Schannel 6.8.3 del mismo SDK auditado, dentro de
 playing-qt-plugins/tls junto al módulo de desarrollo. Su SHA256 se comprueba
 antes de añadir ese directorio propio a las rutas Qt. Las pruebas no sustituyen

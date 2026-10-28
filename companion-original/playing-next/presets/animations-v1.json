@@ -1,0 +1,14 @@
+{"format":"obs-playing.animations","version":1,"profiles":[
+ {"setting":0,"name":"Movimiento del preset","layers":[]},
+ {"setting":1,"name":"Flotar suavemente","layers":[
+  {"target":"title","duration":4000,"loop":"pingpong","keys":[{"at":0,"ease":"cosine"},{"at":1,"x":6}]},
+  {"target":"artist","duration":5000,"loop":"pingpong","keys":[{"at":0,"ease":"cosine"},{"at":1,"x":-4}]},
+  {"target":"artwork","duration":6000,"loop":"pingpong","keys":[{"at":0,"ease":"cosine"},{"at":1,"scale":1.04}]}
+ ]},
+ {"setting":2,"name":"Respirar suavemente","layers":[
+  {"target":"label","duration":4500,"loop":"pingpong","keys":[{"at":0,"ease":"cosine"},{"at":1,"opacity":0.85}]},
+  {"target":"title","duration":5000,"loop":"pingpong","keys":[{"at":0,"ease":"cosine"},{"at":1,"opacity":0.9}]},
+  {"target":"artist","duration":5500,"loop":"pingpong","keys":[{"at":0,"ease":"cosine"},{"at":1,"opacity":0.8}]},
+  {"target":"artwork","duration":6000,"loop":"pingpong","keys":[{"at":0,"ease":"cosine"},{"at":1,"opacity":0.85,"angle":3}]}
+ ]}
+]}

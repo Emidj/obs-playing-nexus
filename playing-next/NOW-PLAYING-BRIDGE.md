@@ -1,5 +1,3 @@
-> Current release: hidden-source read demand is included in the updated official 1.0.1 installer. Earlier notes below describe historical checkpoints.
-
 # Now Playing pÃºblico para OBS News Ticker NEXUS
 
 IncorporaciÃ³n de desarrollo: 2026-10-25. No publicada en el instalador estable.

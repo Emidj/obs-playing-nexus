@@ -1,0 +1,12 @@
+[
+  {
+    "file": "qtbase-everywhere-src-6.6.3.zip",
+    "url": "https://download.qt.io/archive/qt/6.6/6.6.3/submodules/qtbase-everywhere-src-6.6.3.zip",
+    "sha256": "12509f448a16d0a47cec20af6051323860b84e52f639b3bee6405e28c4e5180a"
+  },
+  {
+    "file": "obs-deps-2024-09-12.zip",
+    "url": "https://codeload.github.com/obsproject/obs-deps/zip/refs/tags/2024-09-12",
+    "sha256": "770af6775d7f167ed521928eb6db8241858849ded5930079792ce9d24dda4cca"
+  }
+]

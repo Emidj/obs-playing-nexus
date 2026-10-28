@@ -33,7 +33,7 @@ local function read()
     local text=ffi.string(buffer,size)
     local result={}
     for key,value in text:gmatch('"([%w]+)":([%d]+)') do result[key]=tonumber(value) end
-    result.title=text:match('"title":"(.-)"');result.hash=text:match('"captureHash":"(.-)"');result.timer=text:match('"timer":true')~=nil
+    result.title=text:match('"title":"(.-)"');result.hash=text:match('"captureHash":"(.-)"');result.timer=text:match('"timer":true')~=nil;result.playing=text:match('"playing":true')~=nil
     return result
 end
 local function pulse()
@@ -71,8 +71,8 @@ local function pulse()
         original=native.obs_get_output_source(0);native.obs_set_output_source(0,sceneSource);stage=1
     else
         local s=read()
-        if stage==1 and s.frames==2 then
-            check(s.sessions==1 and s.consumers==2,'Shared DJ session');check(s.title=='Jóga 🎵','Unicode track');check(s.renders==2,'Shared CPU cache')
+        if stage==1 and s.frames==2 and s.title=='Jóga 🎵' then
+            check(s.sessions==1 and s.consumers==2,'Shared DJ session');check(s.title=='Jóga 🎵','Unicode track: '..tostring(s.title));check(s.renders==2,'Shared CPU cache')
             probe.playing_source_test_capture(first);stage=2
         elseif stage==2 and s.captures==1 then
             check(s.capturePixels>0,'Real video_render drew no pixels');check(s.uploads==2,'GPU uploads');lastHash=s.hash;uploads=s.uploads
@@ -95,7 +95,7 @@ local function pulse()
         elseif stage==8 and ticks-waitTick>=3 then
             check(s.refreshes==refreshes and s.uploads==0,'Idle refresh/GPU cache remained')
             native.obs_sceneitem_set_visible(item1,true);stage=9
-        elseif stage==9 and s.frames==1 then
+        elseif stage==9 and s.frames==1 and s.title=='Changed song' then
             check(s.title=='Changed song','Reactivation lost track');native.obs_source_update(first,settings);waitTick=ticks;stage=10
         elseif stage==10 and s.frames==1 and ticks-waitTick>=3 then
             check(s.title=='Changed song','Same settings left publication blank')
@@ -150,10 +150,10 @@ local function pulse()
         elseif stage==15 and s.title=='Remote next' then probe.playing_source_test_capture(sceneSource);stage=16
         elseif stage==16 and s.captures==10 then
             check(s.hash~=lastHash,'TLS track change not drawn');probe.playing_source_test_remote_publish(2);stage=17
-        elseif stage==17 and s.frames==0 then
+        elseif stage==17 and not s.playing then
             check(s.sessions==1 and s.remoteClients==1,'Pause disconnected session');probe.playing_source_test_remote_publish(3);stage=18
         elseif stage==18 and s.title=='Remote resumed' then probe.playing_source_test_remote_publish(4);stage=19
-        elseif stage==19 and s.frames==0 and s.remoteClients==0 then
+        elseif stage==19 and not s.playing and s.remoteClients==0 then
             check(not s.timer,'Revoked remote is polling');native.obs_sceneitem_remove(item1);item1=nil;native.obs_sceneitem_remove(item2);item2=nil
             native.obs_source_release(first);first=nil;native.obs_source_release(second);second=nil
             native.obs_data_release(settings);settings=nil;stage=20

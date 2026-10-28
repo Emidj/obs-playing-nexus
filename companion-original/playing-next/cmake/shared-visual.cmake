@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: MIT
+# Original external implementation remains GPL-2.0-or-later.
+set(PLAYING_SHARED_ROOT "" CACHE PATH "Audited OBS Twitch Overlays source root")
+set(playing_visual_lock "${CMAKE_CURRENT_LIST_DIR}/../tests/visual-audit/sources.lock.json")
+if(NOT IS_DIRECTORY "${PLAYING_SHARED_ROOT}")
+  message(FATAL_ERROR "Provide the real shared source root")
+endif()
+file(READ "${playing_visual_lock}" lock)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${playing_visual_lock}")
+string(JSON count LENGTH "${lock}")
+math(EXPR last "${count}-1")
+foreach(index RANGE 0 ${last})
+  string(JSON path GET "${lock}" ${index} path)
+  string(JSON expected GET "${lock}" ${index} sha256)
+  file(SHA256 "${PLAYING_SHARED_ROOT}/${path}" actual)
+  set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${PLAYING_SHARED_ROOT}/${path}")
+  string(TOUPPER "${actual}" actual)
+  if(NOT actual STREQUAL expected)
+    message(FATAL_ERROR "Audited source changed: ${path}; re-audit before updating lock")
+  endif()
+endforeach()
+find_package(Qt6 6.8 REQUIRED COMPONENTS Gui)
+add_library(playing-shared-visual STATIC
+  "${PLAYING_SHARED_ROOT}/src/visual/text-layout.cpp"
+  "${PLAYING_SHARED_ROOT}/src/visual/visual-engine.cpp"
+  "${PLAYING_SHARED_ROOT}/src/visual/asset-manager.cpp")
+target_include_directories(playing-shared-visual PUBLIC "${PLAYING_SHARED_ROOT}/src")
+target_compile_features(playing-shared-visual PUBLIC cxx_std_17)
+target_compile_options(playing-shared-visual PRIVATE /W4 /WX /utf-8)
+target_link_libraries(playing-shared-visual PUBLIC Qt6::Gui)

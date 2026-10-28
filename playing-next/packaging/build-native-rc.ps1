@@ -1,4 +1,4 @@
-param([string]$OutputRoot='work/phase27-native-rc')
+param([string]$OutputRoot='work/phase27-native-rc',[string]$BuildRoot='work/core-phase08h-build',[string]$Qt66Root='')
 $ErrorActionPreference='Stop'
 $workspace=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $out=[IO.Path]::GetFullPath((Join-Path $workspace $OutputRoot))
@@ -6,11 +6,13 @@ if(-not $out.StartsWith((Join-Path $workspace 'work')+'\',[StringComparison]::Or
 New-Item -ItemType Directory -Path $out | Out-Null
 function Payload($from,$relative){$to=Join-Path $out $relative;New-Item -ItemType Directory -Path (Split-Path $to) -Force | Out-Null;Copy-Item -LiteralPath $from -Destination $to}
 $bin='obs-plugins/64bit'
-Payload (Join-Path $workspace 'work/core-phase08h-build/RelWithDebInfo/obs-playing-next.dll') "$bin/obs-playing-next.dll"
+Payload (Join-Path $workspace ($BuildRoot+'/RelWithDebInfo/obs-playing-next.dll')) "$bin/obs-playing-next.dll"
 Payload (Join-Path $workspace 'obs-playing/obs-playing-db.dll') "$bin/obs-playing-db.dll"
 $qt='C:/NEXUS-Dependencies/OBS Twitch alerts/OBS Twitch Overlays/.deps/obs-deps-qt6-2025-07-11-x64'
 Payload "$qt/plugins/tls/qschannelbackend.dll" "$bin/playing-qt-plugins/tls/qschannelbackend.dll"
-foreach($file in @('LICENSE','THIRD-PARTY-NOTICES.txt','playing-next/THIRD-PARTY-NOTICES.md','playing-next/COMPATIBILITY.md','playing-next/HARDENING.md','playing-next/TRAKTOR.md','playing-next/RELEASE-1.0.0.md','playing-next/RELEASE-1.0.1.md','playing-next/NOW-PLAYING-BRIDGE.md')){Payload (Join-Path $workspace $file) ('docs/'+(Split-Path $file -Leaf))}
+if($Qt66Root){Payload (Join-Path (Resolve-Path $Qt66Root).Path 'plugins/tls/qschannelbackend.dll') 'compat/qt66/qschannelbackend.dll'}
+foreach($license in (Get-ChildItem (Join-Path $PSScriptRoot 'qt66-licenses') -File)){Payload $license.FullName ('docs/qt-licenses/'+$license.Name)}
+foreach($file in @('LICENSE','THIRD-PARTY-NOTICES.txt','playing-next/THIRD-PARTY-NOTICES.md','playing-next/COMPATIBILITY.md','playing-next/HARDENING.md','playing-next/TRAKTOR.md','playing-next/RELEASE-1.0.0.md','playing-next/RELEASE-1.0.1.md','playing-next/RELEASE-1.1.0.md','playing-next/OBS-31-33-STUDY.md','playing-next/NOW-PLAYING-BRIDGE.md')){Payload (Join-Path $workspace $file) ('docs/'+(Split-Path $file -Leaf))}
 foreach($name in @('README.md','README.html','README.en.md','README.en.html')){Payload (Join-Path $workspace "playing-next/docs/companion/$name") "docs/companion/$name"}
 foreach($image in (Get-ChildItem (Join-Path $workspace 'playing-next/docs/companion/imagenes') -File)){Payload $image.FullName ('docs/companion/imagenes/'+$image.Name)}
 Copy-Item -LiteralPath (Join-Path $workspace 'playing-next') -Destination (Join-Path $out 'source/playing-next') -Recurse
@@ -24,11 +26,11 @@ foreach($lock in @('sources.lock.json','renderer.lock.json')){
 }
 foreach($file in (Get-ChildItem -LiteralPath $shared -File | Where-Object Name -Match '^(LICENSE|COPYING)')){Payload $file.FullName ('source/shared/'+$file.Name)}
 @'
-OBS Playing NEXUS 1.0.1 — Windows x64 / OBS 32.x.
+OBS Playing NEXUS 1.1.0 — Windows x64 / OBS 31.x / 32.x / 33.x.
 No es instalador. Payload plugin: obs-plugins/64bit; no incluye Qt de OBS.
 Companion separado en PC DJ; fuente nativa en PC streaming.
 Conservar versiones previas y configuración. No copiar herramientas de prueba.
-Consulte docs/RELEASE-1.0.1.md para pruebas realizadas y seguimiento posterior.
+Consulte docs/RELEASE-1.1.0.md para pruebas realizadas y seguimiento posterior.
 El cierre estable no certifica todas las versiones, equipos ni redes.
 Código combinado del renderer GPL-2.0-or-later; código propio MIT.
 Fuentes Playing y motor auditado incluidas. Qt/licencias/receta se suministran

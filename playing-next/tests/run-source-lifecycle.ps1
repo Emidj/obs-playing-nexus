@@ -1,4 +1,4 @@
-param([switch]$Traktor,[switch]$SettingsPanel,[switch]$Localization,[switch]$QuickConnection,[switch]$ProfileRetry,[string]$WorkRoot='work/phase10a-source',[string]$Version='32.2.2',[switch]$Render,[string]$EvidencePrefix='',[switch]$LoadOnly,[switch]$Baseline,[switch]$NormalReference,[switch]$NormalNative,[switch]$NormalMatrix,[switch]$GlyphReference,[string]$GlyphReferenceJson='',[switch]$GlyphUnclippedRoot,[switch]$TerminalSceneReference,[switch]$NormalRedesign,[switch]$NormalCatalogue,[switch]$Artwork,[switch]$LayerAnimation,[switch]$TrackTransitions,[switch]$WholeCatalogue,[switch]$TextOnly,[switch]$ProPilot,[switch]$VerticalGeometry,[switch]$PresetManager,[switch]$PresetManagerScene,[switch]$PresetManagerKeepOpen,[switch]$PresetManagerKeepSource,[switch]$DebugShutdown,[switch]$Customization,[switch]$PresetManagerDirectSave,[switch]$PresetManagerFileExchange,[switch]$Performance,[switch]$Optimization,[ValidateSet('Direct3D 11','OpenGL')][string]$GraphicsBackend='Direct3D 11',[ValidateSet('SDR','PQ','HLG')][string]$VideoMode='SDR',[switch]$BasicSharedSettings)
+param([switch]$Traktor,[switch]$SettingsPanel,[switch]$Localization,[switch]$QuickConnection,[switch]$ProfileRetry,[string]$WorkRoot='work/phase10a-source',[string]$Version='32.2.2',[string]$RuntimeRoot='',[switch]$Render,[string]$EvidencePrefix='',[switch]$LoadOnly,[switch]$Baseline,[switch]$NormalReference,[switch]$NormalNative,[switch]$NormalMatrix,[switch]$GlyphReference,[string]$GlyphReferenceJson='',[switch]$GlyphUnclippedRoot,[switch]$TerminalSceneReference,[switch]$NormalRedesign,[switch]$NormalCatalogue,[switch]$Artwork,[switch]$LayerAnimation,[switch]$TrackTransitions,[switch]$WholeCatalogue,[switch]$TextOnly,[switch]$ProPilot,[switch]$VerticalGeometry,[switch]$PresetManager,[switch]$PresetManagerScene,[switch]$PresetManagerKeepOpen,[switch]$PresetManagerKeepSource,[switch]$DebugShutdown,[switch]$Customization,[switch]$PresetManagerDirectSave,[switch]$PresetManagerFileExchange,[switch]$Performance,[switch]$Optimization,[ValidateSet('Direct3D 11','OpenGL')][string]$GraphicsBackend='Direct3D 11',[ValidateSet('SDR','PQ','HLG')][string]$VideoMode='SDR',[switch]$BasicSharedSettings)
 $ErrorActionPreference='Stop';if($ProfileRetry -or $QuickConnection){$Render=$true};if($VerticalGeometry){$ProPilot=$true};if(($PresetManagerDirectSave -or $PresetManagerFileExchange) -and -not $PresetManager){throw 'Direct Save As requires manager scenario'};if(($PresetManagerScene -or $PresetManagerKeepOpen -or $PresetManagerKeepSource) -and -not $PresetManager){throw 'Manager scenarios require -PresetManager'};if($PresetManagerKeepSource -and (-not $PresetManagerScene -or -not $PresetManagerKeepOpen)){throw 'Live exit requires scene and open manager'};if($BasicSharedSettings){$Render=$true};if($ProPilot){$TextOnly=$true};if($WholeCatalogue){$NormalCatalogue=$true}
 if($PresetManager -and ($Render -or $LoadOnly -or $Baseline -or $NormalReference -or $NormalNative -or $NormalMatrix -or $GlyphReference -or $TerminalSceneReference -or $NormalRedesign -or $NormalCatalogue -or $Artwork -or $LayerAnimation -or $TrackTransitions -or $WholeCatalogue -or $TextOnly -or $ProPilot)){throw 'Choose preset manager test alone'}
 if($LayerAnimation -and $TrackTransitions){throw 'Choose one animation test'};if($TextOnly -and ($LayerAnimation -or $TrackTransitions)){throw 'Choose one visual test'};if($LayerAnimation -or $TrackTransitions -or $TextOnly){$Artwork=$true}
@@ -19,15 +19,19 @@ $workspace=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $allowed=(Join-Path $workspace 'work').TrimEnd('\')+'\'
 $destination=[IO.Path]::GetFullPath((Join-Path $workspace $WorkRoot))
 if(-not $destination.StartsWith($allowed,[StringComparison]::OrdinalIgnoreCase) -or (Test-Path -LiteralPath $destination)){throw 'Require a new isolated work directory'}
-if($Version -notmatch '^32\.\d+\.\d+$'){throw 'Require OBS32.x'}
+if($Version -notmatch '^(31|32|33)\.\d+\.\d+$'){throw 'Require an OBS31/32/33 study runtime'}
 $original=Join-Path $workspace "tests/obs32/$Version"
+if($RuntimeRoot){
+ $original=(Resolve-Path -LiteralPath $RuntimeRoot).Path
+ if(-not $original.StartsWith($allowed,[StringComparison]::OrdinalIgnoreCase)){throw 'Study runtime must be under project work'}
+}
 $exeOriginal=Join-Path $original 'bin/64bit/obs64.exe'
 if((Get-Item -LiteralPath $exeOriginal).VersionInfo.ProductVersion -ne $Version){throw 'Runtime mismatch'}
 $tests=Join-Path $destination 'tests/obs32'
 $runtime=Join-Path $tests $Version
 New-Item -ItemType Directory -Path $runtime -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $workspace 'obs-playing') -Destination $destination -Recurse
-foreach($folder in @('bin','data','obs-plugins')) {Copy-Item -LiteralPath (Join-Path $original $folder) -Destination $runtime -Recurse}
+foreach($folder in @('bin','data','obs-plugins','core')) {if(Test-Path -LiteralPath (Join-Path $original $folder)){Copy-Item -LiteralPath (Join-Path $original $folder) -Destination $runtime -Recurse}}
 foreach($file in @('prepare-portable.ps1','heartbeat.lua')) {Copy-Item -LiteralPath (Join-Path $workspace "work/audit-phase01/tests/obs32/$file") -Destination $tests}
 Copy-Item -LiteralPath (Join-Path $workspace 'work/core-phase08h-build/RelWithDebInfo/obs-playing-next.dll') -Destination $tests
 Copy-Item -LiteralPath (Join-Path $workspace 'obs-playing/obs-playing-db.dll') -Destination $tests

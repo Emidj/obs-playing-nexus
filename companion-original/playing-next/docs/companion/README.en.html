@@ -1,0 +1,69 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Companion setup · OBS Playing NEXUS</title><style>html{color-scheme:dark}body{margin:0;background:#08111d;color:#d8e4f1;font:17px/1.65 "Segoe UI",Arial,sans-serif}main{max-width:1050px;margin:auto;padding:35px 28px 65px}h1{font-size:36px;color:#fff;line-height:1.2}h2{margin-top:55px;padding:13px 0;border-bottom:2px solid #184764;color:#7cdaff}strong{color:#fff}a{color:#72d5ff}li{margin:8px 0}figure{margin:26px 0}img{display:block;max-width:100%;height:auto;border-radius:16px}img[src*="companion-ejemplo"]{max-width:440px;margin:auto}code{font-family:Consolas,monospace;background:#17283b;padding:2px 6px;border-radius:5px}pre{overflow:auto;background:#17283b;padding:18px;border-radius:12px;font-size:14px}.table{overflow:auto}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #29435c;padding:13px;text-align:left;vertical-align:top}th{background:#123653}em{color:#a7bcd0}footer{border-top:1px solid #29435c;margin-top:45px;padding-top:18px;color:#8aa2ba}@media print{html{color-scheme:light}body{background:white;color:#202a35;font-size:11pt}main{padding:0}h1,h2,strong{color:#10283e}h2{break-after:avoid}figure,table,li{break-inside:avoid}a{color:#08639b}code,pre{background:#edf2f8}th{background:#dfedf6}em{color:#46596a}}</style></head><body><main><h1>OBS Playing NEXUS — connect your two PCs</h1>
+<p><strong>Illustrated guide · Windows · RC3.7</strong></p>
+<p><a href="README.html">Español</a> · <strong>English</strong></p>
+<p>Double-click <strong>README.en.html</strong> to read the illustrated guide offline. Keep the <code>imagenes</code> folder beside the document.</p>
+<h2>1. Install on each PC</h2>
+<ul>
+<li><strong>DJ PC:</strong> install <strong>Companion</strong> and open your DJ application.</li>
+<li><strong>Streaming PC:</strong> install the <strong>OBS Playing NEXUS plugin</strong> and open OBS Studio 32.x x64.</li>
+<li>Companion is only needed on the DJ PC.</li>
+<li>Both computers must be on the same home network.</li>
+<li>Update both components to <strong>RC3.4</strong> to use this assistant.</li>
+</ul>
+<p>The same installer offers a component for each computer. Companion creates a desktop shortcut. Close the corresponding application before updating; Windows may request administrator permission.</p>
+<figure><img src="imagenes/quick-01-en.svg" alt="One component per PC" loading="lazy"/></figure>
+<h2>2. Connect for the first time</h2>
+<ol>
+<li>On the <strong>DJ PC</strong>, open Companion and press <strong>Connect to OBS</strong>. Keep this window open.</li>
+<li>On the <strong>streaming PC</strong>, add an <strong>OBS Playing NEXUS</strong> source and press <strong>Connect Companion</strong> in its properties. Disable the fictional test track if enabled.</li>
+<li>OBS searches automatically. If it finds only one DJ PC, it selects it. Check that its identity matches the one shown in Companion, tick the confirmation and press <strong>Connect this PC</strong>.</li>
+<li>Accept the request in Companion. The OBS window shows the actual connection, track and image status.</li>
+</ol>
+<p>There are no codes to copy or IP addresses and ports to enter. Companion has no streaming-PC mode to select. The OBS button automatically switches the source to the paired DJ PC.</p>
+<figure><img src="imagenes/quick-02-en.svg" alt="Two buttons and identity confirmation" loading="lazy"/></figure>
+<p>The assistant automatically enables local track reading and sending on launch. These are already enabled when opening a new Companion installation. You do not need to tick «Ver canción en este PC» or «Iniciar envío automáticamente» to connect. If multiple DJ applications are playing, select the one you want in the same window.</p>
+<p><strong>Traktor Pro 3.x / 4.x:</strong> use automatic detection or select <strong>Traktor Pro 3 / 4</strong>. The overlay follows the playing deck marked <strong>MASTER</strong>. Broadcast and Bonjour are not required for Traktor. Artwork comes from its local cache; update Companion and the OBS plugin. Live tests: 3.5.0 and 4.4.1. Other 3.x/4.x versions require successful automatic structure validation.</p>
+<p>If Windows requests network permission, confirm it in Windows. Pairing stays open for two minutes. If it expires, press <strong>Retry connection setup</strong> in Companion and <strong>Search again</strong> in OBS. Closing the DJ assistant closes the pairing window; already connected computers keep working.</p>
+<h2>3. Daily use and checks</h2>
+<p>Open Companion on the DJ PC and OBS on the streaming PC. Pairing is saved and the active source automatically tries to reconnect. Automatic startup applies when opening Companion; it does not configure Windows startup. Stop remains available to stop sending during the current session.</p>
+<p>Play music and change tracks. The OBS assistant separately reports the actual <strong>connection</strong>, <strong>received track</strong> and <strong>available image</strong>. A connection can work even when there is no music or artwork yet.</p>
+<figure><img src="imagenes/quick-03-en.svg" alt="Connection, track and image are separate states" loading="lazy"/></figure>
+<p>Choose a <strong>PRO</strong> style and enable the artwork/profile-image option to display artwork. When artwork is unavailable, you can enable the Twitch profile fallback with your Twitch account connected in OBS. Classic styles have no artwork. Companion sends metadata and images, not audio.</p>
+<h2>4. Serato</h2>
+<p>Enable the OBS Playing device in <strong>Setup → Expansion Packs → External Control</strong> inside Serato. This permission must be confirmed in Serato. If the device is missing, check that <strong>Bonjour Service</strong> is installed and running on the DJ PC (<strong>Servizi → In esecuzione</strong> in Italian Windows). Companion shows a message when Bonjour is missing or does not respond.</p>
+<h2>5. Replace or remove a paired PC</h2>
+<p>In OBS press <strong>Connect Companion → Change DJ PC</strong> and follow the same assistant. <strong>Advanced options → Forget previous pairing</strong> removes the saved destination and stops its connection. To withdraw access from an old streaming PC, use <strong>Revoke selected pairing</strong> in Companion settings on the DJ PC. Forgetting the destination in OBS does not revoke its permission on the DJ PC.</p>
+<h2>6. Troubleshooting</h2>
+<div class="table"><table>
+<tr><th>Problem</th><th>Check</th></tr>
+<tr><td>OBS cannot find Companion</td><td>Same network, Companion running and «Connect to OBS» open. Avoid guest networks and VPN routes between the PCs.</td></tr>
+<tr><td>Windows blocks the connection</td><td>On your trusted private home network, allow <code>obs-playing-companion.exe</code> through Firewall → Allow an app → Private. The installer does not add firewall rules.</td></tr>
+<tr><td>No track in Companion</td><td>Play music and select the DJ application in the assistant if automatic detection is ambiguous. For Serato, check External Control and Bonjour.</td></tr>
+<tr><td>Connected but no track</td><td>Check the track in Companion first; this does not necessarily mean a network failure.</td></tr>
+<tr><td>Track arrives but no image</td><td>Check artwork in Companion and the image options of a PRO style in OBS.</td></tr>
+<tr><td>A sample song stays visible</td><td>Disable the fictional test track in OBS.</td></tr>
+<tr><td>An IP change prevents reconnection</td><td>Press «Change DJ PC» and search again.</td></tr>
+</table></div>
+<p>Default Companion path for the firewall permission:</p>
+<pre><code>%LOCALAPPDATA%\OBS NEXUS\OBS Playing Companion\obs-playing-companion.exe</code></pre>
+<h2>7. If an image is missing</h2>
+<p>The Connect Companion assistant distinguishes connection, track and image availability. To use your Twitch profile, check the three image options at the top and that your account is connected in OBS. After reconnecting Twitch, close and reopen OBS to refresh the lookup.</p>
+<p>If Companion also lacks artwork, check whether the image is embedded in the local file and its format. A thumbnail in Serato does not prove the reader can access it; this release does not certify artwork from streaming services.</p>
+<p>When requesting help, provide versions and the visible message. <strong>Never share pairing codes, <code>.pcs</code> profiles, passwords or credentials.</strong></p>
+<p><em>The illustrations are assistant diagrams, not captures of a physical two-PC test.</em></p>
+<h2>Interface languages</h2>
+<p>Spanish, English, Italian, French and German are included. The plugin follows the OBS language; Companion and the installer follow Windows. Other languages use English. Style names, your presets and music metadata remain unchanged.</p>
+<h2>Single settings panel</h2>
+<p>RC3.6 uses one editor, without a Basic/Advanced/Layout selector. Connection and artwork options are first, followed by DJ application/reading, category/style, light and motion, text and alignment. Track test controls are at the bottom. Controls outside these blocks are hidden; saved values and older presets remain.</p>
+<h1>Twitch track announcements</h1>
+<p>In RC3.7, open the Playing NEXUS source properties on the <strong>streaming PC</strong>:</p>
+<ol>
+<li>Enable <strong>Announce tracks in Twitch chat</strong>. It is off by default.</li>
+<li>Click <strong>Connect Twitch chat…</strong>, then <strong>Authorize Twitch chat</strong>.</li>
+<li>Click <strong>Open Twitch</strong> and authorize the same account you use to stream in OBS. If Twitch asks for a code, use the one displayed in the window. Do not share it.</li>
+<li>Customize <strong>Chat message</strong> using <code>{artist}</code> and <code>{title}</code>, for example <code>🎵 Now playing: {artist} — {title}</code>.</li>
+<li>Set the announcement delay; the default is 3 seconds so metadata can settle.</li>
+</ol>
+<p>Messages are sent only while OBS is streaming to Twitch, with a real track and both title and artist available. Local readers and Companion are supported; no chat setup is needed on the DJ PC. Fictional tracks, pauses and artwork updates do not trigger messages. Multiple sources showing the same track produce one message. If enabled sources disagree, announcements wait until they agree or only one remains enabled.</p>
+<p>To stop announcements, clear the checkbox on each source where you enabled it. Pending messages are cancelled; this cannot remove a message already received by Twitch. <strong>Disconnect chat on this computer</strong> forgets the local chat grant without disconnecting OBS streaming or other plugins.</p>
+<p>Chat authorization is separate from the profile image connection. It requests only chat writing permission and is protected by Windows, never stored in the scene. Showing another scene or reconnecting does not repeat the same track. Attempts are at least 10 seconds apart, keeping the newest eligible track. Unconfirmed sends are not retried automatically. In a Shared Chat session, Twitch may display the message in the participating channels according to its rules.</p><footer>NEXUS OBS Plugins by DjEmiMas · Offline Companion setup guide</footer></main></body></html>

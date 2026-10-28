@@ -1,3 +1,9 @@
+# OBS Playing NEXUS 1.1.0
+
+28 de octubre de 2026. Ajustes agrupados y un instalador que detecta OBS 31/32/33.
+OBS 33 utiliza la estructura nueva de plugins, también en modo portable.
+[Notas y límites de la 1.1.0](RELEASE-1.1.0.md). Versiones anteriores conservadas.
+
 # OBS Playing NEXUS 1.0.1
 
 25 de octubre de 2026. Actualización del plugin con consulta pública para OBS News Ticker NEXUS.

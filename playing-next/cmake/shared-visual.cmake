@@ -19,7 +19,7 @@ foreach(index RANGE 0 ${last})
     message(FATAL_ERROR "Audited source changed: ${path}; re-audit before updating lock")
   endif()
 endforeach()
-find_package(Qt6 6.8 REQUIRED COMPONENTS Gui)
+find_package(Qt6 6.6 REQUIRED COMPONENTS Gui)
 add_library(playing-shared-visual STATIC
   "${PLAYING_SHARED_ROOT}/src/visual/text-layout.cpp"
   "${PLAYING_SHARED_ROOT}/src/visual/visual-engine.cpp"

@@ -1,0 +1,15 @@
+Build plugin with Visual Studio 2022 x64 / CMake, Qt 6.6.3 SDK from:
+https://github.com/obsproject/obs-deps/releases/download/2024-09-12/windows-deps-qt6-2024-09-12-x64.zip
+SDK SHA256: 4d15ce13dbb0a8a2cabcce5ae0da5e80ee589b482a61b2025378465c1da32c4f
+Use included obs-deps-2024-09-12 recipe and qtbase source (verified.json).
+Configure playing-next with Qt6_DIR=<SDK>/lib/cmake/Qt6, CMAKE_PREFIX_PATH=<SDK>,
+Qt6CoreTools_DIR=<SDK>/lib/cmake/Qt6CoreTools, PLAYING_BUILD_OBS_SOURCE=ON,
+PLAYING_BUILD_COMPANION=ON, PLAYING_BUILD_SHARED_VISUAL=ON,
+PLAYING_SHARED_ROOT=<sources/shared>, PLAYING_SOURCE_TEST_HOOKS=OFF,
+libobs_DIR and obs-frontend-api_DIR pointing to the OBS SDK.
+Build target obs-playing-next, configuration RelWithDebInfo.
+Package build-native-rc.ps1 with -BuildRoot <build> -Qt66Root <SDK>.
+Package installer/build.ps1 with -Qt66SourceRoot <this source directory>.
+Stable Companion sources and its Qt6.8 rebuild recipe are preserved separately.
+Schannel backend DLL SHA256: fc8a51125ede0d2eeeb264b25b3ac6da0a1fa576dff238e7b5f84d373ae9799b
+Qt licensing texts are in the separately supplied qt-licenses directory.

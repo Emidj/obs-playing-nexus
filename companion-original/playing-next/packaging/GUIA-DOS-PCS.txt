@@ -1,0 +1,34 @@
+OBS Playing NEXUS - Companion para el PC DJ / DJ PC only
+
+ESPANOL
+Companion se ejecuta solo en el PC DJ. En el PC de streaming instala el plugin
+OBS Playing NEXUS con el instalador; no necesitas otro Companion.
+
+1. Extrae TODO el ZIP en el PC DJ. Abre "Abrir Companion PC DJ.cmd" y tu programa DJ.
+2. Pulsa "Conectar con OBS". La lectura local y el envio se activan automaticamente.
+3. En las propiedades de una fuente OBS Playing NEXUS pulsa "Conectar Companion".
+4. Compara la identidad, confirma en OBS y acepta la solicitud en Companion.
+5. La vinculacion queda guardada. Abre Companion y OBS para usarla de nuevo.
+
+Guia ilustrada offline: docs/companion/README.html
+No copies perfiles .pcs entre PCs o usuarios. No compartas claves ni codigos.
+El permiso de red de Windows y External Control de Serato se confirman en esas
+aplicaciones. Ambos PCs deben compartir red; no se envian datos de audio.
+
+ENGLISH
+Run Companion only on the DJ PC. Install the OBS Playing NEXUS plugin on the
+streaming PC using the installer; a second Companion is not needed.
+
+1. Extract the complete ZIP on the DJ PC. Open "Abrir Companion PC DJ.cmd" and your DJ app.
+2. Press "Conectar con OBS". Local reading and sending are enabled automatically.
+3. In the OBS Playing NEXUS source properties press "Conectar Companion".
+4. Compare the identity, confirm in OBS and accept the request in Companion.
+5. Pairing is saved. Open Companion and OBS to use it again.
+
+Offline illustrated guide: docs/companion/README.en.html
+Do not copy .pcs profiles between PCs or users. Never share secrets or codes.
+Windows network permission and Serato External Control must be confirmed in
+those applications. Both PCs need the same network. Audio is not transmitted.
+
+Licenses and corresponding sources: THIRD-PARTY-NOTICES.txt, licenses/, source/, sbom/.
+Qt DLL replacement with compatible rebuilt libraries is supported. See source/REBUILD.txt.

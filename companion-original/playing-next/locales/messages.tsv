@@ -1,0 +1,422 @@
+# Spanish source | English | Italian | French | German. Escaped newlines are preserved.
+Seleccionar estilo|Select style|Seleziona stile|Choisir un style|Stil auswählen
+Solo texto horizontal|Horizontal text only|Solo testo orizzontale|Texte seul horizontal|Nur Text horizontal
+Solo texto vertical|Vertical text only|Solo testo verticale|Texte seul vertical|Nur Text vertikal
+Programa DJ|DJ application|Programma DJ|Logiciel DJ|DJ-Programm
+Serato DJ Pro (Automatic)|Serato DJ Pro (Automatic)|Serato DJ Pro (Automatico)|Serato DJ Pro (Automatique)|Serato DJ Pro (Automatisch)
+Lectura|Reading mode|Modalità di lettura|Mode de lecture|Lesemodus
+Automatic|Automatic|Automatico|Automatique|Automatisch
+History|History|Cronologia|Historique|Verlauf
+Companion — PC DJ|Companion — DJ PC|Companion — PC DJ|Companion — PC DJ|Companion — DJ-PC
+Categoria|Category|Categoria|Catégorie|Kategorie
+Clasicos|Classic|Classici|Classiques|Klassisch
+Clásicos|Classic|Classici|Classiques|Klassisch
+Estilo|Style|Stile|Style|Stil
+Gestor de presets / favoritos|Presets / favorites manager|Gestione preset / preferiti|Gestion des presets / favoris|Preset- und Favoritenverwaltung
+Gestor de presets|Preset manager|Gestione preset|Gestion des presets|Preset-Verwaltung
+Editor de diseno|Design editor|Editor del design|Éditeur de design|Design-Editor
+Basico (Basic)|Basic|Base|Basique|Einfach
+Avanzado (Advanced)|Advanced|Avanzato|Avancé|Erweitert
+Distribucion (Layout)|Layout|Disposizione|Disposition|Anordnung
+Guardar diseno como...|Save design as…|Salva design come…|Enregistrer le design sous…|Design speichern unter…
+Layout|Layout|Disposizione|Disposition|Anordnung
+Clasicos: distribucion automatica. Ajusta ancho y separacion de filas; el marco sigue el texto.|Classic: automatic layout. Adjust width and row spacing; the frame follows the text.|Classici: disposizione automatica. Regola larghezza e distanza tra le righe; la cornice segue il testo.|Classiques : disposition automatique. Réglez largeur et espacement des lignes ; le cadre suit le texte.|Klassisch: automatische Anordnung. Breite und Zeilenabstand anpassen; der Rahmen folgt dem Text.
+Mueve el texto con los dos sliders; cero restaura su posicion original. La portada se adapta automaticamente al marco.|Move text with the two sliders; zero restores its original position. Artwork fits the frame automatically.|Sposta il testo con i due cursori; zero ripristina la posizione originale. La copertina si adatta automaticamente alla cornice.|Déplacez le texte avec les deux curseurs ; zéro rétablit la position initiale. La pochette s’adapte automatiquement au cadre.|Text mit den beiden Reglern bewegen; Null stellt die Originalposition wieder her. Das Cover passt sich automatisch dem Rahmen an.
+Layout manual: ajusta las cajas de titulo/artista y la portada dentro del lienzo.|Manual layout: adjust title/artist boxes and artwork within the canvas.|Disposizione manuale: regola riquadri titolo/artista e copertina nel canvas.|Disposition manuelle : réglez les zones titre/artiste et la pochette dans le canevas.|Manuelle Anordnung: Titel-/Künstlerfelder und Cover innerhalb der Zeichenfläche anpassen.
+Desactivado|Disabled|Disattivato|Désactivé|Deaktiviert
+Tono general (0/360: original)|Overall hue (0/360: original)|Tonalità generale (0/360: originale)|Teinte générale (0/360 : origine)|Gesamtfarbton (0/360: Original)
+Intensidad de luz (%)|Light intensity (%)|Intensità della luce (%)|Intensité lumineuse (%)|Lichtintensität (%)
+Animar pulso de luz (opcional)|Animate light pulse (optional)|Anima pulsazione luminosa (opzionale)|Animer la pulsation lumineuse (facultatif)|Lichtpuls animieren (optional)
+Opacidad del fondo del titulo (%)|Title background opacity (%)|Opacità sfondo del titolo (%)|Opacité du fond du titre (%)|Deckkraft des Titelhintergrunds (%)
+Velocidad de animacion (%)|Animation speed (%)|Velocità animazione (%)|Vitesse d’animation (%)|Animationsgeschwindigkeit (%)
+Desactivado / texto manual|Disabled / manual text|Disattivato / testo manuale|Désactivé / texte manuel|Deaktiviert / manueller Text
+Transicion del tema|Track transition|Transizione del brano|Transition du morceau|Titelübergang
+Fade|Fade|Dissolvenza|Fondu|Überblenden
+Slide|Slide|Scorrimento|Glissement|Schieben
+Duracion de transicion (ms)|Transition duration (ms)|Durata transizione (ms)|Durée de transition (ms)|Übergangsdauer (ms)
+Transicion de toda la tarjeta|Transition the entire card|Transizione dell’intera scheda|Transition de toute la carte|Gesamte Karte überblenden
+Separacion de lineas (px)|Line spacing (px)|Spaziatura righe (px)|Espacement des lignes (px)|Zeilenabstand (px)
+Velocidad del texto (px/s)|Text speed (px/s)|Velocità testo (px/s)|Vitesse du texte (px/s)|Textgeschwindigkeit (px/s)
+Pausa del texto (s)|Text pause (s)|Pausa testo (s)|Pause du texte (s)|Textpause (s)
+Historial / biblioteca (vacio: detectar)|History / library (empty: detect)|Cronologia / libreria (vuoto: rileva)|Historique / bibliothèque (vide : détecter)|Verlauf / Bibliothek (leer: erkennen)
+All (*.*)|All files (*.*)|Tutti i file (*.*)|Tous les fichiers (*.*)|Alle Dateien (*.*)
+Codificacion de historial VirtualDJ|VirtualDJ history encoding|Codifica cronologia VirtualDJ|Encodage de l’historique VirtualDJ|Zeichenkodierung des VirtualDJ-Verlaufs
+Perfil protegido de vinculacion|Protected pairing profile|Profilo di associazione protetto|Profil d’appairage protégé|Geschütztes Kopplungsprofil
+Profile (*.pcs)|Profile (*.pcs)|Profilo (*.pcs)|Profil (*.pcs)|Profil (*.pcs)
+Conectar Companion|Connect Companion|Connetti Companion|Connecter Companion|Companion verbinden
+Mostrar el tema encontrado al activar la fuente|Show current track when source activates|Mostra il brano attuale all’attivazione della sorgente|Afficher le morceau actuel à l’activation de la source|Aktuellen Titel beim Aktivieren der Quelle anzeigen
+Mostrar portada / imagen de perfil|Show artwork / profile image|Mostra copertina / immagine profilo|Afficher la pochette / l’image de profil|Cover / Profilbild anzeigen
+Usar perfil del streamer si no hay portada|Use streamer profile if artwork is unavailable|Usa il profilo dello streamer se manca la copertina|Utiliser le profil du streamer sans pochette|Streamer-Profil verwenden, wenn kein Cover vorhanden ist
+Obtener imagen del canal Twitch conectado en OBS|Get image from the Twitch account connected in OBS|Ottieni immagine dell’account Twitch connesso in OBS|Obtenir l’image du compte Twitch connecté dans OBS|Bild des in OBS verbundenen Twitch-Kontos laden
+Canal Twitch (opcional; vacio usa tu cuenta OBS)|Twitch channel (optional; empty uses your OBS account)|Canale Twitch (opzionale; vuoto usa l’account OBS)|Chaîne Twitch (facultatif ; vide utilise le compte OBS)|Twitch-Kanal (optional; leer verwendet das OBS-Konto)
+Seleccionar imagen manual...|Select custom image…|Seleziona immagine manuale…|Choisir une image manuelle…|Eigenes Bild auswählen…
+Introducir URL HTTPS (opcional)|Enter HTTPS URL (optional)|Inserisci URL HTTPS (opzionale)|Saisir une URL HTTPS (facultatif)|HTTPS-URL eingeben (optional)
+Quitar imagen manual|Remove custom image|Rimuovi immagine manuale|Retirer l’image manuelle|Eigenes Bild entfernen
+Recargar imagen de perfil|Reload profile image|Ricarica immagine profilo|Recharger l’image de profil|Profilbild neu laden
+Diagnóstico de imágenes|Image diagnostics|Diagnostica immagini|Diagnostic des images|Bilddiagnose
+Imagen: posicion X|Image: X position|Immagine: posizione X|Image : position X|Bild: X-Position
+Imagen: posicion Y|Image: Y position|Immagine: posizione Y|Image : position Y|Bild: Y-Position
+Imagen: ancho|Image: width|Immagine: larghezza|Image : largeur|Bild: Breite
+Imagen: alto|Image: height|Immagine: altezza|Image : hauteur|Bild: Höhe
+Ocultar tema tras segundos (0: sin limite)|Hide track after seconds (0: unlimited)|Nascondi brano dopo secondi (0: illimitato)|Masquer après ce délai en secondes (0 : illimité)|Titel nach Sekunden ausblenden (0: unbegrenzt)
+Titulo largo|Long title|Titolo lungo|Titre long|Langer Titel
+Artista largo|Long artist name|Nome artista lungo|Nom d’artiste long|Langer Künstlername
+Recortar|Clip|Ritaglia|Rogner|Abschneiden
+Puntos suspensivos|Ellipsis|Puntini di sospensione|Points de suspension|Auslassungspunkte
+Varias lineas|Wrap lines|Più righe|Plusieurs lignes|Zeilenumbruch
+Ajustar tamano|Auto-fit|Adatta dimensione|Ajuster la taille|Größe anpassen
+Ping-pong (ida y vuelta)|Ping-pong (back and forth)|Ping-pong (avanti e indietro)|Ping-pong (aller-retour)|Pingpong (hin und her)
+Tamano minimo del titulo (px)|Minimum title size (px)|Dimensione minima titolo (px)|Taille minimale du titre (px)|Minimale Titelgröße (px)
+Tamano minimo del artista (px)|Minimum artist size (px)|Dimensione minima artista (px)|Taille minimale de l’artiste (px)|Minimale Künstlergröße (px)
+Ancho de la fuente (px)|Source width (px)|Larghezza sorgente (px)|Largeur de la source (px)|Quellenbreite (px)
+Alto de la fuente (px)|Source height (px)|Altezza sorgente (px)|Hauteur de la source (px)|Quellenhöhe (px)
+Diseno de texto|Text layout|Disposizione testo|Disposition du texte|Textanordnung
+Manual (BASIC actual)|Manual (current BASIC)|Manuale (BASIC attuale)|Manuel (BASIC actuel)|Manuell (aktuelles BASIC)
+Solo texto — horizontal|Text only — horizontal|Solo testo — orizzontale|Texte seul — horizontal|Nur Text — horizontal
+Solo texto — vertical|Text only — vertical|Solo testo — verticale|Texte seul — vertical|Nur Text — vertikal
+Tipografia y tamano del titulo|Title font and size|Carattere e dimensione titolo|Police et taille du titre|Schrift und Größe des Titels
+Tipografia y tamano del artista|Artist font and size|Carattere e dimensione artista|Police et taille de l’artiste|Schrift und Größe des Künstlers
+Color del titulo|Title color|Colore titolo|Couleur du titre|Titelfarbe
+Color del artista|Artist color|Colore artista|Couleur de l’artiste|Künstlerfarbe
+Titulo|Title|Titolo|Titre|Titel
+Artista|Artist|Artista|Artiste|Künstler
+: grosor de contorno (px)|: outline width (px)|: spessore contorno (px)| : épaisseur du contour (px)|: Konturstärke (px)
+: color de contorno|: outline color|: colore contorno| : couleur du contour|: Konturfarbe
+: distancia de sombra (px)|: shadow offset (px)|: distanza ombra (px)| : décalage de l’ombre (px)|: Schattenabstand (px)
+: color y opacidad de sombra|: shadow color and opacity|: colore e opacità ombra| : couleur et opacité de l’ombre|: Schattenfarbe und Deckkraft
+Desplazamiento horizontal del texto (px)|Horizontal text offset (px)|Spostamento orizzontale testo (px)|Décalage horizontal du texte (px)|Horizontaler Textversatz (px)
+Desplazamiento vertical del texto (px)|Vertical text offset (px)|Spostamento verticale testo (px)|Décalage vertical du texte (px)|Vertikaler Textversatz (px)
+Margen exterior (px)|Outer margin (px)|Margine esterno (px)|Marge extérieure (px)|Außenabstand (px)
+Separacion titulo / artista (px)|Title / artist spacing (px)|Distanza titolo / artista (px)|Espacement titre / artiste (px)|Abstand Titel / Künstler (px)
+Distancia del texto desde arriba (px)|Text distance from top (px)|Distanza testo dall’alto (px)|Distance du texte depuis le haut (px)|Textabstand von oben (px)
+Distancia portada / texto (px)|Artwork / text spacing (px)|Distanza copertina / testo (px)|Espacement pochette / texte (px)|Abstand Cover / Text (px)
+Tamano de portada (px)|Artwork size (px)|Dimensione copertina (px)|Taille de la pochette (px)|Covergröße (px)
+Titulo: posicion X|Title: X position|Titolo: posizione X|Titre : position X|Titel: X-Position
+Titulo: posicion Y|Title: Y position|Titolo: posizione Y|Titre : position Y|Titel: Y-Position
+Artista: posicion X|Artist: X position|Artista: posizione X|Artiste : position X|Künstler: X-Position
+Artista: posicion Y|Artist: Y position|Artista: posizione Y|Artiste : position Y|Künstler: Y-Position
+Titulo: ancho|Title: width|Titolo: larghezza|Titre : largeur|Titel: Breite
+Titulo: alto|Title: height|Titolo: altezza|Titre : hauteur|Titel: Höhe
+Artista: ancho|Artist: width|Artista: larghezza|Artiste : largeur|Künstler: Breite
+Artista: alto|Artist: height|Artista: altezza|Artiste : hauteur|Künstler: Höhe
+Alineacion del titulo|Title alignment|Allineamento titolo|Alignement du titre|Titelausrichtung
+Alineacion del artista|Artist alignment|Allineamento artista|Alignement de l’artiste|Künstlerausrichtung
+Izquierda|Left|Sinistra|Gauche|Links
+Centro|Center|Centro|Centre|Mitte
+Derecha|Right|Destra|Droite|Rechts
+Configuracion no disponible: revisa programa, ruta o vinculacion.|Configuration unavailable: check application, path or pairing.|Configurazione non disponibile: controlla programma, percorso o associazione.|Configuration indisponible : vérifiez le logiciel, le chemin ou l’appairage.|Konfiguration nicht verfügbar: Programm, Pfad oder Kopplung prüfen.
+Tema de prueba (ficticio)|Sample track (fictional)|Brano di prova (fittizio)|Morceau de test (fictif)|Testtitel (fiktiv)
+Probar tema anterior|Test previous track|Prova brano precedente|Tester le morceau précédent|Vorherigen Titel testen
+Probar tema siguiente|Test next track|Prova brano successivo|Tester le morceau suivant|Nächsten Titel testen
+Portada de prueba (opcional)|Test artwork (optional)|Copertina di prova (opzionale)|Pochette de test (facultatif)|Testcover (optional)
+Images (*.png *.jpg *.jpeg *.webp *.svg)|Images (*.png *.jpg *.jpeg *.webp *.svg)|Immagini (*.png *.jpg *.jpeg *.webp *.svg)|Images (*.png *.jpg *.jpeg *.webp *.svg)|Bilder (*.png *.jpg *.jpeg *.webp *.svg)
+Imagenes (*.png *.jpg *.jpeg *.webp *.svg)|Images (*.png *.jpg *.jpeg *.webp *.svg)|Immagini (*.png *.jpg *.jpeg *.webp *.svg)|Images (*.png *.jpg *.jpeg *.webp *.svg)|Bilder (*.png *.jpg *.jpeg *.webp *.svg)
+Seleccionar imagen manual|Select custom image|Seleziona immagine manuale|Choisir une image manuelle|Eigenes Bild auswählen
+Imagen manual por URL|Custom image URL|URL immagine manuale|URL de l’image manuelle|URL für eigenes Bild
+URL HTTPS (opcional)|HTTPS URL (optional)|URL HTTPS (opzionale)|URL HTTPS (facultatif)|HTTPS-URL (optional)
+Imagen manual|Custom image|Immagine manuale|Image manuelle|Eigenes Bild
+La URL debe comenzar con https://|The URL must start with https://|L’URL deve iniziare con https://|L’URL doit commencer par https://|Die URL muss mit https:// beginnen
+Sí|Yes|Sì|Oui|Ja
+No|No|No|Non|Nein
+Cerrar|Close|Chiudi|Fermer|Schließen
+Cancelar|Cancel|Annulla|Annuler|Abbrechen
+Aceptar|OK|OK|OK|OK
+Abrir|Open|Apri|Ouvrir|Öffnen
+Guardar|Save|Salva|Enregistrer|Speichern
+Buscar|Browse|Sfoglia|Parcourir|Durchsuchen
+Aplicar|Apply|Applica|Appliquer|Anwenden
+Nombre|Name|Nome|Nom|Name
+Actualizar|Update|Aggiorna|Mettre à jour|Aktualisieren
+Renombrar|Rename|Rinomina|Renommer|Umbenennen
+Eliminar|Delete|Elimina|Supprimer|Löschen
+Favorito|Favorite|Preferito|Favori|Favorit
+Importados|Imported|Importati|Importés|Importiert
+Favoritos|Favorites|Preferiti|Favoris|Favoriten
+Consultando imagen de Twitch…|Fetching Twitch image…|Recupero immagine Twitch…|Récupération de l’image Twitch…|Twitch-Bild wird geladen…
+OBS se está cerrando.|OBS is closing.|OBS si sta chiudendo.|OBS se ferme.|OBS wird geschlossen.
+La fuente se ha cerrado o eliminado.|The source was closed or removed.|La sorgente è stata chiusa o rimossa.|La source a été fermée ou supprimée.|Die Quelle wurde geschlossen oder entfernt.
+Activa esta fuente en la escena de OBS para comprobar la recepción.|Activate this source in the OBS scene to check reception.|Attiva questa sorgente nella scena OBS per verificare la ricezione.|Activez cette source dans la scène OBS pour vérifier la réception.|Diese Quelle in der OBS-Szene aktivieren, um den Empfang zu prüfen.
+La red funciona. Reproduce una canción en el PC DJ.|The network works. Play a track on the DJ PC.|La rete funziona. Riproduci un brano sul PC DJ.|Le réseau fonctionne. Lancez un morceau sur le PC DJ.|Das Netzwerk funktioniert. Einen Titel auf dem DJ-PC abspielen.
+Mostrar imagen: %1\nAlternativa del perfil: %2\nPerfil automático de Twitch: %3\nImagen manual configurada: %4\n|Show image: %1\nProfile fallback: %2\nAutomatic Twitch profile: %3\nCustom image configured: %4\n|Mostra immagine: %1\nProfilo alternativo: %2\nProfilo Twitch automatico: %3\nImmagine manuale configurata: %4\n|Afficher l’image : %1\nProfil de remplacement : %2\nProfil Twitch automatique : %3\nImage manuelle configurée : %4\n|Bild anzeigen: %1\nProfil als Ersatz: %2\nAutomatisches Twitch-Profil: %3\nEigenes Bild eingerichtet: %4\n
+Sin consulta realizada.|No lookup performed.|Nessuna richiesta eseguita.|Aucune requête effectuée.|Noch keine Abfrage durchgeführt.
+Sin canción activa|No active track|Nessun brano attivo|Aucun morceau actif|Kein aktiver Titel
+Portada recibida|Artwork received|Copertina ricevuta|Pochette reçue|Cover empfangen
+El lector DJ no proporciona portada|The DJ reader provides no artwork|Il lettore DJ non fornisce la copertina|Le lecteur DJ ne fournit pas de pochette|Der DJ-Leser liefert kein Cover
+Error de portada en el lector DJ|DJ reader artwork error|Errore copertina nel lettore DJ|Erreur de pochette du lecteur DJ|Coverfehler im DJ-Leser
+Portada todavía no disponible|Artwork not available yet|Copertina non ancora disponibile|Pochette pas encore disponible|Cover noch nicht verfügbar
+Portada: |Artwork: |Copertina: |Pochette : |Cover: 
+\nImagen preparada para dibujar: |\nImage ready for rendering: |\nImmagine pronta per il rendering: |\nImage prête à afficher : |\nBild zum Zeichnen bereit: 
+OBS no tiene disponible una credencial de Twitch en este perfil.|OBS has no Twitch credential available in this profile.|OBS non dispone di credenziali Twitch in questo profilo.|OBS ne dispose pas d’identifiants Twitch dans ce profil.|In diesem OBS-Profil sind keine Twitch-Zugangsdaten verfügbar.
+El nombre del canal Twitch no es válido.|The Twitch channel name is invalid.|Il nome del canale Twitch non è valido.|Le nom de la chaîne Twitch est invalide.|Der Twitch-Kanalname ist ungültig.
+Se alcanzó el límite de consultas de perfiles.|The profile lookup limit was reached.|Raggiunto il limite di richieste dei profili.|La limite de requêtes de profils est atteinte.|Das Limit für Profilabfragen wurde erreicht.
+Twitch rechazó la credencial guardada por OBS (HTTP 401). Vuelve a conectar tu cuenta en OBS y recarga la imagen.|Twitch rejected the credential saved by OBS (HTTP 401). Reconnect your account in OBS and reload the image.|Twitch ha rifiutato le credenziali salvate da OBS (HTTP 401). Riconnetti l’account in OBS e ricarica l’immagine.|Twitch a refusé les identifiants enregistrés par OBS (HTTP 401). Reconnectez votre compte dans OBS et rechargez l’image.|Twitch hat die in OBS gespeicherten Zugangsdaten abgelehnt (HTTP 401). Konto in OBS erneut verbinden und Bild neu laden.
+No se pudo conectar con Twitch para validar la cuenta.|Could not connect to Twitch to validate the account.|Impossibile connettersi a Twitch per verificare l’account.|Connexion à Twitch impossible pour valider le compte.|Verbindung zu Twitch zur Kontoprüfung fehlgeschlagen.
+Respuesta de validación Twitch: HTTP %1.|Twitch validation response: HTTP %1.|Risposta di verifica Twitch: HTTP %1.|Réponse de validation Twitch : HTTP %1.|Twitch-Prüfantwort: HTTP %1.
+Twitch rechazó la consulta del perfil (HTTP 401).|Twitch rejected the profile lookup (HTTP 401).|Twitch ha rifiutato la richiesta del profilo (HTTP 401).|Twitch a refusé la requête du profil (HTTP 401).|Twitch hat die Profilabfrage abgelehnt (HTTP 401).
+No se pudo conectar con Twitch para consultar el perfil.|Could not connect to Twitch to look up the profile.|Impossibile connettersi a Twitch per recuperare il profilo.|Connexion à Twitch impossible pour consulter le profil.|Verbindung zu Twitch zur Profilabfrage fehlgeschlagen.
+Consulta de perfil Twitch: HTTP %1; no se obtuvo una imagen válida.|Twitch profile lookup: HTTP %1; no valid image received.|Richiesta profilo Twitch: HTTP %1; nessuna immagine valida ricevuta.|Requête du profil Twitch : HTTP %1 ; aucune image valide reçue.|Twitch-Profilabfrage: HTTP %1; kein gültiges Bild empfangen.
+Imagen del perfil Twitch obtenida.|Twitch profile image retrieved.|Immagine del profilo Twitch recuperata.|Image du profil Twitch obtenue.|Twitch-Profilbild geladen.
+En el PC DJ, abre Companion y pulsa «Conectar con OBS».\nLos equipos deben estar en la misma red.|On the DJ PC, open Companion and press “Connect to OBS”.\nBoth computers must be on the same network.|Sul PC DJ, apri Companion e premi «Connetti a OBS».\nI computer devono essere sulla stessa rete.|Sur le PC DJ, ouvrez Companion et cliquez sur « Connecter à OBS ».\nLes ordinateurs doivent être sur le même réseau.|Auf dem DJ-PC Companion öffnen und „Mit OBS verbinden“ drücken.\nBeide Computer müssen im selben Netzwerk sein.
+La identidad coincide con la del Companion|The identity matches Companion|L’identità corrisponde a quella di Companion|L’identité correspond à celle de Companion|Die Identität stimmt mit Companion überein
+Conectar este PC|Connect this PC|Connetti questo PC|Connecter ce PC|Diesen PC verbinden
+Buscar de nuevo|Search again|Cerca di nuovo|Rechercher à nouveau|Erneut suchen
+Opciones avanzadas|Advanced options|Opzioni avanzate|Options avancées|Erweiterte Optionen
+Olvidar vinculación anterior|Forget previous pairing|Dimentica associazione precedente|Oublier l’appairage précédent|Vorherige Kopplung vergessen
+Vinculación guardada. La reconexión automática está activada.|Pairing saved. Automatic reconnection is enabled.|Associazione salvata. Riconnessione automatica attiva.|Appairage enregistré. Reconnexion automatique activée.|Kopplung gespeichert. Automatische Wiederverbindung ist aktiviert.
+Vinculación: guardada\nConexión: %1\nCanción: %2\nImagen en OBS: %3%4|Pairing: saved\nConnection: %1\nTrack: %2\nImage in OBS: %3%4|Associazione: salvata\nConnessione: %1\nBrano: %2\nImmagine in OBS: %3%4|Appairage : enregistré\nConnexion : %1\nMorceau : %2\nImage dans OBS : %3%4|Kopplung: gespeichert\nVerbindung: %1\nTitel: %2\nBild in OBS: %3%4
+conectada|connected|connessa|connectée|verbunden
+recibida|received|ricevuto|reçu|empfangen
+disponible|available|disponibile|disponible|verfügbar
+esperando al PC DJ|waiting for DJ PC|in attesa del PC DJ|en attente du PC DJ|Warten auf DJ-PC
+esperando música|waiting for music|in attesa della musica|en attente de musique|Warten auf Musik
+todavía no disponible|not available yet|non ancora disponibile|pas encore disponible|noch nicht verfügbar
+Tu PC DJ queda guardado. OBS volverá a conectarse automáticamente al abrir esta fuente.|Your DJ PC is saved. OBS will reconnect automatically when this source opens.|Il PC DJ è salvato. OBS si riconnetterà automaticamente all’apertura di questa sorgente.|Votre PC DJ est enregistré. OBS se reconnectera automatiquement à l’ouverture de cette source.|Der DJ-PC ist gespeichert. OBS verbindet sich beim Öffnen dieser Quelle automatisch erneut.
+Cambiar PC DJ|Change DJ PC|Cambia PC DJ|Changer de PC DJ|DJ-PC wechseln
+Comprueba esta identidad en el Companion:\n|Check this identity in Companion:\n|Verifica questa identità in Companion:\n|Vérifiez cette identité dans Companion :\n|Diese Identität in Companion prüfen:\n
+No se pudo completar la conexión. Vuelve a abrir la vinculación en el PC DJ y pulsa Buscar de nuevo.|Could not complete the connection. Reopen pairing on the DJ PC and press Search again.|Impossibile completare la connessione. Riapri l’associazione sul PC DJ e premi Cerca di nuovo.|Connexion impossible. Rouvrez l’appairage sur le PC DJ et cliquez sur Rechercher à nouveau.|Verbindung fehlgeschlagen. Kopplung auf dem DJ-PC erneut öffnen und Erneut suchen drücken.
+Buscando tu PC DJ…|Searching for your DJ PC…|Ricerca del PC DJ…|Recherche du PC DJ…|DJ-PC wird gesucht…
+Selecciona tu PC DJ y confirma su identidad.|Select your DJ PC and confirm its identity.|Seleziona il PC DJ e conferma la sua identità.|Sélectionnez votre PC DJ et confirmez son identité.|DJ-PC auswählen und seine Identität bestätigen.
+No se encuentra el PC DJ. Comprueba la misma red y el permiso de red del Companion en Windows.|DJ PC not found. Check the shared network and Companion’s Windows network permission.|PC DJ non trovato. Verifica la stessa rete e il permesso di rete di Companion in Windows.|PC DJ introuvable. Vérifiez le même réseau et l’autorisation réseau de Companion dans Windows.|DJ-PC nicht gefunden. Gemeinsames Netzwerk und Windows-Netzwerkfreigabe für Companion prüfen.
+No se pudo guardar la vinculación. El perfil anterior se conserva.|Could not save pairing. The previous profile is preserved.|Impossibile salvare l’associazione. Il profilo precedente è conservato.|Impossible d’enregistrer l’appairage. Le profil précédent est conservé.|Kopplung konnte nicht gespeichert werden. Das vorherige Profil bleibt erhalten.
+En el PC DJ pulsa «Conectar con OBS». Elige aquí tu equipo y confirma que su identidad coincide.|On the DJ PC press “Connect to OBS”. Choose your computer here and confirm the matching identity.|Sul PC DJ premi «Connetti a OBS». Scegli qui il computer e conferma che l’identità corrisponde.|Sur le PC DJ, cliquez sur « Connecter à OBS ». Choisissez votre ordinateur ici et confirmez son identité.|Auf dem DJ-PC „Mit OBS verbinden“ drücken. Hier den Computer wählen und die passende Identität bestätigen.
+No se pudo iniciar la búsqueda. Comprueba la conexión de red de este PC.|Could not start searching. Check this PC’s network connection.|Impossibile avviare la ricerca. Controlla la connessione di rete di questo PC.|Impossible de lancer la recherche. Vérifiez la connexion réseau de ce PC.|Suche konnte nicht gestartet werden. Netzwerkverbindung dieses PCs prüfen.
+No se pudo solicitar la conexión. Pulsa Buscar de nuevo.|Could not request the connection. Press Search again.|Impossibile richiedere la connessione. Premi Cerca di nuovo.|Impossible de demander la connexion. Cliquez sur Rechercher à nouveau.|Verbindung konnte nicht angefordert werden. Erneut suchen drücken.
+Acepta la solicitud en el Companion del PC DJ. No necesitas copiar ningún código.|Accept the request in Companion on the DJ PC. No codes need to be copied.|Accetta la richiesta in Companion sul PC DJ. Non serve copiare codici.|Acceptez la demande dans Companion sur le PC DJ. Aucun code à copier.|Anfrage in Companion auf dem DJ-PC annehmen. Es müssen keine Codes kopiert werden.
+No hay vinculación guardada.|No saved pairing.|Nessuna associazione salvata.|Aucun appairage enregistré.|Keine Kopplung gespeichert.
+Vinculación retirada. Pulsa Cambiar PC DJ para elegir otro equipo.|Pairing removed. Press Change DJ PC to choose another computer.|Associazione rimossa. Premi Cambia PC DJ per scegliere un altro computer.|Appairage retiré. Cliquez sur Changer de PC DJ pour choisir un autre ordinateur.|Kopplung entfernt. DJ-PC wechseln drücken, um einen anderen Computer zu wählen.
+No se pudo retirar la vinculación. El perfil anterior se conserva.|Could not remove pairing. The previous profile is preserved.|Impossibile rimuovere l’associazione. Il profilo precedente è conservato.|Impossible de retirer l’appairage. Le profil précédent est conservé.|Kopplung konnte nicht entfernt werden. Das vorherige Profil bleibt erhalten.
+No se puede leer la vinculación guardada. Su archivo se conserva.|Cannot read the saved pairing. Its file is preserved.|Impossibile leggere l’associazione salvata. Il file è conservato.|Impossible de lire l’appairage enregistré. Son fichier est conservé.|Gespeicherte Kopplung kann nicht gelesen werden. Die Datei bleibt erhalten.
+El nombre debe tener entre 1 y 80 caracteres.|The name must contain 1 to 80 characters.|Il nome deve contenere da 1 a 80 caratteri.|Le nom doit contenir de 1 à 80 caractères.|Der Name muss 1 bis 80 Zeichen enthalten.
+El nombre contiene caracteres de control.|The name contains control characters.|Il nome contiene caratteri di controllo.|Le nom contient des caractères de contrôle.|Der Name enthält Steuerzeichen.
+Estilo base desconocido.|Unknown base style.|Stile di base sconosciuto.|Style de base inconnu.|Unbekannter Basisstil.
+Biblioteca incompatible o dañada; no se modificará.|Incompatible or damaged library; it will not be modified.|Libreria incompatibile o danneggiata; non verrà modificata.|Bibliothèque incompatible ou endommagée ; elle ne sera pas modifiée.|Inkompatible oder beschädigte Bibliothek; sie wird nicht verändert.
+Demasiados presets guardados.|Too many saved presets.|Troppi preset salvati.|Trop de presets enregistrés.|Zu viele gespeicherte Presets.
+Preset dañado.|Damaged preset.|Preset danneggiato.|Preset endommagé.|Beschädigtes Preset.
+Identificador de preset inválido.|Invalid preset identifier.|Identificativo del preset non valido.|Identifiant de preset invalide.|Ungültige Preset-Kennung.
+Base de preset inválida.|Invalid preset base.|Base del preset non valida.|Base de preset invalide.|Ungültige Preset-Basis.
+Demasiados favoritos.|Too many favorites.|Troppi preferiti.|Trop de favoris.|Zu viele Favoriten.
+Favorito inválido.|Invalid favorite.|Preferito non valido.|Favori invalide.|Ungültiger Favorit.
+No se pudo leer la biblioteca.|Could not read the library.|Impossibile leggere la libreria.|Impossible de lire la bibliothèque.|Bibliothek konnte nicht gelesen werden.
+Biblioteca demasiado grande.|Library too large.|Libreria troppo grande.|Bibliothèque trop volumineuse.|Bibliothek zu groß.
+Biblioteca dañada; no se modificará.|Damaged library; it will not be modified.|Libreria danneggiata; non verrà modificata.|Bibliothèque endommagée ; elle ne sera pas modifiée.|Beschädigte Bibliothek; sie wird nicht verändert.
+Texto manual|Manual text|Testo manuale|Texte manuel|Manueller Text
+Demasiados ajustes.|Too many settings.|Troppe impostazioni.|Trop de réglages.|Zu viele Einstellungen.
+El preset contiene un ajuste no visual.|The preset contains a non-visual setting.|Il preset contiene un’impostazione non visiva.|Le preset contient un réglage non visuel.|Das Preset enthält eine nicht visuelle Einstellung.
+Tipografía inválida.|Invalid font.|Carattere non valido.|Police invalide.|Ungültige Schrift.
+Campo de tipografía desconocido.|Unknown font field.|Campo del carattere sconosciuto.|Champ de police inconnu.|Unbekanntes Schriftfeld.
+Ajuste booleano inválido.|Invalid boolean setting.|Impostazione booleana non valida.|Réglage booléen invalide.|Ungültige boolesche Einstellung.
+Ajuste visual fuera de rango.|Visual setting out of range.|Impostazione visiva fuori intervallo.|Réglage visuel hors limites.|Visuelle Einstellung außerhalb des Bereichs.
+Selección de estilo inválida.|Invalid style selection.|Selezione dello stile non valida.|Sélection de style invalide.|Ungültige Stilauswahl.
+Selectores de estilo incompatibles.|Incompatible style selectors.|Selettori di stile incompatibili.|Sélecteurs de style incompatibles.|Inkompatible Stilauswahlfelder.
+El archivo de preset es demasiado grande.|The preset file is too large.|Il file del preset è troppo grande.|Le fichier de preset est trop volumineux.|Die Preset-Datei ist zu groß.
+Archivo de preset vacío o demasiado grande.|Preset file empty or too large.|File del preset vuoto o troppo grande.|Fichier de preset vide ou trop volumineux.|Preset-Datei leer oder zu groß.
+Archivo de preset dañado.|Damaged preset file.|File del preset danneggiato.|Fichier de preset endommagé.|Beschädigte Preset-Datei.
+Formato o versión de preset no compatible.|Unsupported preset format or version.|Formato o versione del preset non supportati.|Format ou version du preset non pris en charge.|Nicht unterstütztes Preset-Format oder nicht unterstützte Version.
+Estilo base incompatible con los ajustes.|Base style incompatible with settings.|Stile di base incompatibile con le impostazioni.|Style de base incompatible avec les réglages.|Basisstil mit den Einstellungen inkompatibel.
+Selecciona un archivo .obsplayingpreset con ruta absoluta.|Select a .obsplayingpreset file with an absolute path.|Seleziona un file .obsplayingpreset con percorso assoluto.|Sélectionnez un fichier .obsplayingpreset avec un chemin absolu.|Eine .obsplayingpreset-Datei mit absolutem Pfad auswählen.
+No se pudo crear la biblioteca.|Could not create the library.|Impossibile creare la libreria.|Impossible de créer la bibliothèque.|Bibliothek konnte nicht erstellt werden.
+La biblioteca está abierta por otra operación. Inténtalo de nuevo.|The library is open in another operation. Try again.|La libreria è aperta da un’altra operazione. Riprova.|La bibliothèque est ouverte par une autre opération. Réessayez.|Die Bibliothek wird von einem anderen Vorgang verwendet. Erneut versuchen.
+No se pudo guardar la biblioteca.|Could not save the library.|Impossibile salvare la libreria.|Impossible d’enregistrer la bibliothèque.|Bibliothek konnte nicht gespeichert werden.
+Preset no encontrado.|Preset not found.|Preset non trovato.|Preset introuvable.|Preset nicht gefunden.
+Solo se pueden actualizar presets guardados.|Only saved presets can be updated.|Si possono aggiornare solo i preset salvati.|Seuls les presets enregistrés peuvent être mis à jour.|Nur gespeicherte Presets können aktualisiert werden.
+Solo se pueden renombrar presets guardados.|Only saved presets can be renamed.|Si possono rinominare solo i preset salvati.|Seuls les presets enregistrés peuvent être renommés.|Nur gespeicherte Presets können umbenannt werden.
+Los estilos originales no se pueden eliminar.|Original styles cannot be deleted.|Gli stili originali non possono essere eliminati.|Les styles d’origine ne peuvent pas être supprimés.|Originalstile können nicht gelöscht werden.
+No se pudo leer el preset o supera 64 KiB.|Could not read the preset or it exceeds 64 KiB.|Impossibile leggere il preset o supera 64 KiB.|Preset illisible ou supérieur à 64 Kio.|Preset konnte nicht gelesen werden oder überschreitet 64 KiB.
+Archivo de preset demasiado grande.|Preset file too large.|File del preset troppo grande.|Fichier de preset trop volumineux.|Preset-Datei zu groß.
+No se pudo exportar el preset.|Could not export the preset.|Impossibile esportare il preset.|Impossible d’exporter le preset.|Preset konnte nicht exportiert werden.
+OBS Playing — Gestor de presets|OBS Playing — Preset manager|OBS Playing — Gestione preset|OBS Playing — Gestion des presets|OBS Playing — Preset-Verwaltung
+Mis presets|My presets|I miei preset|Mes presets|Meine Presets
+Buscar estilo o preset…|Search styles or presets…|Cerca stile o preset…|Rechercher un style ou un preset…|Stil oder Preset suchen…
+Solo cambia el diseño. El programa DJ, las imágenes locales y la conexión se conservan.|Only the design changes. DJ application, local images and connection are preserved.|Cambia solo il design. Programma DJ, immagini locali e connessione sono conservati.|Seul le design change. Logiciel DJ, images locales et connexion sont conservés.|Nur das Design wird geändert. DJ-Programm, lokale Bilder und Verbindung bleiben erhalten.
+Guardar como…|Save as…|Salva come…|Enregistrer sous…|Speichern unter…
+Importar…|Import…|Importa…|Importer…|Importieren…
+Exportar seleccionado…|Export selected…|Esporta selezionato…|Exporter la sélection…|Auswahl exportieren…
+Restablecer base|Reset to base|Ripristina base|Rétablir la base|Basis wiederherstellen
+Selecciona un preset.|Select a preset.|Seleziona un preset.|Sélectionnez un preset.|Ein Preset auswählen.
+No hay presets en esta categoría.|No presets in this category.|Nessun preset in questa categoria.|Aucun preset dans cette catégorie.|Keine Presets in dieser Kategorie.
+Importar preset|Import preset|Importa preset|Importer un preset|Preset importieren
+OBS Playing preset (*.obsplayingpreset)|OBS Playing preset (*.obsplayingpreset)|Preset OBS Playing (*.obsplayingpreset)|Preset OBS Playing (*.obsplayingpreset)|OBS-Playing-Preset (*.obsplayingpreset)
+Preset importado. Selecciona Aplicar para usarlo.|Preset imported. Select Apply to use it.|Preset importato. Seleziona Applica per usarlo.|Preset importé. Cliquez sur Appliquer pour l’utiliser.|Preset importiert. Zum Verwenden Anwenden wählen.
+Exportar preset|Export preset|Esporta preset|Exporter un preset|Preset exportieren
+Preset exportado.|Preset exported.|Preset esportato.|Preset exporté.|Preset exportiert.
+Preset aplicado.|Preset applied.|Preset applicato.|Preset appliqué.|Preset angewendet.
+Guardar preset|Save preset|Salva preset|Enregistrer un preset|Preset speichern
+Diseño guardado.|Design saved.|Design salvato.|Design enregistré.|Design gespeichert.
+Ajustes actuales guardados.|Current settings saved.|Impostazioni attuali salvate.|Réglages actuels enregistrés.|Aktuelle Einstellungen gespeichert.
+Renombrar preset|Rename preset|Rinomina preset|Renommer le preset|Preset umbenennen
+Eliminar preset|Delete preset|Elimina preset|Supprimer le preset|Preset löschen
+¿Eliminar «|Delete “|Eliminare «|Supprimer « |„
+» de la biblioteca?|” from the library?|» dalla libreria?| » de la bibliothèque ?|“ aus der Bibliothek löschen?
+OBS Playing Companion · Vista previa|OBS Playing Companion · Preview|OBS Playing Companion · Anteprima|OBS Playing Companion · Aperçu|OBS Playing Companion · Vorschau
+CURRENT TRACK|CURRENT TRACK|BRANO ATTUALE|MORCEAU ACTUEL|AKTUELLER TITEL
+NETWORK|NETWORK|RETE|RÉSEAU|NETZWERK
+CONNECTED CLIENTS|CONNECTED CLIENTS|CLIENT CONNESSI|CLIENTS CONNECTÉS|VERBUNDENE CLIENTS
+AUTO DETECTOR|AUTO DETECTOR|RILEVAMENTO AUTOMATICO|DÉTECTION AUTOMATIQUE|AUTOMATISCHE ERKENNUNG
+Indicador decorativo de reproducción; no mide el audio.|Decorative playback indicator; does not measure audio.|Indicatore decorativo di riproduzione; non misura l’audio.|Indicateur décoratif de lecture ; ne mesure pas l’audio.|Dekorative Wiedergabeanzeige; misst kein Audio.
+Conectar con OBS|Connect to OBS|Connetti a OBS|Connecter à OBS|Mit OBS verbinden
+Configuración y dispositivos|Settings and devices|Impostazioni e dispositivi|Réglages et appareils|Einstellungen und Geräte
+Configuración del Companion|Companion settings|Impostazioni Companion|Réglages de Companion|Companion-Einstellungen
+Detectar automáticamente|Detect automatically|Rileva automaticamente|Détecter automatiquement|Automatisch erkennen
+Historial VirtualDJ|VirtualDJ history|Cronologia VirtualDJ|Historique VirtualDJ|VirtualDJ-Verlauf
+Historial rekordbox|rekordbox history|Cronologia rekordbox|Historique rekordbox|rekordbox-Verlauf
+Vacío: buscar historial automáticamente|Empty: find history automatically|Vuoto: cerca cronologia automaticamente|Vide : rechercher l’historique automatiquement|Leer: Verlauf automatisch suchen
+Elegir historial…|Choose history…|Scegli cronologia…|Choisir l’historique…|Verlauf auswählen…
+Elegir historial|Choose history|Scegli cronologia|Choisir l’historique|Verlauf auswählen
+Historial|History|Cronologia|Historique|Verlauf
+Dirección del PC DJ|DJ PC address|Indirizzo PC DJ|Adresse du PC DJ|Adresse des DJ-PCs
+Puerto|Port|Porta|Port|Port
+Permitir conexión desde otro PC de mi red|Allow another PC on my network|Consenti un altro PC della mia rete|Autoriser un autre PC de mon réseau|Anderen PC in meinem Netzwerk zulassen
+Ver canción en este PC|Show track on this PC|Mostra brano su questo PC|Afficher le morceau sur ce PC|Titel auf diesem PC anzeigen
+Iniciar envío automáticamente al abrir|Start sending automatically on launch|Avvia invio automaticamente all’apertura|Démarrer l’envoi automatiquement à l’ouverture|Senden beim Öffnen automatisch starten
+Iniciar envío|Start sending|Avvia invio|Démarrer l’envoi|Senden starten
+Permitir vinculación durante 2 minutos|Allow pairing for 2 minutes|Consenti associazione per 2 minuti|Autoriser l’appairage pendant 2 minutes|Kopplung für 2 Minuten erlauben
+Vinculación abierta. Identidad de este PC:\n|Pairing open. This PC’s identity:\n|Associazione aperta. Identità di questo PC:\n|Appairage ouvert. Identité de ce PC :\n|Kopplung geöffnet. Identität dieses PCs:\n
+Vinculación cerrada|Pairing closed|Associazione chiusa|Appairage fermé|Kopplung geschlossen
+Red del PC DJ|DJ PC network|Rete del PC DJ|Réseau du PC DJ|Netzwerk des DJ-PCs
+Elige la red compartida con el PC de streaming|Choose the network shared with the streaming PC|Scegli la rete condivisa con il PC di streaming|Choisissez le réseau partagé avec le PC de streaming|Gemeinsames Netzwerk mit dem Streaming-PC wählen
+Abre tu programa DJ. Después, en OBS del otro PC, pulsa «Conectar Companion».\nNo necesitas configurar direcciones ni copiar códigos.|Open your DJ application. Then in OBS on the other PC, press “Connect Companion”.\nNo addresses to configure or codes to copy.|Apri il programma DJ. Poi, in OBS sull’altro PC, premi «Connetti Companion».\nNon serve configurare indirizzi o copiare codici.|Ouvrez votre logiciel DJ. Puis, dans OBS sur l’autre PC, cliquez sur « Connecter Companion ».\nAucune adresse à configurer ni aucun code à copier.|DJ-Programm öffnen. Dann in OBS auf dem anderen PC „Companion verbinden“ drücken.\nKeine Adressen einrichten oder Codes kopieren.
+Volver a buscar conexión|Retry connection setup|Riprova connessione|Réessayer la connexion|Verbindung erneut einrichten
+Conecta este PC a la misma red Wi-Fi o cableada que el PC de OBS y vuelve a intentarlo.|Connect this PC to the same Wi-Fi or wired network as the OBS PC and try again.|Connetti questo PC alla stessa rete Wi-Fi o cablata del PC OBS e riprova.|Connectez ce PC au même réseau Wi-Fi ou câblé que le PC OBS et réessayez.|Diesen PC mit demselben WLAN oder Kabelnetz wie den OBS-PC verbinden und erneut versuchen.
+No se pudo preparar la conexión. Cierra otras ventanas del Companion en este PC y vuelve a intentarlo.|Could not prepare the connection. Close other Companion windows on this PC and try again.|Impossibile preparare la connessione. Chiudi altre finestre di Companion su questo PC e riprova.|Impossible de préparer la connexion. Fermez les autres fenêtres de Companion sur ce PC et réessayez.|Verbindung konnte nicht vorbereitet werden. Andere Companion-Fenster auf diesem PC schließen und erneut versuchen.
+Cerrar vinculación|Close pairing|Chiudi associazione|Fermer l’appairage|Kopplung schließen
+El equipo «%1» solicita vincularse.\n\nComprueba que esta identidad coincide en ambos PCs:\n%2\n\nConfirma solo la solicitud que acabas de iniciar.|Computer “%1” requests pairing.\n\nCheck that this identity matches on both PCs:\n%2\n\nConfirm only the request you just started.|Il computer «%1» richiede l’associazione.\n\nVerifica che questa identità corrisponda sui due PC:\n%2\n\nConferma solo la richiesta appena avviata.|L’ordinateur « %1 » demande l’appairage.\n\nVérifiez cette identité sur les deux PC :\n%2\n\nConfirmez uniquement la demande que vous venez de lancer.|Computer „%1“ möchte sich koppeln.\n\nDiese Identität auf beiden PCs prüfen:\n%2\n\nNur die gerade gestartete Anfrage bestätigen.
+Vincular equipo|Pair computer|Associa computer|Appairer l’ordinateur|Computer koppeln
+Vincular mediante código…|Pair using code…|Associa tramite codice…|Appairer par code…|Mit Code koppeln…
+Vincular PC|Pair PC|Associa PC|Appairer un PC|PC koppeln
+Nombre del PC|PC name|Nome del PC|Nom du PC|PC-Name
+PC de streaming|Streaming PC|PC di streaming|PC de streaming|Streaming-PC
+Vincular PC de streaming|Pair streaming PC|Associa PC di streaming|Appairer le PC de streaming|Streaming-PC koppeln
+Introduce este código en el PC de streaming.\nGuárdalo como una contraseña: da acceso a tu canción.|Enter this code on the streaming PC.\nKeep it like a password: it grants access to your track.|Inserisci questo codice sul PC di streaming.\nConservalo come una password: consente l’accesso al brano.|Saisissez ce code sur le PC de streaming.\nGardez-le comme un mot de passe : il donne accès au morceau.|Diesen Code auf dem Streaming-PC eingeben.\nWie ein Passwort aufbewahren: Er gewährt Zugriff auf den Titel.
+Revocar vinculación seleccionada|Revoke selected pairing|Revoca associazione selezionata|Révoquer l’appairage sélectionné|Ausgewählte Kopplung widerrufen
+PC DJ|DJ PC|PC DJ|PC DJ|DJ-PC
+Buscar PC DJ y vincular…|Find and pair DJ PC…|Cerca e associa PC DJ…|Rechercher et appairer un PC DJ…|DJ-PC suchen und koppeln…
+Buscar PC DJ|Find DJ PC|Cerca PC DJ|Rechercher un PC DJ|DJ-PC suchen
+En el PC DJ pulsa «Permitir vinculación durante 2 minutos».\nSelecciona el equipo y compara su identidad antes de confirmar.|On the DJ PC press “Allow pairing for 2 minutes”.\nSelect the computer and compare its identity before confirming.|Sul PC DJ premi «Consenti associazione per 2 minuti».\nSeleziona il computer e confronta l’identità prima di confermare.|Sur le PC DJ, cliquez sur « Autoriser l’appairage pendant 2 minutes ».\nSélectionnez l’ordinateur et comparez son identité avant de confirmer.|Auf dem DJ-PC „Kopplung für 2 Minuten erlauben“ drücken.\nComputer auswählen und vor dem Bestätigen die Identität vergleichen.
+Vincular equipo seleccionado|Pair selected computer|Associa computer selezionato|Appairer l’ordinateur sélectionné|Ausgewählten Computer koppeln
+Buscando equipos…|Searching for computers…|Ricerca computer…|Recherche d’ordinateurs…|Computer werden gesucht…
+Búsqueda terminada. Si no aparece, comprueba que la vinculación esté abierta en el PC DJ y ambos estén en la misma red.|Search finished. If missing, check that pairing is open on the DJ PC and both are on the same network.|Ricerca terminata. Se non compare, verifica che l’associazione sia aperta sul PC DJ e che entrambi siano sulla stessa rete.|Recherche terminée. Si le PC manque, vérifiez que l’appairage est ouvert sur le PC DJ et que les deux sont sur le même réseau.|Suche beendet. Falls der PC fehlt, offene Kopplung auf dem DJ-PC und gemeinsames Netzwerk prüfen.
+Confirmar PC DJ|Confirm DJ PC|Conferma PC DJ|Confirmer le PC DJ|DJ-PC bestätigen
+Vincular con «%1»\n\nComprueba que esta identidad coincide con la que muestra tu PC DJ:\n%2|Pair with “%1”\n\nCheck that this identity matches your DJ PC:\n%2|Associa con «%1»\n\nVerifica che questa identità corrisponda a quella del PC DJ:\n%2|Appairer avec « %1 »\n\nVérifiez que cette identité correspond à celle du PC DJ :\n%2|Mit „%1“ koppeln\n\nPrüfen, ob diese Identität mit dem DJ-PC übereinstimmt:\n%2
+Confirma la solicitud en el PC DJ…|Confirm the request on the DJ PC…|Conferma la richiesta sul PC DJ…|Confirmez la demande sur le PC DJ…|Anfrage auf dem DJ-PC bestätigen…
+Conectar al PC guardado automáticamente al abrir|Connect to saved PC automatically on launch|Connetti automaticamente al PC salvato all’apertura|Se connecter au PC enregistré à l’ouverture|Beim Öffnen automatisch mit gespeichertem PC verbinden
+Reconectar automáticamente si se pierde la red|Reconnect automatically after network loss|Riconnetti automaticamente dopo perdita di rete|Se reconnecter automatiquement après une coupure réseau|Nach Netzwerkverlust automatisch erneut verbinden
+Pega el código generado en tu PC DJ para vincular este PC.|Paste the code from your DJ PC to pair this PC.|Incolla il codice generato sul PC DJ per associare questo PC.|Collez le code du PC DJ pour appairer ce PC.|Code vom DJ-PC einfügen, um diesen PC zu koppeln.
+Vincular y conectar|Pair and connect|Associa e connetti|Appairer et connecter|Koppeln und verbinden
+Conectar al PC guardado|Connect to saved PC|Connetti al PC salvato|Se connecter au PC enregistré|Mit gespeichertem PC verbinden
+Retira el destino de este PC. Para retirar su acceso, revoca también el equipo en el PC DJ.|Remove this PC’s destination. To remove its access, also revoke it on the DJ PC.|Rimuove la destinazione da questo PC. Per togliere l’accesso, revoca il computer anche sul PC DJ.|Retire la destination de ce PC. Pour retirer son accès, révoquez-le aussi sur le PC DJ.|Entfernt das Ziel dieses PCs. Zum Entziehen des Zugriffs auch die Kopplung auf dem DJ-PC widerrufen.
+Elegir imagen de perfil del streamer…|Choose streamer profile image…|Scegli immagine profilo dello streamer…|Choisir l’image de profil du streamer…|Streamer-Profilbild auswählen…
+Imagen de perfil|Profile image|Immagine profilo|Image de profil|Profilbild
+Imágenes (*.png *.jpg *.jpeg *.webp)|Images (*.png *.jpg *.jpeg *.webp)|Immagini (*.png *.jpg *.jpeg *.webp)|Images (*.png *.jpg *.jpeg *.webp)|Bilder (*.png *.jpg *.jpeg *.webp)
+Detener conexión|Stop connection|Interrompi connessione|Arrêter la connexion|Verbindung beenden
+No se pudo completar la acción. Comprueba la configuración y el perfil protegido.|Could not complete the action. Check settings and the protected profile.|Impossibile completare l’azione. Controlla impostazioni e profilo protetto.|Impossible de terminer l’action. Vérifiez les réglages et le profil protégé.|Aktion konnte nicht abgeschlossen werden. Einstellungen und geschütztes Profil prüfen.
+  ·  Sin conexión|  ·  Disconnected|  ·  Disconnesso|  ·  Déconnecté|  ·  Nicht verbunden
+  ·  Connected|  ·  Connected|  ·  Connesso|  ·  Connecté|  ·  Verbunden
+Sin conexión|Disconnected|Disconnesso|Déconnecté|Nicht verbunden
+Conectado al PC DJ|Connected to DJ PC|Connesso al PC DJ|Connecté au PC DJ|Mit DJ-PC verbunden
+Conexión perdida. Reintentando…|Connection lost. Retrying…|Connessione persa. Nuovo tentativo…|Connexion perdue. Nouvelle tentative…|Verbindung verloren. Neuer Versuch…
+Conectando con el PC DJ…|Connecting to DJ PC…|Connessione al PC DJ…|Connexion au PC DJ…|Verbindung mit DJ-PC wird hergestellt…
+La identidad del PC DJ no coincide. Comprueba el emparejamiento.|DJ PC identity does not match. Check pairing.|L’identità del PC DJ non corrisponde. Controlla l’associazione.|L’identité du PC DJ ne correspond pas. Vérifiez l’appairage.|Identität des DJ-PCs stimmt nicht überein. Kopplung prüfen.
+El PC DJ rechazó el acceso. Vuelve a vincular este PC.|DJ PC rejected access. Pair this PC again.|Il PC DJ ha rifiutato l’accesso. Associa di nuovo questo PC.|Le PC DJ a refusé l’accès. Appairez à nouveau ce PC.|DJ-PC hat den Zugriff abgelehnt. Diesen PC erneut koppeln.
+El PC DJ envió datos incompatibles.|DJ PC sent incompatible data.|Il PC DJ ha inviato dati incompatibili.|Le PC DJ a envoyé des données incompatibles.|DJ-PC hat inkompatible Daten gesendet.
+Comprueba la dirección, el puerto y el código de vinculación.|Check address, port and pairing code.|Controlla indirizzo, porta e codice di associazione.|Vérifiez l’adresse, le port et le code d’appairage.|Adresse, Port und Kopplungscode prüfen.
+No se pudo conectar. Comprueba que el PC DJ está encendido y enviando.|Could not connect. Check that the DJ PC is on and sending.|Impossibile connettersi. Verifica che il PC DJ sia acceso e stia inviando.|Connexion impossible. Vérifiez que le PC DJ est allumé et envoie des données.|Verbindung fehlgeschlagen. Prüfen, ob der DJ-PC eingeschaltet ist und sendet.
+Envío iniciado · %1 PC(s) conectado(s)|Sending started · %1 PC(s) connected|Invio avviato · %1 PC connessi|Envoi démarré · %1 PC connecté(s)|Senden gestartet · %1 PC(s) verbunden
+ · Hay varios programas reproduciendo. Elige uno.| · Multiple applications are playing. Choose one.| · Più programmi stanno riproducendo. Scegline uno.| · Plusieurs logiciels sont en lecture. Choisissez-en un.| · Mehrere Programme spielen ab. Eines auswählen.
+Serato: Bonjour no está disponible o no responde. Comprueba que Bonjour Service esté instalado y en ejecución en este PC.|Serato: Bonjour is unavailable or not responding. Check that Bonjour Service is installed and running on this PC.|Serato: Bonjour non è disponibile o non risponde. Verifica che Bonjour Service sia installato e in esecuzione su questo PC.|Serato : Bonjour est indisponible ou ne répond pas. Vérifiez que Bonjour Service est installé et en cours d’exécution sur ce PC.|Serato: Bonjour ist nicht verfügbar oder antwortet nicht. Prüfen, ob Bonjour Service auf diesem PC installiert ist und läuft.
+Serato: no se pudo iniciar el lector local. Detén y vuelve a activar la vista local.|Serato: could not start the local reader. Stop and re-enable local preview.|Serato: impossibile avviare il lettore locale. Arresta e riattiva l’anteprima locale.|Serato : impossible de démarrer le lecteur local. Arrêtez puis réactivez l’aperçu local.|Serato: Lokaler Leser konnte nicht gestartet werden. Lokale Vorschau stoppen und erneut aktivieren.
+Activa «Ver canción en este PC» para que Serato pueda descubrir el Companion antes de conectar OBS.|Enable “Show track on this PC” so Serato can discover Companion before connecting OBS.|Attiva «Mostra brano su questo PC» per consentire a Serato di rilevare Companion prima di connettere OBS.|Activez « Afficher le morceau sur ce PC » pour que Serato découvre Companion avant de connecter OBS.|„Titel auf diesem PC anzeigen“ aktivieren, damit Serato Companion vor der OBS-Verbindung erkennt.
+En Serato abre Setup → Expansion Packs → External Control y activa «OBS Playing @ Local…».|In Serato open Setup → Expansion Packs → External Control and enable “OBS Playing @ Local…”.|In Serato apri Setup → Expansion Packs → External Control e attiva «OBS Playing @ Local…».|Dans Serato, ouvrez Setup → Expansion Packs → External Control et activez « OBS Playing @ Local… ».|In Serato Setup → Expansion Packs → External Control öffnen und „OBS Playing @ Local…“ aktivieren.
+Programa DJ: %1\nMúsica: %2\nConexión con OBS: %3\nPortada del tema: %4%5|DJ application: %1\nMusic: %2\nOBS connection: %3\nTrack artwork: %4%5|Programma DJ: %1\nMusica: %2\nConnessione OBS: %3\nCopertina del brano: %4%5|Logiciel DJ : %1\nMusique : %2\nConnexion OBS : %3\nPochette du morceau : %4%5|DJ-Programm: %1\nMusik: %2\nOBS-Verbindung: %3\nTitelcover: %4%5
+esperando una canción|waiting for a track|in attesa di un brano|en attente d’un morceau|Warten auf einen Titel
+lista; esperando a OBS|ready; waiting for OBS|pronta; in attesa di OBS|prête ; en attente d’OBS|bereit; Warten auf OBS
+sin preparar|not ready|non pronta|non prête|nicht bereit
+En OBS pulsa «Conectar Companion».\nComprueba esta identidad en ambos PCs:\n|In OBS press “Connect Companion”.\nCheck this identity on both PCs:\n|In OBS premi «Connetti Companion».\nVerifica questa identità sui due PC:\n|Dans OBS, cliquez sur « Connecter Companion ».\nVérifiez cette identité sur les deux PC :\n|In OBS „Companion verbinden“ drücken.\nDiese Identität auf beiden PCs prüfen:\n
+La conexión está guardada. En las siguientes sesiones solo abre Companion y OBS.|The connection is saved. Next time just open Companion and OBS.|La connessione è salvata. La prossima volta apri solo Companion e OBS.|La connexion est enregistrée. La prochaine fois, ouvrez simplement Companion et OBS.|Verbindung gespeichert. Beim nächsten Mal einfach Companion und OBS öffnen.
+La ventana de vinculación está cerrada. Pulsa «Volver a buscar conexión» para abrirla de nuevo.\nSi OBS no encuentra este PC, comprueba el permiso de red del Companion en Windows.|Pairing is closed. Press “Retry connection setup” to reopen it.\nIf OBS cannot find this PC, check Companion’s network permission in Windows.|L’associazione è chiusa. Premi «Riprova connessione» per riaprirla.\nSe OBS non trova questo PC, controlla il permesso di rete di Companion in Windows.|L’appairage est fermé. Cliquez sur « Réessayer la connexion » pour le rouvrir.\nSi OBS ne trouve pas ce PC, vérifiez l’autorisation réseau de Companion dans Windows.|Kopplung geschlossen. Zum Öffnen „Verbindung erneut einrichten“ drücken.\nWenn OBS diesen PC nicht findet, Windows-Netzwerkfreigabe für Companion prüfen.
+PC DJ VINCULADO|PAIRED DJ PC|PC DJ ASSOCIATO|PC DJ APPAIRÉ|GEKOPPELTER DJ-PC
+PC DJ · %1:%2\n%3|DJ PC · %1:%2\n%3|PC DJ · %1:%2\n%3|PC DJ · %1:%2\n%3|DJ-PC · %1:%2\n%3
+Conectado|Connected|Connesso|Connecté|Verbunden
+Conectando…|Connecting…|Connessione…|Connexion…|Verbindung wird hergestellt…
+Reconectando…|Reconnecting…|Riconnessione…|Reconnexion…|Wiederverbindung…
+Guardado · Sin conexión|Saved · Disconnected|Salvato · Disconnesso|Enregistré · Déconnecté|Gespeichert · Nicht verbunden
+Sin PC DJ vinculado|No paired DJ PC|Nessun PC DJ associato|Aucun PC DJ appairé|Kein gekoppelter DJ-PC
+Esperando canción|Waiting for a track|In attesa di un brano|En attente d’un morceau|Warten auf einen Titel
+Sin reproducción activa|No active playback|Nessuna riproduzione attiva|Aucune lecture active|Keine aktive Wiedergabe
+●  Connected|●  Connected|●  Connesso|●  Connecté|●  Verbunden
+●  Disconnected|●  Disconnected|●  Disconnesso|●  Déconnecté|●  Nicht verbunden
+●  Running|●  Running|●  In esecuzione|●  En cours|●  Aktiv
+●  Stopped|●  Stopped|●  Arrestato|●  Arrêté|●  Angehalten
+Directorio propio del perfil protegido|Protected profile directory|Cartella del profilo protetto|Dossier du profil protégé|Verzeichnis des geschützten Profils
+Dependencia DB auditada|Audited DB dependency|Dipendenza DB verificata|Dépendance DB vérifiée|Geprüfte DB-Abhängigkeit
+No se pudo abrir el Companion. Comprueba su carpeta de instalación y el perfil protegido.|Could not open Companion. Check its installation folder and protected profile.|Impossibile aprire Companion. Controlla la cartella di installazione e il profilo protetto.|Impossible d’ouvrir Companion. Vérifiez son dossier d’installation et le profil protégé.|Companion konnte nicht geöffnet werden. Installationsordner und geschütztes Profil prüfen.
+Diseño base restablecido; el preset guardado se conserva.|Base design restored; the saved preset is preserved.|Design di base ripristinato; il preset salvato è conservato.|Design de base rétabli ; le preset enregistré est conservé.|Basisdesign wiederhergestellt; das gespeicherte Preset bleibt erhalten.
+No se admiten enlaces ni junctions: |Links and junctions are not supported: |Collegamenti e junction non sono supportati: |Liens et jonctions non pris en charge : |Links und Junctions werden nicht unterstützt: 
+Ruta inválida|Invalid path|Percorso non valido|Chemin invalide|Ungültiger Pfad
+Ruta fuera del destino|Path outside destination|Percorso fuori dalla destinazione|Chemin hors de la destination|Pfad außerhalb des Ziels
+Cierra |Close |Chiudi |Fermez |Bitte 
+ antes de continuar.| before continuing.| prima di continuare.| avant de continuer.| vor dem Fortfahren schließen.
+Rol inválido|Invalid role|Ruolo non valido|Rôle invalide|Ungültige Rolle
+Selecciona la carpeta de OBS Studio x64.|Select the OBS Studio x64 folder.|Seleziona la cartella di OBS Studio x64.|Sélectionnez le dossier d’OBS Studio x64.|Ordner von OBS Studio x64 auswählen.
+Se requiere OBS Studio 32.x Windows x64.|OBS Studio 32.x Windows x64 is required.|È richiesto OBS Studio 32.x Windows x64.|OBS Studio 32.x Windows x64 est requis.|OBS Studio 32.x für Windows x64 ist erforderlich.
+OBS no es AMD64.|OBS is not AMD64.|OBS non è AMD64.|OBS n’est pas AMD64.|OBS ist nicht AMD64.
+Destino inválido.|Invalid destination.|Destinazione non valida.|Destination invalide.|Ungültiges Ziel.
+Entrada duplicada|Duplicate entry|Voce duplicata|Entrée en double|Doppelter Eintrag
+Registro de instalación desconocido|Unknown installation record|Registro di installazione sconosciuto|Registre d’installation inconnu|Unbekannter Installationseintrag
+Registro inválido|Invalid record|Registro non valido|Registre invalide|Ungültiger Eintrag
+Copia original inválida|Invalid original backup|Copia originale non valida|Copie d’origine invalide|Ungültige Originalsicherung
+Otra instalación está utilizando esta carpeta.|Another installation is using this folder.|Un’altra installazione sta usando questa cartella.|Une autre installation utilise ce dossier.|Eine andere Installation verwendet diesen Ordner.
+Archivo modificado: |Modified file: |File modificato: |Fichier modifié : |Geänderte Datei: 
+. No se sobrescribirá.|. It will not be overwritten.|. Non verrà sovrascritto.|. Il ne sera pas écrasé.|. Sie wird nicht überschrieben.
+Destino ocupado por un archivo ajeno: |Destination occupied by an unrelated file: |Destinazione occupata da un file estraneo: |Destination occupée par un fichier tiers : |Ziel durch fremde Datei belegt: 
+Checksum de escritura incorrecto|Write checksum mismatch|Checksum di scrittura errato|Somme de contrôle d’écriture incorrecte|Prüfsumme nach dem Schreiben stimmt nicht überein
+El acceso directo fue modificado; se conserva.|The shortcut was modified; it is preserved.|Il collegamento è stato modificato; viene conservato.|Le raccourci a été modifié ; il est conservé.|Die Verknüpfung wurde geändert; sie bleibt erhalten.
+Falta copia original válida; no se desinstala.|A valid original backup is missing; uninstall cancelled.|Manca una copia originale valida; disinstallazione annullata.|Copie d’origine valide manquante ; désinstallation annulée.|Gültige Originalsicherung fehlt; Deinstallation abgebrochen.
+Acceso directo fuera del destino esperado|Shortcut outside expected destination|Collegamento fuori dalla destinazione prevista|Raccourci hors de la destination prévue|Verknüpfung außerhalb des erwarteten Ziels
+Copia del acceso directo inválida|Invalid shortcut backup|Copia del collegamento non valida|Copie du raccourci invalide|Ungültige Sicherung der Verknüpfung
+La instalación de Companion es por usuario.|Companion is installed per user.|Companion viene installato per utente.|Companion est installé par utilisateur.|Companion wird pro Benutzer installiert.
+No se pudo completar la operación con permisos de administrador.|Could not complete the operation with administrator permission.|Impossibile completare l’operazione con permessi di amministratore.|Impossible de terminer l’opération avec les droits administrateur.|Vorgang konnte mit Administratorrechten nicht abgeschlossen werden.
+Instalación · |Installation · |Installazione · |Installation · |Installation · 
+Elige qué instalar en este PC|Choose what to install on this PC|Scegli cosa installare su questo PC|Choisissez quoi installer sur ce PC|Auswählen, was auf diesem PC installiert werden soll
+PC streaming · Plugin OBS|Streaming PC · OBS plugin|PC streaming · Plugin OBS|PC streaming · Plugin OBS|Streaming-PC · OBS-Plugin
+PC DJ · Companion|DJ PC · Companion|PC DJ · Companion|PC DJ · Companion|DJ-PC · Companion
+Carpeta de destino|Destination folder|Cartella di destinazione|Dossier de destination|Zielordner
+OBS 32.x · Windows x64\nConserva escenas, perfiles y versiones anteriores.\nCierra OBS o Companion antes de instalar.|OBS 32.x · Windows x64\nPreserves scenes, profiles and previous versions.\nClose OBS or Companion before installing.|OBS 32.x · Windows x64\nConserva scene, profili e versioni precedenti.\nChiudi OBS o Companion prima di installare.|OBS 32.x · Windows x64\nConserve les scènes, profils et versions précédentes.\nFermez OBS ou Companion avant l’installation.|OBS 32.x · Windows x64\nSzenen, Profile und frühere Versionen bleiben erhalten.\nOBS oder Companion vor der Installation schließen.
+Instalar|Install|Installa|Installer|Installieren
+Desinstalar|Uninstall|Disinstalla|Désinstaller|Deinstallieren
+¿Retirar esta instalación? Se conservarán perfiles y copias anteriores.|Remove this installation? Profiles and previous backups will be preserved.|Rimuovere questa installazione? Profili e copie precedenti verranno conservati.|Retirer cette installation ? Les profils et copies précédentes seront conservés.|Diese Installation entfernen? Profile und frühere Sicherungen bleiben erhalten.
+Comprobando archivos…|Checking files…|Verifica file…|Vérification des fichiers…|Dateien werden geprüft…
+Desinstalación terminada. Archivos modificados conservados: |Uninstall complete. Modified files preserved: |Disinstallazione completata. File modificati conservati: |Désinstallation terminée. Fichiers modifiés conservés : |Deinstallation abgeschlossen. Geänderte Dateien erhalten: 
+Instalación terminada. Ya puedes abrir |Installation complete. You can now open |Installazione completata. Ora puoi aprire |Installation terminée. Vous pouvez ouvrir |Installation abgeschlossen. Jetzt öffnen: 
+Companion desde la carpeta elegida.|Companion from the selected folder.|Companion dalla cartella selezionata.|Companion depuis le dossier choisi.|Companion im gewählten Ordner.
+Solicitando permisos de administrador…|Requesting administrator permission…|Richiesta permessi di amministratore…|Demande des droits administrateur…|Administratorrechte werden angefordert…
+Desinstalación terminada.|Uninstall complete.|Disinstallazione completata.|Désinstallation terminée.|Deinstallation abgeschlossen.
+Instalación terminada. Ya puedes abrir OBS Studio.|Installation complete. You can now open OBS Studio.|Installazione completata. Ora puoi aprire OBS Studio.|Installation terminée. Vous pouvez ouvrir OBS Studio.|Installation abgeschlossen. OBS Studio kann jetzt geöffnet werden.
+Operación cancelada al solicitar permisos.|Operation cancelled when requesting permission.|Operazione annullata alla richiesta dei permessi.|Opération annulée lors de la demande d’autorisation.|Vorgang bei der Rechteanforderung abgebrochen.
+El desinstalador anterior sigue abierto.|The previous uninstaller is still open.|Il programma di disinstallazione precedente è ancora aperto.|Le désinstallateur précédent est encore ouvert.|Das vorherige Deinstallationsprogramm ist noch geöffnet.
+\r\nGuía con imágenes: |\r\nIllustrated guide: |\r\nGuida illustrata: |\r\nGuide illustré : |\r\nBebilderte Anleitung: 
+\r\nPlugin en PC streaming; Companion solo en PC DJ. También funciona localmente sin Companion.\r\nEn el PC DJ pulsa Conectar con OBS. En la fuente de OBS pulsa Conectar Companion.\r\nConfirma la identidad y acepta la solicitud en Companion. Lectura y envio automaticos.\r\nPara este asistente, actualiza plugin y Companion a esta versión.\r\nNo se modifican escenas ni perfiles. Windows limpio y certificación LAN completa pendientes.\r\nInstalación sin firma digital. Conserva fuentes/licencias incluidas.\r\n|\r\nPlugin on streaming PC; Companion on DJ PC only. Also works locally without Companion.\r\nOn DJ PC press Connect to OBS. In OBS press Connect Companion.\r\nConfirm the identity and accept the request in Companion. Reading and sending are automatic.\r\nUpdate both components to this version.\r\nScenes and profiles are preserved. Clean Windows and full LAN certification pending.\r\nUnsigned installer. Keep included sources and licenses.\r\n|\r\nPlugin sul PC streaming; Companion solo sul PC DJ. Funziona anche localmente senza Companion.\r\nSul PC DJ premi Connetti a OBS. In OBS premi Connetti Companion.\r\nConferma l’identità e accetta la richiesta in Companion. Lettura e invio automatici.\r\nAggiorna entrambi i componenti a questa versione.\r\nScene e profili conservati. Verifica su Windows pulito e certificazione LAN completa in sospeso.\r\nInstallazione senza firma digitale. Conserva sorgenti e licenze incluse.\r\n|\r\nPlugin sur le PC streaming ; Companion sur le PC DJ uniquement. Fonctionne aussi localement sans Companion.\r\nSur le PC DJ, cliquez sur Connecter à OBS. Dans OBS, cliquez sur Connecter Companion.\r\nConfirmez l’identité et acceptez la demande dans Companion. Lecture et envoi automatiques.\r\nMettez les deux composants à jour vers cette version.\r\nScènes et profils conservés. Validation Windows propre et certification LAN complète en attente.\r\nInstallation non signée. Conservez les sources et licences incluses.\r\n|\r\nPlugin auf dem Streaming-PC; Companion nur auf dem DJ-PC. Funktioniert auch lokal ohne Companion.\r\nAuf dem DJ-PC Mit OBS verbinden drücken. In OBS Companion verbinden drücken.\r\nIdentität bestätigen und Anfrage in Companion annehmen. Lesen und Senden automatisch.\r\nBeide Komponenten auf diese Version aktualisieren.\r\nSzenen und Profile bleiben erhalten. Prüfung auf sauberem Windows und vollständige LAN-Zertifizierung ausstehend.\r\nInstaller ohne digitale Signatur. Quellen und Lizenzen aufbewahren.\r\n
+# Chat announcements
+Anunciar canciones en el chat de Twitch|Announce tracks in Twitch chat|Annuncia i brani nella chat di Twitch|Annoncer les morceaux dans le chat Twitch|Titel im Twitch-Chat ankündigen
+Conectar chat de Twitch…|Connect Twitch chat…|Collega la chat di Twitch…|Connecter le chat Twitch…|Twitch-Chat verbinden…
+Mensaje del chat|Chat message|Messaggio in chat|Message du chat|Chatnachricht
+Incluye {title} y {artist}. Solo canciones reales durante la transmisión; los mensajes repetidos se omiten.|Include {title} and {artist}. Real tracks only while streaming; repeated messages are skipped.|Includi {title} e {artist}. Solo brani reali durante la diretta; i messaggi ripetuti vengono ignorati.|Incluez {title} et {artist}. Morceaux réels uniquement pendant la diffusion ; les messages répétés sont ignorés.|{title} und {artist} einfügen. Nur echte Titel während des Streams; wiederholte Nachrichten werden übersprungen.
+Espera antes del anuncio (s)|Delay before announcement (s)|Attesa prima dell'annuncio (s)|Délai avant l'annonce (s)|Wartezeit vor der Ankündigung (s)
+Chat sin autorizar|Chat not authorized|Chat non autorizzata|Chat non autorisé|Chat nicht autorisiert
+Chat autorizado: %1|Chat authorized: %1|Chat autorizzata: %1|Chat autorisé : %1|Chat autorisiert: %1
+No se pudo leer la autorización protegida del chat.|Could not read the protected chat authorization.|Impossibile leggere l'autorizzazione protetta della chat.|Impossible de lire l'autorisation protégée du chat.|Die geschützte Chat-Autorisierung konnte nicht gelesen werden.
+No se pudo guardar la autorización protegida del chat.|Could not save the protected chat authorization.|Impossibile salvare l'autorizzazione protetta della chat.|Impossible d'enregistrer l'autorisation protégée du chat.|Die geschützte Chat-Autorisierung konnte nicht gespeichert werden.
+Autoriza Twitch para enviar mensajes al chat.|Authorize Twitch to send chat messages.|Autorizza Twitch a inviare messaggi in chat.|Autorisez Twitch à envoyer des messages dans le chat.|Twitch zum Senden von Chatnachrichten autorisieren.
+No se pudo autorizar el chat. Vuelve a intentarlo.|Could not authorize chat. Please try again.|Impossibile autorizzare la chat. Riprova.|Impossible d'autoriser le chat. Réessayez.|Der Chat konnte nicht autorisiert werden. Bitte erneut versuchen.
+El código ha caducado. Pulsa Autorizar chat de Twitch.|The code has expired. Click Authorize Twitch chat.|Il codice è scaduto. Premi Autorizza la chat di Twitch.|Le code a expiré. Cliquez sur Autoriser le chat Twitch.|Der Code ist abgelaufen. Klicke auf Twitch-Chat autorisieren.
+Enviando canción al chat…|Sending track to chat…|Invio del brano alla chat…|Envoi du morceau dans le chat…|Titel wird an den Chat gesendet…
+Canción enviada al chat.|Track sent to chat.|Brano inviato alla chat.|Morceau envoyé dans le chat.|Titel an den Chat gesendet.
+Twitch no confirmó el envío. No se repetirá automáticamente.|Twitch did not confirm delivery. It will not be retried automatically.|Twitch non ha confermato l'invio. Non verrà ripetuto automaticamente.|Twitch n'a pas confirmé l'envoi. Il ne sera pas répété automatiquement.|Twitch hat den Versand nicht bestätigt. Er wird nicht automatisch wiederholt.
+El chat autorizado no coincide con la cuenta de emisión de OBS.|The authorized chat account does not match the OBS broadcast account.|L'account chat autorizzato non corrisponde all'account di trasmissione di OBS.|Le compte de chat autorisé ne correspond pas au compte de diffusion OBS.|Das autorisierte Chat-Konto stimmt nicht mit dem OBS-Streaming-Konto überein.
+Preparando autorización de Twitch…|Preparing Twitch authorization…|Preparazione dell'autorizzazione Twitch…|Préparation de l'autorisation Twitch…|Twitch-Autorisierung wird vorbereitet…
+Abre Twitch e introduce este código para autorizar el chat.|Open Twitch and enter this code to authorize chat.|Apri Twitch e inserisci questo codice per autorizzare la chat.|Ouvrez Twitch et saisissez ce code pour autoriser le chat.|Öffne Twitch und gib diesen Code ein, um den Chat zu autorisieren.
+Chat desconectado en este equipo.|Chat disconnected on this computer.|Chat disconnessa su questo computer.|Chat déconnecté sur cet ordinateur.|Chat auf diesem Computer getrennt.
+Anuncios de canciones en Twitch|Track announcements on Twitch|Annunci dei brani su Twitch|Annonces des morceaux sur Twitch|Titelankündigungen auf Twitch
+Autoriza la cuenta que utilizas para transmitir en Twitch. Solo se enviarán canciones reales mientras OBS esté transmitiendo.|Authorize the account you use to stream on Twitch. Only real tracks will be sent while OBS is streaming.|Autorizza l'account che usi per trasmettere su Twitch. Verranno inviati solo brani reali mentre OBS è in diretta.|Autorisez le compte utilisé pour diffuser sur Twitch. Seuls les morceaux réels seront envoyés pendant la diffusion OBS.|Autorisiere das Konto, mit dem du auf Twitch streamst. Es werden nur echte Titel gesendet, während OBS streamt.
+Autorizar chat de Twitch|Authorize Twitch chat|Autorizza la chat di Twitch|Autoriser le chat Twitch|Twitch-Chat autorisieren
+Abrir Twitch|Open Twitch|Apri Twitch|Ouvrir Twitch|Twitch öffnen
+Desconectar chat en este equipo|Disconnect chat on this computer|Disconnetti la chat su questo computer|Déconnecter le chat sur cet ordinateur|Chat auf diesem Computer trennen
